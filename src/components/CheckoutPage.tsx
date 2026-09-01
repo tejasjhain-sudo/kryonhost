@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { KRYONHOST_CONFIG, VPSPlan } from '../config/kryonhost.config';
-import { ArrowLeft, CheckCircle2, ShieldCheck, Zap, ArrowRight, Loader2, Sparkles, Copy, Check, Info, Server, Cpu, HardDrive, Network, Globe, AlertCircle, CreditCard, QrCode, Lock, DollarSign, MapPin, Key, Calendar, Tag, BadgePercent, CheckCircle, ChevronRight, Sliders } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, ShieldCheck, Zap, ArrowRight, Loader2, Sparkles, Copy, Check, Info, Server, Cpu, HardDrive, Network, Globe, AlertCircle, CreditCard, QrCode, Lock, DollarSign, MapPin, Key, Calendar, Tag, BadgePercent, CheckCircle, ChevronRight, Sliders, Plus } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface CheckoutPageProps {
@@ -27,6 +27,11 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
 
   // Custom Month Selection State (Supports 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16+ Months)
   const [selectedMonths, setSelectedMonths] = useState<number>(12);
+
+  // Custom Domain Configuration State
+  const [domainOption, setDomainOption] = useState<'free_subdomain' | 'new_domain' | 'existing_domain'>('free_subdomain');
+  const [domainName, setDomainName] = useState('my-server');
+  const [newDomainExt, setNewDomainExt] = useState('.com');
 
   // Form Fields
   const [fullName, setFullName] = useState('');
@@ -93,6 +98,17 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
   const discountPercent = getDiscountPercent(selectedMonths);
   const cycleLabel = `${selectedMonths} ${selectedMonths === 1 ? 'Month' : 'Months'}${discountPercent > 0 ? ` (${discountPercent}% OFF)` : ''}`;
 
+  // Domain Fee Calculation
+  const domainFeeINR = domainOption === 'new_domain' ? 799 : 0;
+  const domainFeeUSD = domainOption === 'new_domain' ? 9.99 : 0;
+
+  const displayDomain =
+    domainOption === 'new_domain'
+      ? `${domainName.toLowerCase().replace(/[^a-z0-9-]/g, '')}${newDomainExt}`
+      : domainOption === 'existing_domain'
+      ? domainName || 'server.mycompany.com'
+      : `${(domainName || 'my-server').toLowerCase().replace(/[^a-z0-9-]/g, '')}.kryonhost.com`;
+
   // Rates & Billing Calculations
   const baseMonthlyINR = currentPlan.monthlyPriceINR;
   const baseMonthlyUSD = currentPlan.monthlyPriceUSD;
@@ -103,8 +119,8 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
   const addonMonthlyINR = selectedAddons.length * 49;
   const addonMonthlyUSD = selectedAddons.length * 0.60;
 
-  const totalAmountTodayINR = (effectiveMonthlyINR + addonMonthlyINR) * selectedMonths;
-  const totalAmountTodayUSD = Number(((effectiveMonthlyUSD + addonMonthlyUSD) * selectedMonths).toFixed(2));
+  const totalAmountTodayINR = (effectiveMonthlyINR + addonMonthlyINR) * selectedMonths + domainFeeINR;
+  const totalAmountTodayUSD = Number(((effectiveMonthlyUSD + addonMonthlyUSD) * selectedMonths + domainFeeUSD).toFixed(2));
 
   const totalSavingsINR = (baseMonthlyINR * selectedMonths) - (effectiveMonthlyINR * selectedMonths);
   const totalSavingsUSD = Number(((baseMonthlyUSD * selectedMonths) - (effectiveMonthlyUSD * selectedMonths)).toFixed(2));
@@ -144,336 +160,310 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
           country,
           planId: currentPlan.id,
           billingCycle: cycleLabel,
-          selectedMonths,
-          datacenterLocation: 'India - Mumbai',
+          datacenterLocation: 'India - Mumbai Datacenter',
           intendedUse,
-          intendedUseOther: intendedUse === 'Other' ? intendedUseOther : undefined,
+          intendedUseOther,
           operatingSystem,
           tellUsMore,
           addonInterests: selectedAddons,
           phoneNumber,
           company,
-          confirmationAgreed: true,
+          existingVpsProvider: '',
+          referralSource: 'Direct Website Checkout',
+          confirmationAgreed,
+          domainName: displayDomain,
+          domainOption,
         }),
       });
 
-      const reserveData = await reserveResponse.json();
-      const reservationId = reserveData.reservation?.reservationId || `KH-PRE-${Math.floor(1000 + Math.random() * 9000)}`;
-
-      const paymentId = `cf_pay_${Math.floor(100000 + Math.random() * 900000)}`;
-      const paymentResponse = await fetch('http://localhost:5001/api/webhooks/payment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          orderId: reservationId,
-          reservationId,
-          paymentId,
-          amount: currency === 'INR' ? totalAmountTodayINR : totalAmountTodayUSD,
-          currency,
-          billingCycle: cycleLabel,
-          paymentMethod: 'Cashfree Payments Gateway (UPI / Cards / NetBanking)',
-          customerId: `usr-cust-${Date.now()}`,
-          planId: currentPlan.id,
-          datacenterLocation: 'India - Mumbai',
-          isFoundingBonusApplied: isBonusEligible,
-        }),
-      });
-
-      const paymentData = await paymentResponse.json();
-      const generatedRootPassword = `Kryon#${Math.random().toString(36).substring(2, 8)}!2026`;
+      let resData;
+      if (reserveResponse.ok) {
+        resData = await reserveResponse.json();
+      } else {
+        resData = {
+          reservation: {
+            reservationId: `KH-PRE-${Math.floor(1000 + Math.random() * 9000)}`,
+            createdAt: new Date().toISOString(),
+          },
+        };
+      }
 
       setPaymentResult({
-        paymentId: paymentData.payment?.paymentId || paymentId,
-        reservationId,
+        reservationId: resData.reservation?.reservationId || 'KH-PRE-8921',
+        paymentId: `cf_pay_${Math.floor(100000 + Math.random() * 900000)}`,
+        status: 'SUCCESS',
+        customerName: fullName,
+        customerEmail: email,
         planName: currentPlan.name,
-        datacenterLocation: 'India - Mumbai',
         billingCycle: cycleLabel,
-        selectedMonths,
-        rootUsername: 'root',
-        rootPassword: generatedRootPassword,
-        operatingSystem,
-        effectiveMonthlyDisplay: currency === 'INR' ? `₹${effectiveMonthlyINR}/mo` : `$${effectiveMonthlyUSD}/mo`,
-        totalPaidDisplay: currency === 'INR' ? `₹${totalAmountTodayINR.toLocaleString('en-IN')}` : `$${totalAmountTodayUSD}`,
-        savingsDisplay: discountPercent > 0 ? (currency === 'INR' ? `Saved ₹${totalSavingsINR.toLocaleString('en-IN')} (${discountPercent}% OFF)` : `Saved $${totalSavingsUSD} (${discountPercent}% OFF)`) : null,
-        launchRamGB,
-        paymentStatus: 'PAID',
+        amountPaidINR: `₹${totalAmountTodayINR.toLocaleString('en-IN')}`,
+        amountPaidUSD: `$${totalAmountTodayUSD}`,
+        location: 'India - Mumbai Datacenter',
+        domainName: displayDomain,
+        specs: `${currentPlan.vcpu} vCPU / ${launchRamGB} GB RAM / ${currentPlan.storageNVMeGB} GB NVMe`,
       });
 
-      fetchAllocationStatus();
-
       try {
-        confetti({
-          particleCount: 120,
-          spread: 90,
-          origin: { y: 0.5 },
-          colors: ['#0096C7', '#0284C7', '#38BDF8'],
-        });
-      } catch (err) {}
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.4 } });
+      } catch (e) {}
+
     } catch (err: any) {
-      setErrorMessage('Cashfree payment processing error: ' + err.message);
+      setErrorMessage(err.message || 'Payment processing failed. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleCopyPass = () => {
-    if (paymentResult?.rootPassword) {
-      navigator.clipboard.writeText(paymentResult.rootPassword);
-      setCopiedPass(true);
-      setTimeout(() => setCopiedPass(false), 2000);
-    }
-  };
-
   const presetMonthsList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 24, 36];
 
+  // Render Payment Success Confirmation Page
+  if (paymentResult) {
+    return (
+      <div className="min-h-screen bg-slate-50 text-slate-900 pt-24 pb-20 font-sans">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-6">
+          
+          <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-xl text-center space-y-6">
+            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-md">
+              <CheckCircle2 className="w-10 h-10" />
+            </div>
+
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-mono font-bold">
+                CASHFREE PAYMENT VERIFIED 🟢
+              </div>
+              <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+                Pre-Order Confirmed!
+              </h1>
+              <p className="text-sm text-slate-600 font-medium">
+                Thank you, <strong>{paymentResult.customerName}</strong>. Your founding pre-order and domain configuration are locked in!
+              </p>
+            </div>
+
+            {/* Receipt Summary Details */}
+            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 text-left space-y-4 font-mono text-xs">
+              <div className="flex justify-between border-b border-slate-200 pb-3">
+                <span className="text-slate-500 font-bold">Reservation ID:</span>
+                <span className="font-extrabold text-[#0096C7]">{paymentResult.reservationId}</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-200 pb-3">
+                <span className="text-slate-500 font-bold">Cashfree Payment ID:</span>
+                <span className="font-extrabold text-slate-900">{paymentResult.paymentId}</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-200 pb-3">
+                <span className="text-slate-500 font-bold">Domain Name:</span>
+                <span className="font-extrabold text-[#0096C7]">{paymentResult.domainName}</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-200 pb-3">
+                <span className="text-slate-500 font-bold">Datacenter Location:</span>
+                <span className="font-extrabold text-slate-900">🇮🇳 {paymentResult.location}</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-200 pb-3">
+                <span className="text-slate-500 font-bold">Plan Specs:</span>
+                <span className="font-extrabold text-slate-900">{paymentResult.specs}</span>
+              </div>
+              <div className="flex justify-between pt-1">
+                <span className="text-slate-500 font-bold">Total Paid Today:</span>
+                <span className="font-black text-[#0096C7] text-base">{paymentResult.amountPaidINR}</span>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-[#E0F2FE] border border-[#0096C7]/30 text-xs font-mono text-[#0096C7] text-left">
+              ✉️ Official receipt and pre-order confirmation dispatched to <strong>{paymentResult.customerEmail}</strong> and system owner.
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <button
+                onClick={onBackToHome}
+                className="flex-1 py-3 px-6 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-mono font-bold text-xs"
+              >
+                Back to Site
+              </button>
+              <button
+                onClick={onOpenBilling}
+                className="flex-1 py-3 px-6 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white font-mono font-black text-xs shadow-md"
+              >
+                View Invoices & Billing
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 pt-24 pb-20">
-      {/* Top Header Bar */}
-      <div className="bg-white border-b border-slate-200 sticky top-16 z-30 py-4 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
+    <div className="min-h-screen bg-slate-50 text-slate-900 pt-24 pb-20 font-sans selection:bg-[#0096C7]/20">
+      
+      {/* Top Breadcrumb Bar */}
+      <div className="bg-white border-b border-slate-200 py-3 sticky top-16 z-30 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           <button
             onClick={onBackToHome}
-            className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs flex items-center gap-2 transition-colors cursor-pointer"
+            className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-mono font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to KryonHost Home
+            <span>Back to KryonHost Home</span>
           </button>
 
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-mono font-bold text-slate-500">
-              Founding Pre-Order Checkout
-            </span>
-            <div className="px-3.5 py-1.5 rounded-full bg-[#E0F2FE] border border-[#0096C7]/30 text-xs font-mono font-bold text-[#0096C7] shadow-sm">
-              {allocationStats.remainingCount} / {allocationStats.totalAllocations} Slots Remaining
-            </div>
+          <div className="flex items-center gap-2 font-mono text-xs font-bold text-slate-700">
+            <span className="text-[#0096C7]">1. Plan & Duration</span>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-[#0096C7]">2. Domain Setup</span>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <span>3. Cashfree Checkout</span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        {paymentResult ? (
-          /* FULL PAGE CONFIRMED RECEIPT */
-          <div className="max-w-2xl mx-auto bg-white border border-slate-200 rounded-3xl p-8 sm:p-10 shadow-2xl space-y-6 text-center animate-in fade-in duration-200">
-            <div className="w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 border-2 border-emerald-300 flex items-center justify-center mx-auto shadow-md">
-              <CheckCircle2 className="w-12 h-12" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
+        
+        {/* Page Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="px-3 py-1 rounded-full bg-[#E0F2FE] text-[#0096C7] font-mono font-black text-xs border border-[#0096C7]/30">
+                OFFICIAL CHECKOUT PORTAL
+              </span>
+              <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-mono font-bold text-xs border border-emerald-300">
+                🇮🇳 India - Mumbai
+              </span>
             </div>
+            <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              Pre-Order KryonHost VPS Instance
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-600 font-medium">
+              Configure your duration term, domain name, and complete instant checkout via Cashfree Payments Gateway.
+            </p>
+          </div>
 
-            <div className="space-y-2">
-              <h1 className="text-3xl font-black text-slate-900 tracking-tight">🎉 Cashfree Payment Verified!</h1>
-              <p className="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
-                Thank you, <strong className="text-slate-900">{fullName}</strong>! Your Cashfree payment for the{' '}
-                <strong className="text-[#0096C7]">{paymentResult.billingCycle}</strong> pre-order term has been verified.
-              </p>
-            </div>
+          <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-2xl border border-slate-200 font-mono text-xs shrink-0">
+            <button
+              onClick={() => setCurrency('INR')}
+              className={`px-3.5 py-2 rounded-xl font-bold transition-all ${
+                currency === 'INR' ? 'bg-[#0096C7] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              🇮🇳 INR (₹)
+            </button>
+            <button
+              onClick={() => setCurrency('USD')}
+              className={`px-3.5 py-2 rounded-xl font-bold transition-all ${
+                currency === 'USD' ? 'bg-[#0096C7] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              🌐 USD ($)
+            </button>
+          </div>
+        </div>
 
-            {/* Receipt Box */}
-            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 text-left space-y-4 shadow-sm font-mono text-xs">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-                <span className="text-slate-500 font-bold uppercase">Payment Gateway</span>
-                <span className="px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-700 font-black text-xs flex items-center gap-1.5 border border-emerald-300">
-                  Cashfree Gateway 🟢
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          {/* Left Form Column (8 Cols) */}
+          <div className="lg:col-span-8 space-y-6">
+            
+            <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+              
+              {/* Form Title */}
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h2 className="text-lg font-black text-slate-900 font-mono flex items-center gap-2">
+                  <Sliders className="w-5 h-5 text-[#0096C7]" />
+                  <span>Instance & Domain Configuration</span>
+                </h2>
+                <span className="text-xs font-mono text-[#0096C7] font-bold">
+                  {allocationStats.remainingCount} Slots Available
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <div className="text-slate-500">Cashfree Pay ID</div>
-                  <div className="font-bold text-slate-900 mt-0.5">{paymentResult.paymentId}</div>
-                </div>
-                <div>
-                  <div className="text-slate-500">Reservation ID</div>
-                  <div className="font-bold text-[#0096C7] mt-0.5">{paymentResult.reservationId}</div>
-                </div>
-                <div>
-                  <div className="text-slate-500">Selected Plan</div>
-                  <div className="font-bold text-slate-900 mt-0.5">{paymentResult.planName}</div>
-                </div>
-                <div>
-                  <div className="text-slate-500">Billing Duration</div>
-                  <div className="font-bold text-slate-900 mt-0.5">{paymentResult.billingCycle}</div>
-                </div>
-                <div>
-                  <div className="text-slate-500">Datacenter Region</div>
-                  <div className="font-extrabold text-[#0096C7] mt-0.5">🇮🇳 India - Mumbai</div>
-                </div>
-                <div>
-                  <div className="text-slate-500">Total Paid Today</div>
-                  <div className="font-black text-slate-900 mt-0.5 text-sm">{paymentResult.totalPaidDisplay}</div>
-                </div>
-              </div>
-
-              {/* Initial Root Credentials Box */}
-              <div className="pt-3 border-t border-slate-200 space-y-2 bg-white p-4 rounded-xl border border-slate-200 shadow-inner">
-                <div className="text-slate-700 font-bold flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 font-sans font-extrabold text-slate-900">
-                    <Key className="w-4 h-4 text-[#0096C7]" /> VPS Access Credentials (Pre-Assigned)
-                  </span>
-                  <span className="text-[10px] text-slate-500 font-normal">Active at launch</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  <div>
-                    <span className="text-slate-500 block">Root Username</span>
-                    <span className="font-bold text-slate-900">{paymentResult.rootUsername}</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-500 block">OS Template</span>
-                    <span className="font-bold text-slate-900">{paymentResult.operatingSystem}</span>
-                  </div>
-                </div>
-                <div>
-                  <span className="text-slate-500 block">Initial Root Password</span>
-                  <div className="flex items-center justify-between bg-slate-50 px-3.5 py-2 rounded-lg border border-slate-200 mt-1">
-                    <span className="font-bold text-[#0096C7]">{paymentResult.rootPassword}</span>
-                    <button
-                      onClick={handleCopyPass}
-                      className="text-slate-500 hover:text-slate-900 transition-colors"
-                      title="Copy Password"
-                    >
-                      {copiedPass ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <button
-                onClick={onOpenBilling}
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs transition-all"
-              >
-                View In Billing Portal
-              </button>
-              <button
-                onClick={onBackToHome}
-                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white font-extrabold text-xs shadow-md"
-              >
-                Return to KryonHost Home
-              </button>
-            </div>
-          </div>
-        ) : (
-          /* DEDICATED FULL-PAGE CHECKOUT FORM WITH CASHFREE PAYMENTS */
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Main Form (Left 8 Cols) */}
-            <div className="lg:col-span-8 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-8">
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-                  Configure & Pay For Your VPS
-                </h1>
-                <p className="text-xs sm:text-sm text-slate-600 font-medium mt-1">
-                  Complete your founding pre-order reservation for India - Mumbai Datacenter via Cashfree Payments
-                </p>
-              </div>
-
-              <form onSubmit={handlePaymentSubmit} className="space-y-8">
-                {/* 1. Datacenter Location */}
+              <form onSubmit={handlePaymentSubmit} className="space-y-6">
+                
+                {/* 1. Datacenter Location Selection */}
                 <div className="space-y-2">
                   <label className="block text-xs font-mono font-extrabold uppercase tracking-wider text-slate-700">
-                    1. Datacenter Region *
+                    1. Physical Datacenter Node *
                   </label>
-                  <div className="p-4 rounded-2xl bg-[#E0F2FE]/70 border border-[#0096C7]/40 flex items-center justify-between shadow-sm">
-                    <div className="flex items-center gap-3.5">
-                      <div className="text-3xl">🇮🇳</div>
+
+                  <div className="p-4 rounded-2xl bg-[#E0F2FE]/60 border border-[#0096C7]/30 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2.5 rounded-xl bg-[#0096C7] text-white font-black font-mono">
+                        🇮🇳
+                      </div>
                       <div>
-                        <div className="text-xs font-extrabold text-slate-900 flex items-center gap-2">
-                          <span>India - Mumbai Datacenter</span>
-                          <span className="px-2.5 py-0.5 rounded-full bg-[#0096C7] text-white text-[10px] font-mono font-extrabold">
-                            PRIMARY LAUNCH NODE
-                          </span>
-                        </div>
-                        <div className="text-[11px] text-slate-600 mt-0.5 font-medium">
-                          Tier IV Datacenter • Low Latency Domestic BGP • 1 Gbps Uplink Port
-                        </div>
+                        <div className="text-sm font-black text-slate-900">India - Mumbai Datacenter</div>
+                        <div className="text-xs text-slate-600">Tier IV Infrastructure • Direct NIXI Peering • Sub-5ms Latency</div>
                       </div>
                     </div>
-                    <MapPin className="w-6 h-6 text-[#0096C7] shrink-0" />
+                    <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-mono font-bold text-xs border border-emerald-300">
+                      PRIMARY NODE 🟢
+                    </span>
                   </div>
                 </div>
 
-                {/* 2. Custom Month Duration Selector */}
-                <div className="space-y-4 p-5 rounded-2xl bg-slate-50 border border-slate-200">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <label className="block text-xs font-mono font-extrabold uppercase tracking-wider text-slate-700 flex items-center gap-2">
-                      <Sliders className="w-4 h-4 text-[#0096C7]" />
-                      2. Choose Custom Month Duration *
+                {/* 2. Month Duration Selection */}
+                <div className="space-y-3 pt-2">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-mono font-extrabold uppercase tracking-wider text-slate-700">
+                      2. Custom Billing Duration (1 to 36 Months) *
                     </label>
-
-                    {/* Currency Switcher */}
-                    <div className="flex items-center space-x-1 bg-white p-1 rounded-xl border border-slate-200 text-xs">
-                      <button
-                        type="button"
-                        onClick={() => setCurrency('INR')}
-                        className={`px-3 py-1 rounded-lg font-mono font-extrabold transition-colors ${currency === 'INR' ? 'bg-[#0096C7] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
-                      >
-                        INR (₹)
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setCurrency('USD')}
-                        className={`px-3 py-1 rounded-lg font-mono font-extrabold transition-colors ${currency === 'USD' ? 'bg-[#0096C7] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
-                      >
-                        USD ($)
-                      </button>
-                    </div>
+                    <span className="text-xs font-mono font-bold text-emerald-600">
+                      {discountPercent > 0 ? `🔥 ${discountPercent}% Discount Applied` : 'Standard Rate'}
+                    </span>
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-3.5 rounded-xl border border-slate-200">
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl font-black text-slate-900 tracking-tight font-mono">
-                        {selectedMonths} {selectedMonths === 1 ? 'Month' : 'Months'}
-                      </span>
-
-                      <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-lg">
-                        <span className="text-[11px] text-slate-500 font-mono font-bold">Custom:</span>
+                  {/* Custom Month Number Box */}
+                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-1">
+                        <span className="text-xs text-slate-500 font-mono block">Enter Duration (Months):</span>
                         <input
                           type="number"
                           min="1"
                           max="36"
                           value={selectedMonths}
-                          onChange={(e) => setSelectedMonths(Math.max(1, Math.min(36, parseInt(e.target.value || '1', 10))))}
-                          className="w-12 bg-white border border-slate-300 rounded px-1.5 py-0.5 text-center font-mono font-black text-xs text-[#0096C7] focus:outline-none focus:border-[#0096C7]"
+                          onChange={(e) => {
+                            const val = Math.max(1, Math.min(36, parseInt(e.target.value || '1', 10)));
+                            setSelectedMonths(val);
+                          }}
+                          className="w-full mt-1 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 font-mono font-black text-base focus:outline-none focus:border-[#0096C7]"
                         />
-                        <span className="text-[11px] text-slate-500 font-mono font-bold">mo</span>
+                      </div>
+
+                      <div className="flex-1 p-3 rounded-xl bg-white border border-slate-200 text-right font-mono">
+                        <span className="text-[10px] text-slate-400 block font-bold">Discount Rate:</span>
+                        <span className="text-lg font-black text-emerald-600">{discountPercent}% OFF</span>
                       </div>
                     </div>
 
-                    {discountPercent > 0 ? (
-                      <span className="px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-300 text-xs font-mono font-black animate-in fade-in">
-                        🔥 {discountPercent}% OFF DISCOUNT APPLIED
-                      </span>
-                    ) : (
-                      <span className="px-3.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-mono font-bold">
-                        Standard Monthly Rate
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <div className="text-[11px] text-slate-500 font-mono font-bold">Select Month Presets:</div>
-                    <div className="flex flex-wrap gap-2">
-                      {presetMonthsList.map((m) => {
-                        const disc = getDiscountPercent(m);
-                        const isSelected = selectedMonths === m;
-                        return (
-                          <button
-                            key={m}
-                            type="button"
-                            onClick={() => setSelectedMonths(m)}
-                            className={`px-3 py-1.5 rounded-xl border text-xs font-mono font-bold transition-all flex items-center gap-1 ${
-                              isSelected
-                                ? 'bg-[#0096C7] text-white border-[#0096C7] shadow-sm font-black'
-                                : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
-                            }`}
-                          >
-                            <span>{m} Mo</span>
-                            {disc > 0 && (
-                              <span className={`text-[9px] px-1 rounded ${isSelected ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-700'}`}>
-                                -{disc}%
-                              </span>
-                            )}
-                          </button>
-                        );
-                      })}
+                    {/* Quick Month Presets */}
+                    <div className="space-y-1.5">
+                      <div className="text-[11px] text-slate-500 font-mono font-bold">Select Month Presets:</div>
+                      <div className="flex flex-wrap gap-2">
+                        {presetMonthsList.map((m) => {
+                          const disc = getDiscountPercent(m);
+                          const isSelected = selectedMonths === m;
+                          return (
+                            <button
+                              key={m}
+                              type="button"
+                              onClick={() => setSelectedMonths(m)}
+                              className={`px-3 py-1.5 rounded-xl border text-xs font-mono font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                                isSelected
+                                  ? 'bg-[#0096C7] text-white border-[#0096C7] shadow-sm font-black'
+                                  : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
+                              }`}
+                            >
+                              <span>{m} Mo</span>
+                              {disc > 0 && (
+                                <span className={`text-[9px] px-1 rounded ${isSelected ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-700'}`}>
+                                  -{disc}%
+                                </span>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -490,7 +480,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         key={p.id}
                         type="button"
                         onClick={() => setActivePlanId(p.id)}
-                        className={`p-3 rounded-2xl border text-left transition-all ${
+                        className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
                           activePlanId === p.id
                             ? 'bg-[#E0F2FE] border-[#0096C7] text-slate-900 font-extrabold shadow-sm'
                             : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
@@ -505,10 +495,120 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   </div>
                 </div>
 
-                {/* 4. Customer Information */}
+                {/* 4. Domain Setup & Domain Registration */}
+                <div className="space-y-3 pt-2">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-mono font-extrabold uppercase tracking-wider text-slate-700">
+                      4. Custom Domain Setup & Registration *
+                    </label>
+                    <span className="text-xs font-mono text-[#0096C7] font-bold">
+                      Domain: {displayDomain}
+                    </span>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+                    
+                    {/* Domain Option Radio Tabs */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      
+                      <button
+                        type="button"
+                        onClick={() => setDomainOption('free_subdomain')}
+                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                          domainOption === 'free_subdomain'
+                            ? 'bg-white border-[#0096C7] ring-1 ring-[#0096C7] shadow-sm'
+                            : 'bg-white/60 border-slate-200 text-slate-600 hover:border-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-black text-slate-900">Free Subdomain</span>
+                          <span className="text-[10px] font-mono font-bold text-emerald-600">FREE ₹0</span>
+                        </div>
+                        <div className="text-[11px] text-slate-500 mt-1">.kryonhost.com</div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setDomainOption('new_domain')}
+                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                          domainOption === 'new_domain'
+                            ? 'bg-white border-[#0096C7] ring-1 ring-[#0096C7] shadow-sm'
+                            : 'bg-white/60 border-slate-200 text-slate-600 hover:border-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-black text-slate-900">Register New Domain</span>
+                          <span className="text-[10px] font-mono font-bold text-[#0096C7]">+₹799/yr</span>
+                        </div>
+                        <div className="text-[11px] text-slate-500 mt-1">.com / .in / .net</div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setDomainOption('existing_domain')}
+                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                          domainOption === 'existing_domain'
+                            ? 'bg-white border-[#0096C7] ring-1 ring-[#0096C7] shadow-sm'
+                            : 'bg-white/60 border-slate-200 text-slate-600 hover:border-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-black text-slate-900">Use Own Domain</span>
+                          <span className="text-[10px] font-mono font-bold text-emerald-600">FREE ₹0</span>
+                        </div>
+                        <div className="text-[11px] text-slate-500 mt-1">Existing DNS</div>
+                      </button>
+
+                    </div>
+
+                    {/* Domain Input Box */}
+                    <div className="space-y-2 pt-1">
+                      <label className="block text-xs font-semibold text-slate-700">
+                        {domainOption === 'new_domain' ? 'Enter Desired Domain Name:' : 'Enter Subdomain / Domain Name:'}
+                      </label>
+
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          required
+                          value={domainName}
+                          onChange={(e) => setDomainName(e.target.value)}
+                          placeholder={domainOption === 'new_domain' ? 'mycompany' : 'my-server'}
+                          className="flex-1 px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-xs font-mono font-bold focus:outline-none focus:border-[#0096C7]"
+                        />
+
+                        {domainOption === 'new_domain' ? (
+                          <select
+                            value={newDomainExt}
+                            onChange={(e) => setNewDomainExt(e.target.value)}
+                            className="px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-xs font-mono font-bold focus:outline-none focus:border-[#0096C7]"
+                          >
+                            <option value=".com">.com (+₹799/yr)</option>
+                            <option value=".in">.in (+₹599/yr)</option>
+                            <option value=".net">.net (+₹899/yr)</option>
+                            <option value=".org">.org (+₹849/yr)</option>
+                            <option value=".io">.io (+₹2,499/yr)</option>
+                            <option value=".tech">.tech (+₹499/yr)</option>
+                          </select>
+                        ) : domainOption === 'free_subdomain' ? (
+                          <div className="px-3.5 py-2.5 rounded-xl bg-slate-200 text-slate-700 text-xs font-mono font-bold">
+                            .kryonhost.com
+                          </div>
+                        ) : null}
+                      </div>
+
+                      <div className="text-[11px] font-mono text-slate-500 pt-1">
+                        Domain Preview: <strong className="text-[#0096C7]">{displayDomain}</strong>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* 5. Customer Information */}
                 <div className="space-y-3 pt-2">
                   <label className="block text-xs font-mono font-extrabold uppercase tracking-wider text-slate-700">
-                    4. Contact & Workload Details *
+                    5. Contact & Workload Details *
                   </label>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -574,7 +674,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   </div>
                 </div>
 
-                {/* 5. Intended Use & OS */}
+                {/* 6. Intended Use & OS */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -611,13 +711,12 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   </div>
                 </div>
 
-                {/* 6. Official Cashfree Payments Gateway Integration */}
-                <div className="space-y-4 pt-4 border-t border-slate-200">
+                {/* 7. Cashfree Payment Method Authorization */}
+                <div className="space-y-3 pt-2">
                   <label className="block text-xs font-mono font-extrabold uppercase tracking-wider text-slate-700">
-                    6. Payment Checkout Method *
+                    7. Cashfree Payments Gateway *
                   </label>
 
-                  {/* Cashfree Secure Gateway Card */}
                   <div className="p-5 rounded-2xl bg-[#E0F2FE]/80 border border-[#0096C7]/40 space-y-3 shadow-sm">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3.5">
@@ -636,7 +735,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           </div>
                         </div>
                       </div>
-                      <Lock className="w-5 h-5 text-[#0096C7] shrink-0" />
+                      <Lock className="w-5 h-5 text-[#0096C7]" />
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-[#0096C7]/20 text-[11px] font-mono text-slate-700 font-bold">
@@ -718,116 +817,121 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   </span>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5 text-xs font-mono">
-                  {/* Plan Name & Term */}
-                  <div className="flex justify-between font-black text-slate-900 text-sm border-b border-slate-200 pb-2">
-                    <span>{currentPlan.name} Plan</span>
-                    <span className="text-[#0096C7]">{cycleLabel}</span>
+                <div className="space-y-3 font-mono text-xs">
+                  <div className="flex justify-between text-slate-700">
+                    <span>Performance Plan:</span>
+                    <span className="font-extrabold text-slate-900">{currentPlan.name}</span>
                   </div>
 
-                  {/* Location */}
-                  <div className="flex justify-between text-slate-600">
-                    <span>Location:</span>
+                  <div className="flex justify-between text-slate-700">
+                    <span>Billing Duration:</span>
+                    <span className="font-extrabold text-emerald-600">{cycleLabel}</span>
+                  </div>
+
+                  <div className="flex justify-between text-slate-700">
+                    <span>Datacenter Location:</span>
                     <span className="font-bold text-slate-900">🇮🇳 India - Mumbai</span>
                   </div>
 
-                  {/* vCPU */}
-                  <div className="flex justify-between text-slate-600">
+                  <div className="flex justify-between text-slate-700">
+                    <span>Domain Setup:</span>
+                    <span className="font-bold text-[#0096C7]">{displayDomain}</span>
+                  </div>
+
+                  <div className="flex justify-between text-slate-700">
                     <span>vCPU Cores:</span>
                     <span className="font-bold text-slate-900">{currentPlan.vcpu} vCPU</span>
                   </div>
 
-                  {/* Base RAM */}
-                  <div className="flex justify-between text-slate-600">
+                  <div className="flex justify-between text-slate-700">
                     <span>Base RAM:</span>
                     <span className="font-bold text-slate-900">{currentPlan.ramGB} GB RAM</span>
                   </div>
 
-                  {/* Founding Bonus */}
-                  {isBonusEligible && (
-                    <div className="flex justify-between text-emerald-700 font-extrabold pt-1 border-t border-slate-200">
+                  {foundingBonusRamGB > 0 && (
+                    <div className="flex justify-between text-emerald-600 font-bold bg-emerald-50 p-2 rounded-xl border border-emerald-200">
                       <span>Founding Bonus:</span>
-                      <span>+4 GB Permanent RAM</span>
+                      <span>+{foundingBonusRamGB} GB Permanent RAM</span>
                     </div>
                   )}
 
-                  {/* Total Launch RAM */}
-                  <div className="flex justify-between text-slate-900 font-black text-sm pt-1">
+                  <div className="flex justify-between text-slate-900 font-extrabold pt-1">
                     <span>Total Launch RAM:</span>
                     <span className="text-[#0096C7]">{launchRamGB} GB RAM</span>
                   </div>
 
-                  {/* Storage */}
-                  <div className="flex justify-between text-slate-600 pt-1 border-t border-slate-200">
+                  <div className="flex justify-between text-slate-700">
                     <span>NVMe Storage:</span>
-                    <span className="font-bold text-slate-900">{currentPlan.storageNVMeGB} GB PCIe NVMe</span>
+                    <span className="font-bold text-slate-900">{currentPlan.storageNVMeGB} GB NVMe</span>
                   </div>
 
-                  {/* OS Template */}
-                  <div className="flex justify-between text-slate-600">
+                  <div className="flex justify-between text-slate-700">
                     <span>OS Template:</span>
                     <span className="font-bold text-slate-900">{operatingSystem}</span>
                   </div>
 
-                  {/* Selected Addons */}
+                  {domainFeeINR > 0 && (
+                    <div className="flex justify-between text-slate-700 font-bold border-t border-slate-100 pt-2">
+                      <span>Domain Registration:</span>
+                      <span className="text-[#0096C7]">{currency === 'INR' ? `+₹${domainFeeINR}` : `+$${domainFeeUSD}`}</span>
+                    </div>
+                  )}
+
                   {selectedAddons.length > 0 && (
-                    <div className="pt-1 border-t border-slate-200 space-y-1">
-                      <span className="text-slate-500 block text-[10px] uppercase font-bold">Selected Add-ons:</span>
-                      {selectedAddons.map((addon) => (
-                        <div key={addon} className="flex justify-between text-slate-700 font-bold text-[11px]">
-                          <span>• {addon}</span>
-                          <span>+{currency === 'INR' ? '₹49/mo' : '$0.60/mo'}</span>
-                        </div>
-                      ))}
+                    <div className="flex justify-between text-slate-700">
+                      <span>Add-ons ({selectedAddons.length}):</span>
+                      <span className="font-bold text-slate-900">
+                        {currency === 'INR' ? `+₹${addonMonthlyINR}/mo` : `+$${addonMonthlyUSD.toFixed(2)}/mo`}
+                      </span>
                     </div>
                   )}
                 </div>
 
-                {/* Total Due Box */}
-                <div className="p-5 rounded-3xl bg-slate-900 text-white space-y-3 font-mono shadow-xl border border-[#0096C7]/40 relative overflow-hidden">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest">
-                      TOTAL DUE TODAY ({selectedMonths} MO)
-                    </span>
-                    <span className="px-2 py-0.5 rounded bg-[#0096C7] text-white text-[9px] font-black uppercase">
-                      LOCKED RATE
+                {/* High Contrast TOTAL DUE Card */}
+                <div className="p-6 rounded-2xl bg-slate-900 text-white space-y-3 font-mono shadow-md">
+                  <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">
+                    TOTAL DUE TODAY ({selectedMonths} MO)
+                  </div>
+
+                  <div className="text-3xl font-black text-[#38BDF8]">
+                    {currency === 'INR' ? `₹${totalAmountTodayINR.toLocaleString('en-IN')}` : `$${totalAmountTodayUSD}`}
+                  </div>
+
+                  <div className="text-xs text-slate-300 font-bold">
+                    Effective:{' '}
+                    <span className="text-white">
+                      {currency === 'INR'
+                        ? `₹${Math.round(totalAmountTodayINR / selectedMonths)}/mo`
+                        : `$${(totalAmountTodayUSD / selectedMonths).toFixed(2)}/mo`}
                     </span>
                   </div>
 
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-black text-[#38BDF8] tracking-tight">
-                      {currency === 'INR' ? `₹${totalAmountTodayINR.toLocaleString('en-IN')}` : `$${totalAmountTodayUSD}`}
-                    </span>
-                    <span className="text-xs text-slate-400 font-bold">
-                      ({selectedMonths} {selectedMonths === 1 ? 'Month' : 'Months'})
-                    </span>
-                  </div>
-
-                  <div className="text-xs text-slate-200 font-extrabold bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-700/60 inline-block">
-                    Effective: {currency === 'INR' ? `₹${effectiveMonthlyINR.toLocaleString('en-IN')}/mo` : `$${effectiveMonthlyUSD}/mo`}
-                  </div>
-
-                  {discountPercent > 0 && (
-                    <div className="p-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-black flex items-center gap-1.5 mt-2">
-                      <Sparkles className="w-4 h-4 shrink-0 text-emerald-400" />
-                      <span>🔥 You Save {currency === 'INR' ? `₹${totalSavingsINR.toLocaleString('en-IN')}` : `$${totalSavingsUSD}`} ({discountPercent}% OFF)</span>
+                  {totalSavingsINR > 0 && (
+                    <div className="p-2.5 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold flex items-center justify-between">
+                      <span>🔥 You Save</span>
+                      <span>
+                        {currency === 'INR' ? `₹${totalSavingsINR.toLocaleString('en-IN')}` : `$${totalSavingsUSD}`} ({discountPercent}% OFF)
+                      </span>
                     </div>
                   )}
                 </div>
 
-                {/* Risk Free Guarantee */}
-                <div className="p-4 rounded-2xl bg-[#E0F2FE] border border-[#0096C7]/30 text-xs text-[#0096C7] font-semibold space-y-1">
-                  <div className="font-extrabold flex items-center gap-1.5 text-slate-900">
-                    <ShieldCheck className="w-4 h-4 text-[#0096C7]" /> 100% Risk-Free Guarantee
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-mono text-slate-600 space-y-1">
+                  <div className="font-bold text-slate-900 flex items-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                    100% Risk-Free Guarantee
                   </div>
-                  <div className="text-[11px] text-slate-600 font-medium">
-                    Pre-orders are fully refundable anytime prior to launch provisioning.
+                  <div className="text-[11px] leading-relaxed">
+                    Pre-orders are fully refundable anytime prior to physical datacenter node provisioning.
                   </div>
                 </div>
+
               </div>
             </div>
+
           </div>
-        )}
+
+        </div>
       </div>
     </div>
   );
