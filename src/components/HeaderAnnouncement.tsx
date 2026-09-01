@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, ArrowRight, X, ChevronLeft, ChevronRight, ShieldCheck, Zap, CreditCard, Globe } from 'lucide-react';
+import { Sparkles, ArrowRight, X, ChevronLeft, ChevronRight, ShieldCheck, Zap, CreditCard, Calendar, Mail } from 'lucide-react';
 
 interface AnnouncementSlide {
   id: number;
@@ -21,14 +21,22 @@ export const HeaderAnnouncement: React.FC<HeaderAnnouncementProps> = ({ onOpenPr
   const slides: AnnouncementSlide[] = [
     {
       id: 1,
-      tag: 'FOUNDING OFFER',
-      tagBg: 'bg-amber-400 text-slate-950',
-      icon: <Sparkles className="w-3 h-3 text-slate-950" />,
-      text: 'India - Mumbai Datacenter Launch: Get up to 30% OFF + Free +4 GB Permanent RAM Bonus!',
+      tag: 'OCTOBER 1–10 LAUNCH',
+      tagBg: 'bg-emerald-400 text-slate-950',
+      icon: <Calendar className="w-3 h-3 text-slate-950" />,
+      text: 'Datacenter Live Provisioning Window: Oct 1–10! We will notify you via email when pre-orders end.',
       buttonText: 'Pre-Order Now',
     },
     {
       id: 2,
+      tag: 'FOUNDING OFFER',
+      tagBg: 'bg-amber-400 text-slate-950',
+      icon: <Sparkles className="w-3 h-3 text-slate-950" />,
+      text: 'India - Mumbai Datacenter Launch: Get up to 30% OFF + Free +4 GB Permanent RAM Bonus!',
+      buttonText: 'Claim Bonus',
+    },
+    {
+      id: 3,
       tag: 'EPYC HARDWARE',
       tagBg: 'bg-purple-500 text-white',
       icon: <Zap className="w-3 h-3 text-yellow-300" />,
@@ -36,20 +44,12 @@ export const HeaderAnnouncement: React.FC<HeaderAnnouncementProps> = ({ onOpenPr
       buttonText: 'Explore Specs',
     },
     {
-      id: 3,
-      tag: 'RISK-FREE GUARANTEE',
-      tagBg: 'bg-emerald-500 text-white',
-      icon: <ShieldCheck className="w-3 h-3 text-white" />,
-      text: 'Pre-orders are 100% fully refundable anytime prior to physical node provisioning!',
-      buttonText: 'Claim Slot',
-    },
-    {
       id: 4,
-      tag: 'CASHFREE GATEWAY',
+      tag: 'RISK-FREE GUARANTEE',
       tagBg: 'bg-cyan-500 text-slate-950',
-      icon: <CreditCard className="w-3 h-3 text-slate-950" />,
-      text: 'Instant 1-Click Payments via UPI, GPay, PhonePe, Paytm, and All Credit Cards!',
-      buttonText: 'Checkout Now',
+      icon: <ShieldCheck className="w-3 h-3 text-slate-950" />,
+      text: 'Pre-orders are 100% fully refundable anytime prior to physical node provisioning!',
+      buttonText: 'Reserve Slot',
     },
   ];
 

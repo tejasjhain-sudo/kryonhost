@@ -410,7 +410,7 @@ export const KRYONHOST_CONFIG = {
     },
     {
       question: 'When will my VPS be provisioned?',
-      answer: 'VPS instances pre-ordered today will be provisioned immediately when our Mumbai infrastructure location goes live (expected launch window: Q4 2026). You will receive advance email notifications prior to provisioning.',
+      answer: 'Datacenter live provisioning takes place between October 1 and October 10, 2026. You will receive an automated email notification on your registered email address when the pre-order period completes and your physical server node goes live.',
     },
     {
       question: 'What does the +4 GB RAM bonus mean?',

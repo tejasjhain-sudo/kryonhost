@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { KRYONHOST_CONFIG } from '../config/kryonhost.config';
-import { Zap, ArrowRight, ShieldCheck, Lock } from 'lucide-react';
+import { Zap, ArrowRight, ShieldCheck, Lock, Calendar, Mail } from 'lucide-react';
 
 interface PreOrderBannerProps {
   onOpenPreOrder: () => void;
@@ -32,21 +32,30 @@ export const PreOrderBanner: React.FC<PreOrderBannerProps> = ({ onOpenPreOrder }
   const progressPercent = Math.round((allocationStats.claimedCount / allocationStats.totalAllocations) * 100);
 
   return (
-    <section className="py-8 bg-[#F1F5F9] border-b border-slate-200">
+    <section className="py-8 bg-[#F1F5F9] border-b border-slate-200 font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 light-card-shadow">
-          <div className="space-y-2 text-left">
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded bg-[#E0F2FE] border border-[#0096C7]/30 text-xs font-mono font-bold text-[#0096C7]">
-              FOUNDING PRE-ORDER OFFER
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-sm">
+          <div className="space-y-3 text-left">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded bg-[#E0F2FE] border border-[#0096C7]/30 text-xs font-mono font-bold text-[#0096C7]">
+                FOUNDING PRE-ORDER OFFER
+              </span>
+              <span className="px-2.5 py-0.5 rounded bg-emerald-100 border border-emerald-300 text-xs font-mono font-bold text-emerald-700 flex items-center gap-1">
+                <Calendar className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Datacenter Live: Oct 1–10</span>
+              </span>
             </div>
+
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
               Founding Pre-Orders Are Live
             </h2>
-            <p className="text-sm text-slate-600 max-w-xl">
-              Pay & lock in your founding VPS rate today to secure your infrastructure allocation.
+
+            <p className="text-xs sm:text-sm text-slate-600 max-w-xl font-medium leading-relaxed">
+              We are going live between <strong>October 1 and October 10, 2026</strong>. You will receive an instant email notification when the pre-order period ends and physical server provisioning begins!
             </p>
-            <div className="pt-1 flex items-center gap-2 text-sm text-slate-900 font-semibold">
-              <Zap className="w-4 h-4 text-[#0096C7] fill-[#0096C7]" />
+
+            <div className="pt-1 flex items-center gap-2 text-xs sm:text-sm text-slate-900 font-semibold">
+              <Zap className="w-4 h-4 text-[#0096C7] fill-[#0096C7] shrink-0" />
               <span>
                 <strong>First 30 pre-orders receive</strong>{' '}
                 <span className="text-[#0096C7] font-extrabold underline decoration-[#0096C7]/30 underline-offset-4">
@@ -77,6 +86,11 @@ export const PreOrderBanner: React.FC<PreOrderBannerProps> = ({ onOpenPreOrder }
               <div className="text-[11px] text-right text-slate-500 font-mono">
                 {allocationStats.claimedCount} claimed ({progressPercent}%)
               </div>
+            </div>
+
+            <div className="p-2.5 rounded-lg bg-[#E0F2FE] border border-[#0096C7]/20 text-[11px] font-mono text-[#0096C7] flex items-center gap-1.5 font-bold">
+              <Mail className="w-3.5 h-3.5 text-[#0096C7] shrink-0" />
+              <span>Email notification sent at launch</span>
             </div>
 
             <button
