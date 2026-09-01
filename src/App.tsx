@@ -7,6 +7,8 @@ import { PreOrderBanner } from './components/PreOrderBanner';
 import { Pricing } from './components/Pricing';
 import { Features } from './components/Features';
 import { InfrastructureSpecs } from './components/InfrastructureSpecs';
+import { InfrastructureUpgrades } from './components/InfrastructureUpgrades';
+import { InfrastructureSlideshow } from './components/InfrastructureSlideshow';
 import { Locations } from './components/Locations';
 import { NetworkSection } from './components/NetworkSection';
 import { SupportBanner } from './components/SupportBanner';
@@ -104,6 +106,12 @@ export function AppContent() {
 
           {/* Technical Infrastructure Specification Dashboard */}
           <InfrastructureSpecs />
+
+          {/* Custom Infrastructure Upgrades & Add-ons Pricing */}
+          <InfrastructureUpgrades onOpenPreOrder={() => handleOpenCheckout('performance')} />
+
+          {/* Interactive 5-Slide Infrastructure Presentation */}
+          <InfrastructureSlideshow onOpenPreOrder={() => handleOpenCheckout('performance')} />
 
           {/* Datacenter Locations */}
           <Locations />
