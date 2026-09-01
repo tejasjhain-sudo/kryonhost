@@ -56,7 +56,7 @@ export const HeaderAnnouncement: React.FC<HeaderAnnouncementProps> = ({ onOpenPr
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4500);
+    }, 4000);
     return () => clearInterval(interval);
   }, [slides.length]);
 
@@ -65,17 +65,25 @@ export const HeaderAnnouncement: React.FC<HeaderAnnouncementProps> = ({ onOpenPr
   const slide = slides[currentSlide];
 
   return (
-    <div className="w-full bg-gradient-to-r from-[#0096C7] via-blue-600 to-indigo-600 text-white text-xs font-mono py-2.5 px-4 shadow-md border-b border-white/10 relative z-40 transition-all">
+    <div className="w-full bg-gradient-to-r from-[#0096C7] via-blue-600 to-indigo-600 text-white text-xs font-mono py-2.5 px-4 shadow-md border-b border-white/10 relative z-40 transition-all overflow-hidden">
+      
+      {/* Automatic Slide Progress Bar Indicator */}
+      <div
+        key={currentSlide}
+        className="absolute top-0 left-0 h-0.5 bg-amber-400/90 transition-all duration-[4000ms] ease-linear"
+        style={{ width: '100%' }}
+      />
+
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         
-        {/* Slideshow Ticker Content */}
+        {/* Automatic Slideshow Ticker Content */}
         <div className="flex items-center gap-3 overflow-hidden flex-1">
           <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-black text-[10px] uppercase tracking-wider shadow-sm shrink-0 ${slide.tagBg}`}>
             {slide.icon}
             <span>{slide.tag}</span>
           </span>
 
-          <span className="font-extrabold text-white text-xs sm:text-sm tracking-wide truncate animate-in fade-in duration-300">
+          <span className="font-extrabold text-white text-xs sm:text-sm tracking-wide truncate transition-all duration-500">
             {slide.text}
           </span>
         </div>
@@ -83,23 +91,18 @@ export const HeaderAnnouncement: React.FC<HeaderAnnouncementProps> = ({ onOpenPr
         {/* Slideshow Controls & CTA */}
         <div className="flex items-center gap-2.5 shrink-0">
           
-          {/* Mini Nav Controls */}
-          <div className="hidden md:flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded-full border border-white/20">
-            <button
-              onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
-              className="p-0.5 hover:text-amber-300 transition-colors"
-              title="Previous offer"
-            >
-              <ChevronLeft className="w-3.5 h-3.5" />
-            </button>
-            <span className="text-[10px] font-bold px-1">{currentSlide + 1}/{slides.length}</span>
-            <button
-              onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
-              className="p-0.5 hover:text-amber-300 transition-colors"
-              title="Next offer"
-            >
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
+          {/* Slide Progress Dots */}
+          <div className="hidden md:flex items-center gap-1.5 px-2 py-1 rounded-full bg-white/10 border border-white/20">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentSlide(idx)}
+                className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                  currentSlide === idx ? 'w-4 bg-amber-400' : 'w-1.5 bg-white/40 hover:bg-white'
+                }`}
+                title={`Go to slide ${idx + 1}`}
+              />
+            ))}
           </div>
 
           <button
