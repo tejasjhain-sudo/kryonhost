@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Logo } from './Logo';
 import { useAuth } from '../context/AuthContext';
-import { Menu, X, ArrowRight, Terminal, User as UserIcon, LogOut, ShieldCheck, CheckCircle2, ChevronDown, CreditCard } from 'lucide-react';
+import { Menu, X, ArrowRight, Terminal, User as UserIcon, LogOut, ShieldCheck, CheckCircle2, ChevronDown, CreditCard, Lock } from 'lucide-react';
 
 import { HeaderAnnouncement } from './HeaderAnnouncement';
 
@@ -29,6 +29,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPreOrder, onOpenLogin, onO
 
   const userEmail = (user as any)?.email || 'user@kryonhost.com';
   const displayName = userProfile?.fullName || (user as any)?.fullName || userEmail.split('@')[0];
+
+  // Strictly check if logged in user is the Executive Owner Admin (tejasjha.in@gmail.com)
+  const isOwnerAdmin = userEmail.toLowerCase() === 'tejasjha.in@gmail.com';
 
   const navLinks = [
     { name: 'Compute VPS', href: '#vps-plans' },
@@ -72,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPreOrder, onOpenLogin, onO
           ))}
           <button
             onClick={onOpenDocs}
-            className="px-3.5 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
           >
             <Terminal className="w-3.5 h-3.5 text-[#0096C7]" />
             Docs
@@ -82,11 +85,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPreOrder, onOpenLogin, onO
         {/* Actions Section */}
         <div className="hidden sm:flex items-center space-x-3">
           {user ? (
-            /* PROMINENT LOGGED-IN ACCOUNT INDICATOR BADGE (Replaces Log In / Create Account buttons) */
+            /* PROMINENT LOGGED-IN ACCOUNT INDICATOR BADGE */
             <div className="relative">
               <button
                 onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="px-3.5 py-2 rounded-xl bg-[#E0F2FE] border border-[#0096C7]/30 text-xs font-extrabold text-slate-900 flex items-center gap-2 hover:bg-[#0096C7]/15 transition-all shadow-sm"
+                className="px-3.5 py-2 rounded-xl bg-[#E0F2FE] border border-[#0096C7]/30 text-xs font-extrabold text-slate-900 flex items-center gap-2 hover:bg-[#0096C7]/15 transition-all shadow-sm cursor-pointer"
               >
                 <span className="flex h-2.5 w-2.5 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -98,8 +101,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPreOrder, onOpenLogin, onO
                 </div>
 
                 <div className="text-left font-mono leading-none">
-                  <span className="text-[10px] font-bold text-emerald-600 uppercase block">Logged In</span>
-                  <span className="text-xs font-black text-slate-900 max-w-[110px] truncate block">
+                  <span className="text-[10px] font-bold text-emerald-600 uppercase block">
+                    {isOwnerAdmin ? 'Owner Logged In' : 'Logged In'}
+                  </span>
+                  <span className="text-xs font-black text-slate-900 max-w-[120px] truncate block">
                     {displayName}
                   </span>
                 </div>
@@ -109,14 +114,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPreOrder, onOpenLogin, onO
 
               {/* User Account Dropdown Menu */}
               {userDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-60 bg-white rounded-2xl border border-slate-200 shadow-2xl py-2 z-50 text-xs animate-in fade-in duration-100">
+                <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl border border-slate-200 shadow-2xl py-2 z-50 text-xs animate-in fade-in duration-100 font-sans">
                   <div className="px-4 py-3 border-b border-slate-100 font-mono space-y-1">
                     <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Account Profile</div>
                     <div className="font-extrabold text-slate-900 truncate text-xs">{displayName}</div>
                     <div className="text-[11px] text-slate-500 truncate">{userEmail}</div>
                     <div className="pt-1">
                       <span className="px-2 py-0.5 rounded bg-[#E0F2FE] text-[#0096C7] text-[10px] font-extrabold">
-                        🟢 Verified {userProfile?.role || 'Customer'}
+                        Verified {isOwnerAdmin ? 'Owner Admin' : userProfile?.role || 'Customer'}
                       </span>
                     </div>
                   </div>
@@ -126,7 +131,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPreOrder, onOpenLogin, onO
                       setUserDropdownOpen(false);
                       onOpenPreOrder();
                     }}
-                    className="w-full px-4 py-2.5 text-left text-slate-700 hover:bg-slate-50 font-bold flex items-center gap-2"
+                    className="w-full px-4 py-2.5 text-left text-slate-700 hover:bg-slate-50 font-bold flex items-center gap-2 cursor-pointer"
                   >
                     <ShieldCheck className="w-4 h-4 text-[#0096C7]" />
                     My Pre-Orders & VPS
@@ -137,22 +142,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPreOrder, onOpenLogin, onO
                       setUserDropdownOpen(false);
                       onOpenBilling();
                     }}
-                    className="w-full px-4 py-2.5 text-left text-slate-700 hover:bg-slate-50 font-bold flex items-center gap-2"
+                    className="w-full px-4 py-2.5 text-left text-slate-700 hover:bg-slate-50 font-bold flex items-center gap-2 cursor-pointer"
                   >
                     <CreditCard className="w-4 h-4 text-[#0096C7]" />
                     Billing & Tax Invoices
                   </button>
 
-                  <button
-                    onClick={() => {
-                      setUserDropdownOpen(false);
-                      onOpenAdmin();
-                    }}
-                    className="w-full px-4 py-2.5 text-left text-purple-700 hover:bg-purple-50 font-black flex items-center gap-2"
-                  >
-                    <ShieldCheck className="w-4 h-4 text-purple-600" />
-                    Admin Control Panel 👑
-                  </button>
+                  {/* RESTRICTED: OWNER ADMIN PANEL MENU BUTTON (ONLY VISIBLE TO tejasjha.in@gmail.com) */}
+                  {isOwnerAdmin && (
+                    <button
+                      onClick={() => {
+                        setUserDropdownOpen(false);
+                        onOpenAdmin();
+                      }}
+                      className="w-full px-4 py-2.5 text-left text-purple-700 hover:bg-purple-50 font-black flex items-center gap-2 cursor-pointer border-t border-b border-purple-100 my-1 bg-purple-50/50"
+                    >
+                      <Lock className="w-4 h-4 text-purple-600" />
+                      Owner Admin Panel
+                    </button>
+                  )}
 
                   <div className="border-t border-slate-100 my-1" />
 
@@ -161,10 +169,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPreOrder, onOpenLogin, onO
                       setUserDropdownOpen(false);
                       signOut();
                     }}
-                    className="w-full px-4 py-2.5 text-left text-rose-600 hover:bg-rose-50 font-bold flex items-center gap-2"
+                    className="w-full px-4 py-2.5 text-left text-rose-600 hover:bg-rose-50 font-bold flex items-center gap-2 cursor-pointer"
                   >
                     <LogOut className="w-4 h-4 text-rose-500" />
-                    Sign Out (Restores Log In)
+                    Sign Out
                   </button>
                 </div>
               )}
@@ -237,6 +245,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPreOrder, onOpenLogin, onO
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                   <span className="text-xs font-extrabold text-slate-900">Logged in as {displayName}</span>
                 </div>
+
+                {isOwnerAdmin && (
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onOpenAdmin();
+                    }}
+                    className="w-full py-2 rounded-lg bg-purple-600 text-white font-extrabold text-xs"
+                  >
+                    Owner Admin Panel
+                  </button>
+                )}
+
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);

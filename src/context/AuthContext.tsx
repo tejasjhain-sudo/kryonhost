@@ -77,10 +77,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const fetchProfile = (currentUser: User) => {
     const meta = currentUser.user_metadata || {};
+    const isOwner = currentUser.email?.toLowerCase() === 'tejasjha.in@gmail.com';
     const prof = {
-      fullName: meta.full_name || currentUser.email?.split('@')[0] || 'Customer',
+      fullName: meta.full_name || (isOwner ? 'Tejas Jha (Owner)' : currentUser.email?.split('@')[0]) || 'Customer',
       discordUsername: meta.discord_username || 'user',
-      role: meta.role || 'Customer',
+      role: isOwner ? 'Owner Admin' : meta.role || 'Customer',
     };
     setUserProfile(prof);
     setLoading(false);
@@ -88,6 +89,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const signUp = async (email: string, pass: string, fullName: string, discordUsername: string) => {
     try {
+      const isOwner = email.toLowerCase() === 'tejasjha.in@gmail.com';
+      const userRole = isOwner ? 'Owner Admin' : 'Customer';
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password: pass,
@@ -95,7 +99,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           data: {
             full_name: fullName,
             discord_username: discordUsername,
-            role: 'Customer',
+            role: userRole,
           },
         },
       });
@@ -106,14 +110,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         email,
         fullName,
         discordUsername,
-        role: 'Customer',
+        role: userRole,
       };
 
       setUser(newUser);
       setUserProfile({
         fullName,
         discordUsername,
-        role: 'Customer',
+        role: userRole,
       });
 
       localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(newUser));
@@ -125,6 +129,27 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const signIn = async (email: string, pass: string) => {
+    const normalizedEmail = email.trim().toLowerCase();
+
+    // Direct credentials check for System Executive Owner Admin
+    if (normalizedEmail === 'tejasjha.in@gmail.com' && pass === 'Tejas3321@#') {
+      const adminUser: LocalUserProfile = {
+        id: 'admin-owner-001',
+        email: 'tejasjha.in@gmail.com',
+        fullName: 'Tejas Jha (Owner)',
+        discordUsername: 'tejas_owner',
+        role: 'Owner Admin',
+      };
+      setUser(adminUser);
+      setUserProfile({
+        fullName: 'Tejas Jha (Owner)',
+        discordUsername: 'tejas_owner',
+        role: 'Owner Admin',
+      });
+      localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(adminUser));
+      return { error: null };
+    }
+
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -136,7 +161,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const saved = localStorage.getItem(LOCAL_STORAGE_USER_KEY);
         if (saved) {
           const u = JSON.parse(saved);
-          if (u.email === email) {
+          if (u.email.toLowerCase() === normalizedEmail) {
             setUser(u);
             setUserProfile({ fullName: u.fullName, discordUsername: u.discordUsername, role: u.role });
             return { error: null };
@@ -148,14 +173,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (data.user) {
         setUser(data.user);
         fetchProfile(data.user);
+        const isOwner = data.user.email?.toLowerCase() === 'tejasjha.in@gmail.com';
         localStorage.setItem(
           LOCAL_STORAGE_USER_KEY,
           JSON.stringify({
             id: data.user.id,
             email: data.user.email,
-            fullName: data.user.user_metadata?.full_name || email.split('@')[0],
+            fullName: data.user.user_metadata?.full_name || (isOwner ? 'Tejas Jha (Owner)' : email.split('@')[0]),
             discordUsername: data.user.user_metadata?.discord_username || 'user',
-            role: 'Customer',
+            role: isOwner ? 'Owner Admin' : 'Customer',
           })
         );
       }
