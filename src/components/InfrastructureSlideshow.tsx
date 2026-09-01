@@ -20,7 +20,7 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
     {
       id: 1,
       badge: '🇮🇳 INDIA - MUMBAI DATACENTER',
-      title: 'Tier IV Mumbai Datacenter & NIXI Peering',
+      title: 'Tier IV Datacenter & NIXI Peering',
       subtitle: 'Sub-5ms Ultra-Low Latency Across India',
       description: 'Hosted in our Mumbai facility with direct peering via NIXI and ExtremeIX. Built on enterprise Tier IV infrastructure with 1 Gbps unmetered connectivity.',
       image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
@@ -33,7 +33,7 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
     },
     {
       id: 2,
-      badge: '⚡ ENTERPRISE HARDWARE',
+      badge: '⚡ ENTERPRISE COMPUTING',
       title: 'Dual AMD EPYC 9004 & PCIe Gen5 NVMe Array',
       subtitle: '7,400 MB/s Disk Speeds & Dedicated Compute',
       description: 'Powered by latest-generation AMD EPYC processors and enterprise Samsung PCIe Gen5 NVMe SSDs in hardware RAID 10. Zero CPU throttling.',
@@ -51,7 +51,7 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
       title: '+4 GB Permanent RAM Launch Bonus',
       subtitle: 'Exclusive Founding Customer RAM Boost',
       description: 'Pre-order any VPS plan during the founding period and receive +4 GB permanent RAM added to your instance for life at no additional cost.',
-      image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80',
+      image: 'https://images.unsplash.com/photo-1562976540-1502c2145186?auto=format&fit=crop&w=1200&q=80',
       stats: [
         { label: 'Founding Bonus', value: '+4 GB RAM' },
         { label: 'Cost', value: '₹0 (Permanent)' },
@@ -61,11 +61,11 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
     },
     {
       id: 4,
-      badge: '🛡️ SECURITY & CHECKOUT',
+      badge: '🛡️ NETWORK SECURITY',
       title: '100 Gbps+ DDoS Filtering & Cashfree Gateway',
       subtitle: 'Always-On L3/L4/L7 Mitigation & Instant Payments',
       description: 'Protected by automated hardware DDoS filtering against volume attacks. Pay seamlessly using UPI, GPay, PhonePe, Paytm, and credit cards.',
-      image: 'https://images.unsplash.com/photo-1520869578617-557561d7b114?auto=format&fit=crop&w=1200&q=80',
+      image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80',
       stats: [
         { label: 'DDoS Capacity', value: '100 Gbps+' },
         { label: 'Checkout Provider', value: 'Cashfree' },
@@ -75,11 +75,11 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
     },
     {
       id: 5,
-      badge: '💻 VIRTUALIZATION & BACKUPS',
+      badge: '💻 KVM VIRTUALIZATION',
       title: 'Proxmox KVM Isolation & 7-Day Rolling Backups',
       subtitle: 'Dedicated Resources & 1-Click OS Templates',
       description: 'Full KVM hardware virtualization ensuring 100% reserved vCPU and RAM resources. Enjoy 7-day rolling backups and instant OS installs.',
-      image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1200&q=80',
+      image: 'https://images.unsplash.com/photo-1520869578617-557561d7b114?auto=format&fit=crop&w=1200&q=80',
       stats: [
         { label: 'Hypervisor', value: 'Proxmox VE' },
         { label: 'OS Templates', value: 'Linux & Docker' },
@@ -117,10 +117,10 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E0F2FE] border border-[#0096C7]/30 text-[#0096C7] text-xs font-mono font-black uppercase tracking-wider">
               <Radio className="w-3.5 h-3.5 text-[#0096C7] animate-pulse" />
-              <span>Interactive Infrastructure Showcase</span>
+              <span>Datacenter Infrastructure Showcase</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-              KryonHost Datacenter Node Gallery
+              Enterprise Datacenter & VPS Node Gallery
             </h2>
           </div>
 
@@ -154,12 +154,12 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
           </div>
         </div>
 
-        {/* Slide Display Container with Datacenter Image */}
+        {/* Slide Display Container */}
         <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-lg relative overflow-hidden transition-all duration-500">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
             
-            {/* Datacenter Photo Column */}
+            {/* Enterprise Datacenter Photo Column */}
             <div className="lg:col-span-6 space-y-4">
               <div className="relative rounded-2xl overflow-hidden shadow-xl border border-slate-200 group h-64 sm:h-80">
                 <img
@@ -167,12 +167,11 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
                   alt={slide.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between font-mono text-white text-xs">
                   <span className="px-3 py-1 rounded-full bg-slate-900/90 backdrop-blur-md border border-slate-700 font-bold">
                     {slide.badge}
                   </span>
-                  <span className="font-bold text-[#38BDF8]">Live Node Photo</span>
                 </div>
               </div>
             </div>
