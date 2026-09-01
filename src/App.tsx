@@ -20,6 +20,7 @@ import { BillingPage } from './components/BillingPage';
 import { AdminPage } from './components/AdminPage';
 import { AIChatBot } from './components/AIChatBot';
 import { LegalModal, DocsModal } from './components/Modals';
+import { Analytics } from '@vercel/analytics/react';
 
 export function AppContent() {
   // Main Navigation View State: 'home' | 'checkout' | 'admin'
@@ -162,6 +163,7 @@ export function App() {
   return (
     <AuthProvider>
       <AppContent />
+      <Analytics />
     </AuthProvider>
   );
 }
