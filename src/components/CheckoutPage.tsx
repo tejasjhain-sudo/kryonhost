@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { KRYONHOST_CONFIG, VPSPlan } from '../config/kryonhost.config';
-import { ArrowLeft, CheckCircle2, ShieldCheck, Zap, ArrowRight, Loader2, Sparkles, Copy, Check, Info, Server, Cpu, HardDrive, Network, Globe, AlertCircle, CreditCard, QrCode, Lock, DollarSign, MapPin, Key, Calendar, Tag, BadgePercent, CheckCircle, ChevronRight, Sliders, Plus } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, ShieldCheck, Zap, ArrowRight, Loader2, Sparkles, Copy, Check, Info, Server, Cpu, HardDrive, Network, Globe, AlertCircle, CreditCard, Lock, DollarSign, MapPin, Key, Calendar, Tag, BadgePercent, CheckCircle, ChevronRight, Sliders, Mail, Plus } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface CheckoutPageProps {
@@ -229,13 +229,14 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
 
             <div className="space-y-2">
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-mono font-bold">
-                CASHFREE PAYMENT VERIFIED 🟢
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                <span>CASHFREE PAYMENT VERIFIED</span>
               </div>
               <h1 className="text-3xl font-black text-slate-900 tracking-tight">
-                Pre-Order Confirmed!
+                Pre-Order Confirmed
               </h1>
               <p className="text-sm text-slate-600 font-medium">
-                Thank you, <strong>{paymentResult.customerName}</strong>. Your founding pre-order and domain configuration are locked in!
+                Thank you, <strong>{paymentResult.customerName}</strong>. Your founding pre-order and domain configuration are locked in.
               </p>
             </div>
 
@@ -255,7 +256,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
               </div>
               <div className="flex justify-between border-b border-slate-200 pb-3">
                 <span className="text-slate-500 font-bold">Datacenter Location:</span>
-                <span className="font-extrabold text-slate-900">🇮🇳 {paymentResult.location}</span>
+                <span className="font-extrabold text-slate-900">{paymentResult.location}</span>
               </div>
               <div className="flex justify-between border-b border-slate-200 pb-3">
                 <span className="text-slate-500 font-bold">Plan Specs:</span>
@@ -267,8 +268,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-[#E0F2FE] border border-[#0096C7]/30 text-xs font-mono text-[#0096C7] text-left">
-              ✉️ Official receipt and pre-order confirmation dispatched to <strong>{paymentResult.customerEmail}</strong> and system owner.
+            <div className="p-4 rounded-2xl bg-[#E0F2FE] border border-[#0096C7]/30 text-xs font-mono text-[#0096C7] text-left flex items-center gap-2">
+              <Mail className="w-4 h-4 text-[#0096C7] shrink-0" />
+              <span>Official receipt and pre-order confirmation dispatched to <strong>{paymentResult.customerEmail}</strong>.</span>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
@@ -326,8 +328,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
               <span className="px-3 py-1 rounded-full bg-[#E0F2FE] text-[#0096C7] font-mono font-black text-xs border border-[#0096C7]/30">
                 OFFICIAL CHECKOUT PORTAL
               </span>
-              <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-mono font-bold text-xs border border-emerald-300">
-                🇮🇳 India - Mumbai
+              <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-mono font-bold text-xs border border-emerald-300 flex items-center gap-1">
+                <MapPin className="w-3.5 h-3.5 text-emerald-600" />
+                <span>India - Mumbai</span>
               </span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
@@ -345,7 +348,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                 currency === 'INR' ? 'bg-[#0096C7] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              🇮🇳 INR (₹)
+              INR (₹)
             </button>
             <button
               onClick={() => setCurrency('USD')}
@@ -353,7 +356,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                 currency === 'USD' ? 'bg-[#0096C7] text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              🌐 USD ($)
+              USD ($)
             </button>
           </div>
         </div>
@@ -388,15 +391,16 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   <div className="p-4 rounded-2xl bg-[#E0F2FE]/60 border border-[#0096C7]/30 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="p-2.5 rounded-xl bg-[#0096C7] text-white font-black font-mono">
-                        🇮🇳
+                        <MapPin className="w-5 h-5 text-white" />
                       </div>
                       <div>
                         <div className="text-sm font-black text-slate-900">India - Mumbai Datacenter</div>
                         <div className="text-xs text-slate-600">Tier IV Infrastructure • Direct NIXI Peering • Sub-5ms Latency</div>
                       </div>
                     </div>
-                    <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-mono font-bold text-xs border border-emerald-300">
-                      PRIMARY NODE 🟢
+                    <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-mono font-bold text-xs border border-emerald-300 flex items-center gap-1">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>PRIMARY NODE</span>
                     </span>
                   </div>
                 </div>
@@ -407,8 +411,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                     <label className="block text-xs font-mono font-extrabold uppercase tracking-wider text-slate-700">
                       2. Custom Billing Duration (1 to 36 Months) *
                     </label>
-                    <span className="text-xs font-mono font-bold text-emerald-600">
-                      {discountPercent > 0 ? `🔥 ${discountPercent}% Discount Applied` : 'Standard Rate'}
+                    <span className="text-xs font-mono font-bold text-emerald-600 flex items-center gap-1">
+                      <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>{discountPercent > 0 ? `${discountPercent}% Discount Applied` : 'Standard Rate'}</span>
                     </span>
                   </div>
 
@@ -663,12 +668,12 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         onChange={(e) => setCountry(e.target.value)}
                         className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-[#0096C7]"
                       >
-                        <option value="India">🇮🇳 India</option>
-                        <option value="Singapore">🇸🇬 Singapore</option>
-                        <option value="United States">🇺🇸 United States</option>
-                        <option value="Germany">🇩🇪 Germany</option>
-                        <option value="United Kingdom">🇬🇧 United Kingdom</option>
-                        <option value="Other">🌐 Other Country</option>
+                        <option value="India">India</option>
+                        <option value="Singapore">Singapore</option>
+                        <option value="United States">United States</option>
+                        <option value="Germany">Germany</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                        <option value="Other">Other Country</option>
                       </select>
                     </div>
                   </div>
@@ -726,8 +731,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                         <div>
                           <div className="text-xs font-black text-slate-900 flex items-center gap-2">
                             <span>Cashfree Payments Gateway</span>
-                            <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-mono font-bold border border-emerald-300">
-                              OFFICIAL GATEWAY 🟢
+                            <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-mono font-bold border border-emerald-300 flex items-center gap-1">
+                              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                              <span>OFFICIAL GATEWAY</span>
                             </span>
                           </div>
                           <div className="text-[11px] text-slate-600 mt-0.5 font-medium">
@@ -813,7 +819,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                     ORDER SUMMARY
                   </h3>
                   <span className="px-2.5 py-0.5 rounded-full bg-[#E0F2FE] text-[#0096C7] text-[10px] font-mono font-bold">
-                    🇮🇳 Mumbai Node
+                    Mumbai Node
                   </span>
                 </div>
 
@@ -830,7 +836,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
 
                   <div className="flex justify-between text-slate-700">
                     <span>Datacenter Location:</span>
-                    <span className="font-bold text-slate-900">🇮🇳 India - Mumbai</span>
+                    <span className="font-bold text-slate-900">India - Mumbai</span>
                   </div>
 
                   <div className="flex justify-between text-slate-700">
@@ -908,7 +914,10 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
 
                   {totalSavingsINR > 0 && (
                     <div className="p-2.5 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold flex items-center justify-between">
-                      <span>🔥 You Save</span>
+                      <span className="flex items-center gap-1">
+                        <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>You Save</span>
+                      </span>
                       <span>
                         {currency === 'INR' ? `₹${totalSavingsINR.toLocaleString('en-IN')}` : `$${totalSavingsUSD}`} ({discountPercent}% OFF)
                       </span>

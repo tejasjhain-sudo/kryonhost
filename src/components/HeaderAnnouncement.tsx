@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, ArrowRight, X, Flame, ChevronLeft, ChevronRight, ShieldCheck, Zap, CreditCard } from 'lucide-react';
+import { Sparkles, ArrowRight, X, ChevronLeft, ChevronRight, ShieldCheck, Zap, CreditCard, Globe } from 'lucide-react';
 
 interface AnnouncementSlide {
   id: number;
@@ -23,8 +23,8 @@ export const HeaderAnnouncement: React.FC<HeaderAnnouncementProps> = ({ onOpenPr
       id: 1,
       tag: 'FOUNDING OFFER',
       tagBg: 'bg-amber-400 text-slate-950',
-      icon: <Flame className="w-3 h-3 text-red-600 animate-bounce" />,
-      text: '🇮🇳 India - Mumbai Datacenter Launch: Get up to 30% OFF + Free +4 GB Permanent RAM Bonus!',
+      icon: <Sparkles className="w-3 h-3 text-slate-950" />,
+      text: 'India - Mumbai Datacenter Launch: Get up to 30% OFF + Free +4 GB Permanent RAM Bonus!',
       buttonText: 'Pre-Order Now',
     },
     {

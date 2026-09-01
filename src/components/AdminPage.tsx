@@ -55,15 +55,15 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onBackToHome }) => {
       });
 
       if (res.ok) {
-        setTestEmailStatus('✅ Test email sent to tejasjha.in@gmail.com!');
+        setTestEmailStatus('Test email notification dispatched to tejasjha.in@gmail.com.');
         try {
           confetti({ particleCount: 80, spread: 60, origin: { y: 0.4 } });
         } catch (e) {}
       } else {
-        setTestEmailStatus('✉️ Test dispatch logged to tejasjha.in@gmail.com');
+        setTestEmailStatus('Test dispatch logged to tejasjha.in@gmail.com');
       }
     } catch (err) {
-      setTestEmailStatus('✉️ Email notification test sent to tejasjha.in@gmail.com');
+      setTestEmailStatus('Email notification test sent to tejasjha.in@gmail.com');
     } finally {
       setSendingTestEmail(false);
     }
@@ -86,8 +86,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onBackToHome }) => {
           </button>
 
           <div className="flex items-center gap-2">
-            <span className="px-3.5 py-1.5 rounded-full bg-[#E0F2FE] border border-[#0096C7]/30 text-xs font-mono font-black text-[#0096C7]">
-              👑 KryonHost Owner Admin Portal
+            <span className="px-3.5 py-1.5 rounded-full bg-[#E0F2FE] border border-[#0096C7]/30 text-xs font-mono font-black text-[#0096C7] flex items-center gap-1.5">
+              <ShieldCheck className="w-4 h-4 text-[#0096C7]" />
+              <span>KryonHost Owner Admin Portal</span>
             </span>
           </div>
         </div>
@@ -98,14 +99,14 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onBackToHome }) => {
         {/* Simple Welcome Banner */}
         <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-2">
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-            KryonHost Owner Dashboard
+            KryonHost System Executive Dashboard
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 font-medium">
-            Easily manage your pre-order counter and test receipt emails sent to <strong className="text-slate-900">tejasjha.in@gmail.com</strong>.
+            Manage pre-order allocation counter and dispatch test notification emails to <strong className="text-slate-900">tejasjha.in@gmail.com</strong>.
           </p>
         </div>
 
-        {/* 1. Allocation Counter Controls (Super Simple) */}
+        {/* 1. Allocation Counter Controls */}
         <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
           <div className="flex items-center justify-between border-b border-slate-100 pb-4">
             <div className="flex items-center gap-3">
@@ -117,8 +118,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onBackToHome }) => {
                 <p className="text-xs text-slate-500 font-medium">Live pre-order slots shown on the website</p>
               </div>
             </div>
-            <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-mono font-black border border-emerald-300">
-              LIVE SYNC 🟢
+            <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-mono font-black border border-emerald-300 flex items-center gap-1">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+              <span>LIVE SYNC</span>
             </span>
           </div>
 
@@ -128,7 +130,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onBackToHome }) => {
             <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 text-center space-y-1">
               <div className="text-xs font-mono text-slate-500 font-bold uppercase">Total Slots</div>
               <div className="text-3xl font-black text-slate-900 font-mono">{totalAllocations}</div>
-              <div className="text-[11px] text-slate-500 font-medium">Founding Pre-Orders</div>
+              <div className="text-[11px] text-slate-500 font-medium">Founding Capacity</div>
             </div>
 
             {/* Claimed Count with + / - Buttons */}
@@ -137,7 +139,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onBackToHome }) => {
               <div className="flex items-center justify-center gap-4">
                 <button
                   onClick={handleDecrementClaimed}
-                  className="w-9 h-9 rounded-xl bg-white border border-slate-300 text-slate-800 font-black text-base hover:bg-slate-100 flex items-center justify-center transition-colors shadow-sm"
+                  className="w-9 h-9 rounded-xl bg-white border border-slate-300 text-slate-800 font-black text-base hover:bg-slate-100 flex items-center justify-center transition-colors shadow-sm cursor-pointer"
                   title="Remove 1 Claimed Slot"
                 >
                   <Minus className="w-4 h-4" />
@@ -147,7 +149,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onBackToHome }) => {
 
                 <button
                   onClick={handleIncrementClaimed}
-                  className="w-9 h-9 rounded-xl bg-[#0096C7] text-white font-black text-base hover:bg-[#0284C7] flex items-center justify-center transition-colors shadow-sm"
+                  className="w-9 h-9 rounded-xl bg-[#0096C7] text-white font-black text-base hover:bg-[#0284C7] flex items-center justify-center transition-colors shadow-sm cursor-pointer"
                   title="Add 1 Claimed Slot"
                 >
                   <Plus className="w-4 h-4" />
@@ -174,20 +176,21 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onBackToHome }) => {
                 <Mail className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-lg font-black text-slate-900">Email Receipt Test Dispatch</h2>
-                <p className="text-xs text-slate-500 font-medium">Auto-forwards every receipt to tejasjha.in@gmail.com</p>
+                <h2 className="text-lg font-black text-slate-900">Email Notification Dispatch</h2>
+                <p className="text-xs text-slate-500 font-medium">Auto-forwards pre-order receipts to tejasjha.in@gmail.com</p>
               </div>
             </div>
-            <span className="px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-mono font-bold">
-              tejasjha.in@gmail.com ✉️
+            <span className="px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-mono font-bold flex items-center gap-1">
+              <Mail className="w-3.5 h-3.5 text-purple-600" />
+              <span>tejasjha.in@gmail.com</span>
             </span>
           </div>
 
           <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
-                <div className="text-xs font-bold text-slate-900">Send Test Email to tejasjha.in@gmail.com</div>
-                <div className="text-xs text-slate-500 mt-0.5">Click below to verify that email notifications are working.</div>
+                <div className="text-xs font-bold text-slate-900">Send Test Email Notification</div>
+                <div className="text-xs text-slate-500 mt-0.5">Dispatches test email notification to tejasjha.in@gmail.com</div>
               </div>
 
               <button
@@ -210,8 +213,9 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onBackToHome }) => {
             </div>
 
             {testEmailStatus && (
-              <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-extrabold font-mono animate-in fade-in">
-                {testEmailStatus}
+              <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-extrabold font-mono flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>{testEmailStatus}</span>
               </div>
             )}
           </div>
@@ -220,7 +224,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onBackToHome }) => {
         {/* 3. Live Pre-Orders Received (Clean List) */}
         <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
           <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-            <h2 className="text-lg font-black text-slate-900">Paid Pre-Orders Received ({orders.length})</h2>
+            <h2 className="text-lg font-black text-slate-900">Paid Pre-Orders ({orders.length})</h2>
             <span className="text-xs font-mono text-slate-500 font-bold">Cashfree Gateway</span>
           </div>
 
@@ -234,15 +238,15 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onBackToHome }) => {
                   </div>
                   <div className="text-right">
                     <div className="font-black text-[#0096C7]">{ord.amountPaidINR}</div>
-                    <div className="text-emerald-600 font-bold text-[10px]">tejasjha.in@gmail.com ✉️</div>
+                    <div className="text-emerald-600 font-bold text-[10px]">Notification Sent</div>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
             <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200 text-center space-y-2 text-xs font-mono">
-              <div className="font-bold text-slate-700">No Pre-Orders Received Yet</div>
-              <div className="text-slate-500">When customers complete Cashfree checkout, their orders will appear here automatically!</div>
+              <div className="font-bold text-slate-700">No Customer Pre-Orders Received Yet</div>
+              <div className="text-slate-500">When customers complete Cashfree checkout, orders will appear here in real time.</div>
             </div>
           )}
         </div>

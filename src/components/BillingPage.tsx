@@ -222,7 +222,7 @@ export const BillingPage: React.FC<BillingPageProps> = ({ isOpen, onClose, onOpe
 
                         <div className="flex items-center gap-3">
                           <span className="px-3 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-black text-[10px] border border-emerald-300">
-                            {inv.status} 🟢
+                            {inv.status}
                           </span>
                           <span className="font-black text-slate-900 text-sm">
                             {currency === 'INR' ? inv.amountPaidINR : inv.amountPaidUSD}
