@@ -21,6 +21,7 @@ import { AuthModal } from './components/AuthModal';
 import { BillingPage } from './components/BillingPage';
 import { AdminPage } from './components/AdminPage';
 import { AIChatBot } from './components/AIChatBot';
+import { CookieConsent } from './components/CookieConsent';
 import { LegalModal, DocsModal } from './components/Modals';
 import { Analytics } from '@vercel/analytics/react';
 
@@ -142,6 +143,9 @@ export function AppContent() {
 
       {/* AI Customer Support & VPS Guide Chatbot Floating Widget */}
       <AIChatBot onOpenPreOrder={handleOpenCheckout} />
+
+      {/* First-Time Visitor Cookie Consent Banner */}
+      <CookieConsent onOpenPrivacy={() => handleOpenLegal('privacy')} />
 
       {/* Modals & Billing Portal */}
       <AuthModal
