@@ -61,7 +61,7 @@ export function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080B12] text-[#F8FAFC] selection:bg-blue-500/30 selection:text-blue-200 overflow-x-hidden">
+    <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-[#0096C7]/20 selection:text-[#0096C7] overflow-x-hidden">
       {/* Navbar with Header Announcement */}
       <Navbar
         onOpenPreOrder={handleOpenCheckout}
