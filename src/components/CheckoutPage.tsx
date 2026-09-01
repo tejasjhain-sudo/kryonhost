@@ -28,10 +28,8 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
   // Custom Month Selection State (Supports 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16+ Months)
   const [selectedMonths, setSelectedMonths] = useState<number>(12);
 
-  // Custom Domain Configuration State
-  const [domainOption, setDomainOption] = useState<'free_subdomain' | 'new_domain' | 'existing_domain'>('free_subdomain');
-  const [domainName, setDomainName] = useState('my-server');
-  const [newDomainExt, setNewDomainExt] = useState('.com');
+  // Custom Hostname / Domain Name State
+  const [domainName, setDomainName] = useState('');
 
   // Form Fields
   const [fullName, setFullName] = useState('');
@@ -98,16 +96,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
   const discountPercent = getDiscountPercent(selectedMonths);
   const cycleLabel = `${selectedMonths} ${selectedMonths === 1 ? 'Month' : 'Months'}${discountPercent > 0 ? ` (${discountPercent}% OFF)` : ''}`;
 
-  // Domain Fee Calculation
-  const domainFeeINR = domainOption === 'new_domain' ? 799 : 0;
-  const domainFeeUSD = domainOption === 'new_domain' ? 9.99 : 0;
-
-  const displayDomain =
-    domainOption === 'new_domain'
-      ? `${domainName.toLowerCase().replace(/[^a-z0-9-]/g, '')}${newDomainExt}`
-      : domainOption === 'existing_domain'
-      ? domainName || 'server.mycompany.com'
-      : `${(domainName || 'my-server').toLowerCase().replace(/[^a-z0-9-]/g, '')}.kryonhost.com`;
+  const displayDomain = domainName.trim() || 'Default Hostname';
 
   // Rates & Billing Calculations
   const baseMonthlyINR = currentPlan.monthlyPriceINR;
@@ -119,8 +108,8 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
   const addonMonthlyINR = selectedAddons.length * 49;
   const addonMonthlyUSD = selectedAddons.length * 0.60;
 
-  const totalAmountTodayINR = (effectiveMonthlyINR + addonMonthlyINR) * selectedMonths + domainFeeINR;
-  const totalAmountTodayUSD = Number(((effectiveMonthlyUSD + addonMonthlyUSD) * selectedMonths + domainFeeUSD).toFixed(2));
+  const totalAmountTodayINR = (effectiveMonthlyINR + addonMonthlyINR) * selectedMonths;
+  const totalAmountTodayUSD = Number(((effectiveMonthlyUSD + addonMonthlyUSD) * selectedMonths).toFixed(2));
 
   const totalSavingsINR = (baseMonthlyINR * selectedMonths) - (effectiveMonthlyINR * selectedMonths);
   const totalSavingsUSD = Number(((baseMonthlyUSD * selectedMonths) - (effectiveMonthlyUSD * selectedMonths)).toFixed(2));
@@ -172,7 +161,6 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
           referralSource: 'Direct Website Checkout',
           confirmationAgreed,
           domainName: displayDomain,
-          domainOption,
         }),
       });
 
@@ -236,7 +224,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                 Pre-Order Confirmed
               </h1>
               <p className="text-sm text-slate-600 font-medium">
-                Thank you, <strong>{paymentResult.customerName}</strong>. Your founding pre-order and domain configuration are locked in.
+                Thank you, <strong>{paymentResult.customerName}</strong>. Your founding pre-order has been processed successfully.
               </p>
             </div>
 
@@ -251,7 +239,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                 <span className="font-extrabold text-slate-900">{paymentResult.paymentId}</span>
               </div>
               <div className="flex justify-between border-b border-slate-200 pb-3">
-                <span className="text-slate-500 font-bold">Domain Name:</span>
+                <span className="text-slate-500 font-bold">Server Hostname:</span>
                 <span className="font-extrabold text-[#0096C7]">{paymentResult.domainName}</span>
               </div>
               <div className="flex justify-between border-b border-slate-200 pb-3">
@@ -312,7 +300,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
           <div className="flex items-center gap-2 font-mono text-xs font-bold text-slate-700">
             <span className="text-[#0096C7]">1. Plan & Duration</span>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-[#0096C7]">2. Domain Setup</span>
+            <span className="text-[#0096C7]">2. Configuration</span>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
             <span>3. Cashfree Checkout</span>
           </div>
@@ -337,7 +325,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
               Pre-Order KryonHost VPS Instance
             </h1>
             <p className="text-xs sm:text-sm text-slate-600 font-medium">
-              Configure your duration term, domain name, and complete instant checkout via Cashfree Payments Gateway.
+              Configure your duration term, server hostname, and complete instant checkout via Cashfree Payments Gateway.
             </p>
           </div>
 
@@ -373,7 +361,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <h2 className="text-lg font-black text-slate-900 font-mono flex items-center gap-2">
                   <Sliders className="w-5 h-5 text-[#0096C7]" />
-                  <span>Instance & Domain Configuration</span>
+                  <span>Instance & Server Configuration</span>
                 </h2>
                 <span className="text-xs font-mono text-[#0096C7] font-bold">
                   {allocationStats.remainingCount} Slots Available
@@ -500,113 +488,23 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   </div>
                 </div>
 
-                {/* 4. Domain Setup & Domain Registration */}
-                <div className="space-y-3 pt-2">
-                  <div className="flex items-center justify-between">
-                    <label className="block text-xs font-mono font-extrabold uppercase tracking-wider text-slate-700">
-                      4. Custom Domain Setup & Registration *
-                    </label>
-                    <span className="text-xs font-mono text-[#0096C7] font-bold">
-                      Domain: {displayDomain}
-                    </span>
-                  </div>
+                {/* 4. Hostname / Domain Name Setup (Clean & Simple) */}
+                <div className="space-y-2 pt-2">
+                  <label className="block text-xs font-mono font-extrabold uppercase tracking-wider text-slate-700">
+                    4. Server Hostname / Domain Name (Optional)
+                  </label>
 
-                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
-                    
-                    {/* Domain Option Radio Tabs */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      
-                      <button
-                        type="button"
-                        onClick={() => setDomainOption('free_subdomain')}
-                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                          domainOption === 'free_subdomain'
-                            ? 'bg-white border-[#0096C7] ring-1 ring-[#0096C7] shadow-sm'
-                            : 'bg-white/60 border-slate-200 text-slate-600 hover:border-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-black text-slate-900">Free Subdomain</span>
-                          <span className="text-[10px] font-mono font-bold text-emerald-600">FREE ₹0</span>
-                        </div>
-                        <div className="text-[11px] text-slate-500 mt-1">.kryonhost.com</div>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setDomainOption('new_domain')}
-                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                          domainOption === 'new_domain'
-                            ? 'bg-white border-[#0096C7] ring-1 ring-[#0096C7] shadow-sm'
-                            : 'bg-white/60 border-slate-200 text-slate-600 hover:border-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-black text-slate-900">Register New Domain</span>
-                          <span className="text-[10px] font-mono font-bold text-[#0096C7]">+₹799/yr</span>
-                        </div>
-                        <div className="text-[11px] text-slate-500 mt-1">.com / .in / .net</div>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setDomainOption('existing_domain')}
-                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                          domainOption === 'existing_domain'
-                            ? 'bg-white border-[#0096C7] ring-1 ring-[#0096C7] shadow-sm'
-                            : 'bg-white/60 border-slate-200 text-slate-600 hover:border-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-black text-slate-900">Use Own Domain</span>
-                          <span className="text-[10px] font-mono font-bold text-emerald-600">FREE ₹0</span>
-                        </div>
-                        <div className="text-[11px] text-slate-500 mt-1">Existing DNS</div>
-                      </button>
-
-                    </div>
-
-                    {/* Domain Input Box */}
-                    <div className="space-y-2 pt-1">
-                      <label className="block text-xs font-semibold text-slate-700">
-                        {domainOption === 'new_domain' ? 'Enter Desired Domain Name:' : 'Enter Subdomain / Domain Name:'}
-                      </label>
-
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="text"
-                          required
-                          value={domainName}
-                          onChange={(e) => setDomainName(e.target.value)}
-                          placeholder={domainOption === 'new_domain' ? 'mycompany' : 'my-server'}
-                          className="flex-1 px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-xs font-mono font-bold focus:outline-none focus:border-[#0096C7]"
-                        />
-
-                        {domainOption === 'new_domain' ? (
-                          <select
-                            value={newDomainExt}
-                            onChange={(e) => setNewDomainExt(e.target.value)}
-                            className="px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-xs font-mono font-bold focus:outline-none focus:border-[#0096C7]"
-                          >
-                            <option value=".com">.com (+₹799/yr)</option>
-                            <option value=".in">.in (+₹599/yr)</option>
-                            <option value=".net">.net (+₹899/yr)</option>
-                            <option value=".org">.org (+₹849/yr)</option>
-                            <option value=".io">.io (+₹2,499/yr)</option>
-                            <option value=".tech">.tech (+₹499/yr)</option>
-                          </select>
-                        ) : domainOption === 'free_subdomain' ? (
-                          <div className="px-3.5 py-2.5 rounded-xl bg-slate-200 text-slate-700 text-xs font-mono font-bold">
-                            .kryonhost.com
-                          </div>
-                        ) : null}
-                      </div>
-
-                      <div className="text-[11px] font-mono text-slate-500 pt-1">
-                        Domain Preview: <strong className="text-[#0096C7]">{displayDomain}</strong>
-                      </div>
-                    </div>
-
+                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                    <input
+                      type="text"
+                      placeholder="e.g. server.mycompany.com or my-vps-node"
+                      value={domainName}
+                      onChange={(e) => setDomainName(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-xs font-mono font-bold focus:outline-none focus:border-[#0096C7]"
+                    />
+                    <p className="text-[11px] text-slate-500 font-mono">
+                      Specify a custom domain or hostname for your VPS instance (e.g. <strong>{domainName || 'server.mycompany.com'}</strong>). You can also leave this blank and configure it anytime later.
+                    </p>
                   </div>
                 </div>
 
@@ -840,7 +738,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   </div>
 
                   <div className="flex justify-between text-slate-700">
-                    <span>Domain Setup:</span>
+                    <span>Server Hostname:</span>
                     <span className="font-bold text-[#0096C7]">{displayDomain}</span>
                   </div>
 
@@ -875,13 +773,6 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                     <span>OS Template:</span>
                     <span className="font-bold text-slate-900">{operatingSystem}</span>
                   </div>
-
-                  {domainFeeINR > 0 && (
-                    <div className="flex justify-between text-slate-700 font-bold border-t border-slate-100 pt-2">
-                      <span>Domain Registration:</span>
-                      <span className="text-[#0096C7]">{currency === 'INR' ? `+₹${domainFeeINR}` : `+$${domainFeeUSD}`}</span>
-                    </div>
-                  )}
 
                   {selectedAddons.length > 0 && (
                     <div className="flex justify-between text-slate-700">
