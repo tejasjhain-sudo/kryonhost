@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { X, CreditCard, Receipt, ShieldCheck, Download, Zap, CheckCircle2, ArrowRight, Clock, MapPin, Key, DollarSign, QrCode, Lock, RefreshCw, FileText, Search, Filter, Plus, ExternalLink, Printer, Sparkles, AlertCircle, ChevronRight, Check, Copy } from 'lucide-react';
+import { X, CreditCard, Receipt, ShieldCheck, Download, Zap, CheckCircle2, ArrowRight, Clock, MapPin, Key, DollarSign, QrCode, Lock, RefreshCw, FileText, Search, Filter, Plus, ExternalLink, Printer, Sparkles, AlertCircle, ChevronRight, Check, Copy, ArrowLeft } from 'lucide-react';
 
 interface BillingPageProps {
   isOpen: boolean;
@@ -19,13 +19,24 @@ export const BillingPage: React.FC<BillingPageProps> = ({ isOpen, onClose, onOpe
   // Auto-renew toggle state for sample active subscription
   const [autoRenewEnabled, setAutoRenewEnabled] = useState(true);
 
+  // ESC Key listener to close modal easily
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const displayName = userProfile?.fullName || (user as any)?.fullName || user?.email?.split('@')[0] || 'Founding Customer';
   const userEmail = user?.email || 'customer@kryonhost.com';
 
   // User verified pre-order invoices (starts clean for real account orders)
-  const [userInvoices, setUserInvoices] = useState<any[]>([]);
+  const userInvoices: any[] = [];
 
   const filteredInvoices = userInvoices.filter(inv =>
     inv.invoiceId.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -39,19 +50,32 @@ export const BillingPage: React.FC<BillingPageProps> = ({ isOpen, onClose, onOpe
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-150">
-      <div className="relative w-full max-w-5xl bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden my-6">
-        {/* Top Header & Branding Bar */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-150 font-sans">
+      
+      {/* Backdrop Click to Exit */}
+      <div className="fixed inset-0" onClick={onClose} />
+
+      <div className="relative w-full max-w-5xl bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden my-6 z-10">
+        
+        {/* Top Header & Back Button Bar */}
         <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-slate-50 via-white to-slate-50 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="p-3 rounded-2xl bg-[#E0F2FE] text-[#0096C7] border border-[#0096C7]/30 shadow-sm">
-              <Receipt className="w-6 h-6" />
-            </div>
+            <button
+              onClick={onClose}
+              className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-mono font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Home</span>
+            </button>
+
+            <div className="h-6 w-px bg-slate-200 hidden sm:block" />
+
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-xl font-black text-slate-900 tracking-tight">Billing & Invoice Management</h3>
-                <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-mono font-extrabold border border-emerald-300">
-                  VERIFIED ACCOUNT 🟢
+                <h3 className="text-xl font-black text-slate-900 tracking-tight">Billing & Invoices</h3>
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-mono font-extrabold border border-emerald-300 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                  <span>VERIFIED ACCOUNT</span>
                 </span>
               </div>
               <p className="text-xs text-slate-500 font-semibold mt-0.5">
@@ -62,15 +86,20 @@ export const BillingPage: React.FC<BillingPageProps> = ({ isOpen, onClose, onOpe
 
           <div className="flex items-center gap-3">
             <button
-              onClick={() => onOpenPreOrder()}
+              onClick={() => {
+                onClose();
+                onOpenPreOrder();
+              }}
               className="px-4 py-2 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white font-extrabold text-xs shadow-md shadow-[#0096C7]/20 flex items-center gap-1.5 cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>+ Order VPS</span>
             </button>
+
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              className="p-2 rounded-xl text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
+              title="Close Billing Modal"
             >
               <X className="w-5 h-5" />
             </button>
@@ -87,7 +116,7 @@ export const BillingPage: React.FC<BillingPageProps> = ({ isOpen, onClose, onOpe
 
           <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-sm space-y-0.5">
             <div className="text-slate-400 text-[10px] font-bold uppercase">Primary Datacenter</div>
-            <div className="font-extrabold text-[#0096C7] text-xs truncate">🇮🇳 India - Mumbai</div>
+            <div className="font-extrabold text-[#0096C7] text-xs truncate">India - Mumbai Node</div>
             <div className="text-slate-500 text-[11px]">Tier IV Facility</div>
           </div>
 
@@ -99,124 +128,117 @@ export const BillingPage: React.FC<BillingPageProps> = ({ isOpen, onClose, onOpe
 
           <div className="p-3 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
-              <div className="text-slate-400 text-[10px] font-bold uppercase">Total Pre-Orders</div>
-              <div className="font-black text-slate-900 text-sm">2 Paid Services</div>
+              <div className="text-slate-400 text-[10px] font-bold uppercase">Display Currency</div>
+              <div className="font-extrabold text-slate-900 text-xs">{currency}</div>
             </div>
-            <div className="flex items-center space-x-1 bg-slate-100 p-1 rounded-lg border border-slate-200">
+            <div className="flex bg-slate-100 p-0.5 rounded-lg border border-slate-200">
               <button
-                type="button"
                 onClick={() => setCurrency('INR')}
-                className={`px-2 py-0.5 rounded font-mono font-bold text-[10px] ${currency === 'INR' ? 'bg-[#0096C7] text-white' : 'text-slate-600'}`}
+                className={`px-2 py-1 rounded text-[10px] font-bold ${currency === 'INR' ? 'bg-[#0096C7] text-white' : 'text-slate-600'}`}
               >
-                INR (₹)
+                ₹ INR
               </button>
               <button
-                type="button"
                 onClick={() => setCurrency('USD')}
-                className={`px-2 py-0.5 rounded font-mono font-bold text-[10px] ${currency === 'USD' ? 'bg-[#0096C7] text-white' : 'text-slate-600'}`}
+                className={`px-2 py-1 rounded text-[10px] font-bold ${currency === 'USD' ? 'bg-[#0096C7] text-white' : 'text-slate-600'}`}
               >
-                USD ($)
+                $ USD
               </button>
             </div>
           </div>
         </div>
 
-        {/* Navigation Tabs Bar */}
-        <div className="flex border-b border-slate-200 bg-slate-100/60 px-6 font-mono text-xs overflow-x-auto">
+        {/* Navigation Tabs */}
+        <div className="flex border-b border-slate-200 bg-white px-6 font-mono text-xs overflow-x-auto">
           <button
             onClick={() => setActiveTab('invoices')}
-            className={`py-3.5 px-5 font-bold border-b-2 flex items-center gap-2 transition-all whitespace-nowrap ${
+            className={`py-4 px-4 font-bold border-b-2 transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
               activeTab === 'invoices'
-                ? 'border-[#0096C7] text-[#0096C7] bg-white'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+                ? 'border-[#0096C7] text-[#0096C7] font-black'
+                : 'border-transparent text-slate-500 hover:text-slate-900'
             }`}
           >
             <Receipt className="w-4 h-4" />
-            Tax Invoices & Receipts (2)
+            <span>Tax Invoices ({filteredInvoices.length})</span>
           </button>
+
           <button
             onClick={() => setActiveTab('subscriptions')}
-            className={`py-3.5 px-5 font-bold border-b-2 flex items-center gap-2 transition-all whitespace-nowrap ${
+            className={`py-4 px-4 font-bold border-b-2 transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
               activeTab === 'subscriptions'
-                ? 'border-[#0096C7] text-[#0096C7] bg-white'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+                ? 'border-[#0096C7] text-[#0096C7] font-black'
+                : 'border-transparent text-slate-500 hover:text-slate-900'
             }`}
           >
-            <Zap className="w-4 h-4 text-[#0096C7]" />
-            Active VPS Subscriptions
+            <Zap className="w-4 h-4" />
+            <span>Active Subscriptions</span>
           </button>
+
           <button
             onClick={() => setActiveTab('methods')}
-            className={`py-3.5 px-5 font-bold border-b-2 flex items-center gap-2 transition-all whitespace-nowrap ${
+            className={`py-4 px-4 font-bold border-b-2 transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
               activeTab === 'methods'
-                ? 'border-[#0096C7] text-[#0096C7] bg-white'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+                ? 'border-[#0096C7] text-[#0096C7] font-black'
+                : 'border-transparent text-slate-500 hover:text-slate-900'
             }`}
           >
             <CreditCard className="w-4 h-4" />
-            Payment Methods
+            <span>Cashfree Payment Gateways</span>
           </button>
+
           <button
             onClick={() => setActiveTab('perks')}
-            className={`py-3.5 px-5 font-bold border-b-2 flex items-center gap-2 transition-all whitespace-nowrap ${
+            className={`py-4 px-4 font-bold border-b-2 transition-all flex items-center gap-2 cursor-pointer whitespace-nowrap ${
               activeTab === 'perks'
-                ? 'border-[#0096C7] text-[#0096C7] bg-white'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+                ? 'border-[#0096C7] text-[#0096C7] font-black'
+                : 'border-transparent text-slate-500 hover:text-slate-900'
             }`}
           >
-            <Sparkles className="w-4 h-4 text-amber-500" />
-            Founding Perks & Rewards
+            <Sparkles className="w-4 h-4" />
+            <span>Founding Perks & Credits</span>
           </button>
         </div>
 
-        {/* Body Content Container */}
-        <div className="p-6 space-y-6 max-h-[68vh] overflow-y-auto">
-          {/* TAB 1: Invoices & Tax Receipts */}
+        {/* Tab Content Area */}
+        <div className="p-6 max-h-[60vh] overflow-y-auto space-y-6">
+          
           {activeTab === 'invoices' && (
-            <div className="space-y-4">
-              {/* Search & Action Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="relative flex-1 max-w-sm">
+            <div className="space-y-6">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="relative w-full sm:w-72">
                   <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                   <input
                     type="text"
-                    placeholder="Search invoices by ID or plan..."
+                    placeholder="Search by Invoice ID or Plan..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-[#0096C7]"
+                    className="w-full pl-10 pr-3.5 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-[#0096C7] font-mono"
                   />
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => alert('Downloading complete PDF statements archive...')}
-                    className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold font-mono transition-colors flex items-center gap-1.5"
-                  >
-                    <Download className="w-3.5 h-3.5 text-[#0096C7]" />
-                    <span>Export Statement</span>
-                  </button>
+                <div className="text-xs font-mono text-slate-500">
+                  Showing <strong>{filteredInvoices.length}</strong> Tax Invoices
                 </div>
               </div>
 
-              {/* Invoices List */}
-              <div className="space-y-3">
-                {filteredInvoices.length > 0 ? (
-                  filteredInvoices.map((inv) => (
+              {filteredInvoices.length > 0 ? (
+                <div className="space-y-4">
+                  {filteredInvoices.map((inv) => (
                     <div
                       key={inv.invoiceId}
-                      className="p-5 rounded-2xl border border-slate-200 bg-white hover:border-[#0096C7]/50 transition-all shadow-sm space-y-3"
+                      className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-[#0096C7]/50 transition-all shadow-sm space-y-3"
                     >
-                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3 font-mono text-xs">
+                      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3 font-mono text-xs">
                         <div className="flex items-center gap-2">
-                          <FileText className="w-4 h-4 text-[#0096C7]" />
-                          <span className="font-black text-slate-900">{inv.invoiceId}</span>
+                          <span className="font-extrabold text-[#0096C7]">{inv.invoiceId}</span>
                           <button
                             onClick={() => handleCopyInvoice(inv.invoiceId)}
-                            className="text-slate-400 hover:text-slate-800"
+                            className="p-1 text-slate-400 hover:text-slate-700"
+                            title="Copy Invoice ID"
                           >
                             {copiedInvoiceId === inv.invoiceId ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                           </button>
-                          <span className="text-slate-300">|</span>
+                          <span className="text-slate-400">|</span>
                           <span className="text-slate-500">Issued: {inv.date}</span>
                         </div>
 
@@ -238,266 +260,147 @@ export const BillingPage: React.FC<BillingPageProps> = ({ isOpen, onClose, onOpe
                         </div>
                         <div>
                           <span className="text-slate-400 block text-[10px]">Billing Term</span>
-                          <span className="font-bold text-slate-900">{inv.billingCycle}</span>
+                          <span className="font-bold text-emerald-700">{inv.billingCycle}</span>
                         </div>
                         <div>
-                          <span className="text-slate-400 block text-[10px]">Payment Method</span>
-                          <span className="font-bold text-slate-700">{inv.paymentMethod}</span>
+                          <span className="text-slate-400 block text-[10px]">Gateway Reference</span>
+                          <span className="font-bold text-slate-700">{inv.paymentId}</span>
                         </div>
                         <div>
-                          <span className="text-slate-400 block text-[10px]">Datacenter</span>
-                          <span className="font-extrabold text-[#0096C7]">🇮🇳 India - Mumbai</span>
+                          <span className="text-slate-400 block text-[10px]">Datacenter Node</span>
+                          <span className="font-bold text-slate-900">{inv.location}</span>
                         </div>
                       </div>
 
-                      <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                        <span className="text-[10px] font-mono text-slate-400">{inv.taxINR}</span>
-                        <div className="flex items-center gap-2 font-mono text-xs">
-                          <button
-                            onClick={() => setSelectedInvoice(inv)}
-                            className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold transition-colors"
-                          >
-                            View Receipt
-                          </button>
-                        </div>
+                      <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                        <button
+                          onClick={() => window.print()}
+                          className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono font-bold text-xs flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <Printer className="w-3.5 h-3.5" />
+                          <span>Print Tax Receipt</span>
+                        </button>
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="p-10 rounded-2xl border border-slate-200 bg-slate-50 text-center space-y-3 font-mono">
-                    <Receipt className="w-8 h-8 text-[#0096C7] mx-auto" />
-                    <div className="text-sm font-bold text-slate-900">No Tax Invoices Found</div>
-                    <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                      Pre-order a VPS instance to generate your verified payment receipts and tax invoices here.
-                    </p>
-                    <button
-                      onClick={() => onOpenPreOrder()}
-                      className="px-5 py-2.5 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white text-xs font-black shadow-md inline-flex items-center gap-1.5 cursor-pointer mt-2"
-                    >
-                      <Plus className="w-4 h-4" />
-                      <span>+ Pre-Order VPS</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* TAB 2: Active VPS Subscriptions */}
-          {activeTab === 'subscriptions' && (
-            <div className="space-y-4 font-mono text-xs">
-              <div className="flex items-center justify-between">
-                <h4 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
-                  Active VPS Subscriptions & Reservations
-                </h4>
-                <button
-                  onClick={onOpenPreOrder}
-                  className="px-4 py-2 rounded-xl bg-[#0096C7] text-white font-extrabold text-xs shadow flex items-center gap-1.5 cursor-pointer"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span>Pre-Order Another VPS</span>
-                </button>
-              </div>
-
-              <div className="p-6 rounded-3xl bg-white border border-slate-200 space-y-5 shadow-sm">
-                <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
-                  <div className="flex items-center gap-3">
-                    <span className="text-base font-black text-slate-900">Performance VPS Instance</span>
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#E0F2FE] text-[#0096C7] text-[10px] font-bold">
-                      🇮🇳 India - Mumbai Datacenter
-                    </span>
-                  </div>
-                  <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 font-black text-xs border border-emerald-300">
-                    PREORDER_CONFIRMED 🟢
-                  </span>
+                  ))}
                 </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-                  <div>
-                    <span className="text-slate-400 block text-[10px]">vCPU Cores</span>
-                    <span className="font-bold text-slate-900">4 vCPU Cores</span>
+              ) : (
+                <div className="p-10 rounded-2xl bg-slate-50 border border-slate-200 text-center space-y-3 font-mono">
+                  <div className="w-12 h-12 rounded-2xl bg-white text-slate-400 border border-slate-200 flex items-center justify-center mx-auto">
+                    <FileText className="w-6 h-6" />
                   </div>
-                  <div>
-                    <span className="text-slate-400 block text-[10px]">Memory (RAM)</span>
-                    <span className="font-black text-slate-900 text-sm">12 GB RAM (8GB + 4GB Bonus)</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-400 block text-[10px]">Storage</span>
-                    <span className="font-bold text-slate-900">100 GB PCIe NVMe</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-400 block text-[10px]">Effective Rate</span>
-                    <span className="font-extrabold text-[#0096C7]">₹509/mo (12 Months Term)</span>
-                  </div>
-                </div>
-
-                {/* Auto-Renew Control */}
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-                  <div>
-                    <div className="font-bold text-slate-900">Auto-Renewal Status</div>
-                    <div className="text-[11px] text-slate-500">Locks in founding price rate at end of billing cycle</div>
-                  </div>
-
+                  <h4 className="text-sm font-black text-slate-900">No Tax Invoices Found</h4>
+                  <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
+                    You have not completed any pre-orders on this account yet. Pre-orders placed via Cashfree Gateway will automatically generate official tax invoices here.
+                  </p>
                   <button
-                    onClick={() => setAutoRenewEnabled(!autoRenewEnabled)}
-                    className={`px-4 py-2 rounded-xl text-xs font-black transition-all ${
-                      autoRenewEnabled
-                        ? 'bg-emerald-600 text-white shadow-sm'
-                        : 'bg-slate-200 text-slate-700'
-                    }`}
+                    onClick={() => {
+                      onClose();
+                      onOpenPreOrder();
+                    }}
+                    className="px-4 py-2 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white font-black text-xs shadow-md cursor-pointer"
                   >
-                    {autoRenewEnabled ? 'AUTO-RENEW ON 🟢' : 'AUTO-RENEW OFF'}
+                    + Pre-Order VPS Instance
                   </button>
                 </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'subscriptions' && (
+            <div className="space-y-4 font-mono">
+              <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 rounded-xl bg-[#E0F2FE] text-[#0096C7]">
+                      <Zap className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-black text-slate-900">Founding VPS Reservation Status</h4>
+                      <p className="text-xs text-slate-500">Tier IV Mumbai Datacenter Node</p>
+                    </div>
+                  </div>
+                  <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold border border-emerald-300">
+                    SLOT GUARANTEED
+                  </span>
+                </div>
+
+                <div className="text-xs text-slate-600 leading-relaxed font-sans">
+                  Upon physical datacenter node provisioning in Mumbai, your instance will immediately go live with <strong>+4 GB Permanent Bonus RAM</strong>.
+                </div>
               </div>
             </div>
           )}
 
-          {/* TAB 3: Payment Methods */}
           {activeTab === 'methods' && (
             <div className="space-y-4 font-mono text-xs">
-              <div className="flex items-center justify-between">
-                <h4 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider">
-                  Saved Payment Methods & Default Checkout
-                </h4>
-                <button
-                  onClick={() => alert('Add Payment Method dialog')}
-                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs flex items-center gap-1.5"
-                >
-                  <Plus className="w-4 h-4 text-[#0096C7]" />
-                  <span>Add New Payment Method</span>
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-5 rounded-2xl bg-white border border-slate-200 flex items-center justify-between shadow-sm">
-                  <div className="flex items-center gap-3.5">
-                    <div className="p-3 rounded-xl bg-[#E0F2FE] text-[#0096C7]">
-                      <QrCode className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-slate-900 text-sm">UPI / GPay / PhonePe</div>
-                      <div className="text-[11px] text-slate-500 mt-0.5">alex@upi (Default)</div>
-                    </div>
-                  </div>
-                  <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 font-extrabold text-[10px]">
-                    DEFAULT
+              <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-sm font-black text-slate-900">Supported Cashfree Payment Options</h4>
+                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold">
+                    OFFICIAL GATEWAY
                   </span>
                 </div>
-
-                <div className="p-5 rounded-2xl bg-white border border-slate-200 flex items-center justify-between shadow-sm">
-                  <div className="flex items-center gap-3.5">
-                    <div className="p-3 rounded-xl bg-slate-100 text-slate-700">
-                      <CreditCard className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-slate-900 text-sm">Visa ending in 4111</div>
-                      <div className="text-[11px] text-slate-500 mt-0.5">Expires 12/28</div>
-                    </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="p-3 rounded-xl bg-white border border-slate-200">
+                    <div className="font-bold text-slate-900">UPI Instant</div>
+                    <div className="text-[11px] text-slate-500">GPay, PhonePe, Paytm, BHIM</div>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-bold text-[10px]">
-                    SAVED
-                  </span>
+                  <div className="p-3 rounded-xl bg-white border border-slate-200">
+                    <div className="font-bold text-slate-900">Cards & NetBanking</div>
+                    <div className="text-[11px] text-slate-500">Visa, Mastercard, RuPay</div>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white border border-slate-200">
+                    <div className="font-bold text-slate-900">Instant Verification</div>
+                    <div className="text-[11px] text-slate-500">Automated Order Lock</div>
+                  </div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* TAB 4: Founding Perks */}
           {activeTab === 'perks' && (
             <div className="space-y-4 font-mono text-xs">
-              <h4 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-amber-500" />
-                Founding Customer Rewards & Benefits
-              </h4>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-2">
-                  <div className="font-black text-amber-900 text-sm flex items-center gap-1.5">
-                    <Zap className="w-4 h-4 fill-amber-500 text-amber-500" /> +4 GB Permanent RAM
-                  </div>
-                  <div className="text-slate-600 text-xs">
-                    Your account holds founding status. +4 GB RAM is applied permanently to your VPS instance.
-                  </div>
+              <div className="p-6 rounded-2xl bg-[#E0F2FE]/60 border border-[#0096C7]/30 space-y-3">
+                <div className="flex items-center gap-2 text-[#0096C7] font-black text-sm">
+                  <Sparkles className="w-5 h-5 text-amber-500" />
+                  <span>Founding Perks Summary</span>
                 </div>
-
-                <div className="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2">
-                  <div className="font-black text-emerald-900 text-sm flex items-center gap-1.5">
-                    <ShieldCheck className="w-4 h-4 text-emerald-600" /> Lifetime Rate Lock
-                  </div>
-                  <div className="text-slate-600 text-xs">
-                    Your pre-order price is locked forever and will never increase upon future renewals.
-                  </div>
-                </div>
-
-                <div className="p-5 rounded-2xl bg-blue-50/70 border border-blue-200 space-y-2">
-                  <div className="font-black text-blue-900 text-sm flex items-center gap-1.5">
-                    <MapPin className="w-4 h-4 text-[#0096C7]" /> Priority Node Queue
-                  </div>
-                  <div className="text-slate-600 text-xs">
-                    Guaranteed first allocation at India - Mumbai Datacenter at launch.
-                  </div>
-                </div>
+                <ul className="space-y-2 text-slate-700 text-xs">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>+4 GB Permanent Launch RAM Bonus added to your instance for life.</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Locked-in pre-order rate guarantee upon physical datacenter node provisioning.</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>100% Risk-Free: Fully refundable anytime prior to server provisioning.</span>
+                  </li>
+                </ul>
               </div>
             </div>
           )}
+
         </div>
 
-        {/* Selected Invoice Receipt Detail Modal Overlay */}
-        {selectedInvoice && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm">
-            <div className="relative w-full max-w-md bg-white border border-slate-200 rounded-3xl p-6 shadow-2xl space-y-4 font-mono text-xs">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                <h4 className="font-black text-slate-900 text-sm">Receipt #{selectedInvoice.invoiceId}</h4>
-                <button onClick={() => setSelectedInvoice(null)} className="p-1 rounded text-slate-400 hover:text-slate-900">
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Plan:</span>
-                  <span className="font-bold text-slate-900">{selectedInvoice.planName}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Duration:</span>
-                  <span className="font-bold text-slate-900">{selectedInvoice.billingCycle}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Paid Today:</span>
-                  <span className="font-black text-[#0096C7] text-sm">{currency === 'INR' ? selectedInvoice.amountPaidINR : selectedInvoice.amountPaidUSD}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Payment ID:</span>
-                  <span className="font-bold text-slate-900">{selectedInvoice.paymentId}</span>
-                </div>
-              </div>
-
-              <div className="pt-3 border-t border-slate-100 flex justify-end gap-2">
-                <button
-                  onClick={() => {
-                    alert(`Printing Tax Invoice ${selectedInvoice.invoiceId}`);
-                    setSelectedInvoice(null);
-                  }}
-                  className="px-5 py-2 rounded-xl bg-[#0096C7] text-white font-extrabold shadow"
-                >
-                  Print PDF Receipt
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Footer */}
-        <div className="p-5 border-t border-slate-200 bg-slate-50 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
-          <span className="text-slate-500">KryonHost Enterprise Billing Portal • SSL 256-Bit Encrypted</span>
+        {/* Footer Bar with Back to Home Action */}
+        <div className="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
           <button
             onClick={onClose}
-            className="px-6 py-2.5 rounded-xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-900 font-mono font-extrabold text-xs flex items-center gap-1.5 cursor-pointer"
           >
-            Close Billing Portal
+            <ArrowLeft className="w-4 h-4" />
+            <span>Exit Billing & Return to Website</span>
           </button>
+
+          <span className="text-[11px] font-mono text-slate-400">
+            Press ESC key to exit
+          </span>
         </div>
+
       </div>
     </div>
   );
