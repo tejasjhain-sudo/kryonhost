@@ -19,7 +19,7 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
   const slides: Slide[] = [
     {
       id: 1,
-      badge: '🇮🇳 INDIA - MUMBAI DATACENTER',
+      badge: 'INDIA - MUMBAI DATACENTER',
       title: 'Tier IV Datacenter & NIXI Peering',
       subtitle: 'Sub-5ms Ultra-Low Latency Across India',
       description: 'Hosted in our Mumbai facility with direct peering via NIXI and ExtremeIX. Built on enterprise Tier IV infrastructure with 1 Gbps unmetered connectivity.',
@@ -33,7 +33,7 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
     },
     {
       id: 2,
-      badge: '⚡ ENTERPRISE COMPUTING',
+      badge: 'ENTERPRISE COMPUTING',
       title: 'Dual AMD EPYC 9004 & PCIe Gen5 NVMe Array',
       subtitle: '7,400 MB/s Disk Speeds & Dedicated Compute',
       description: 'Powered by latest-generation AMD EPYC processors and enterprise Samsung PCIe Gen5 NVMe SSDs in hardware RAID 10. Zero CPU throttling.',
@@ -47,7 +47,7 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
     },
     {
       id: 3,
-      badge: '🎁 FOUNDING PERK BONUS',
+      badge: 'FOUNDING PERK BONUS',
       title: '+4 GB Permanent RAM Launch Bonus',
       subtitle: 'Exclusive Founding Customer RAM Boost',
       description: 'Pre-order any VPS plan during the founding period and receive +4 GB permanent RAM added to your instance for life at no additional cost.',
@@ -61,7 +61,7 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
     },
     {
       id: 4,
-      badge: '🛡️ NETWORK SECURITY',
+      badge: 'NETWORK SECURITY',
       title: '100 Gbps+ DDoS Filtering & Cashfree Gateway',
       subtitle: 'Always-On L3/L4/L7 Mitigation & Instant Payments',
       description: 'Protected by automated hardware DDoS filtering against volume attacks. Pay seamlessly using UPI, GPay, PhonePe, Paytm, and credit cards.',
@@ -75,11 +75,11 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
     },
     {
       id: 5,
-      badge: '💻 KVM VIRTUALIZATION',
+      badge: 'KVM VIRTUALIZATION',
       title: 'Proxmox KVM Isolation & 7-Day Rolling Backups',
       subtitle: 'Dedicated Resources & 1-Click OS Templates',
       description: 'Full KVM hardware virtualization ensuring 100% reserved vCPU and RAM resources. Enjoy 7-day rolling backups and instant OS installs.',
-      image: 'https://images.unsplash.com/photo-1520869578617-557561d7b114?auto=format&fit=crop&w=1200&q=80',
+      image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1200&q=80',
       stats: [
         { label: 'Hypervisor', value: 'Proxmox VE' },
         { label: 'OS Templates', value: 'Linux & Docker' },
