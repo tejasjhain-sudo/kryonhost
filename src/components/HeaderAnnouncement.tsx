@@ -1,5 +1,14 @@
-import React, { useState } from 'react';
-import { Sparkles, ArrowRight, X, Flame } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Sparkles, ArrowRight, X, Flame, ChevronLeft, ChevronRight, ShieldCheck, Zap, CreditCard } from 'lucide-react';
+
+interface AnnouncementSlide {
+  id: number;
+  tag: string;
+  tagBg: string;
+  icon: React.ReactNode;
+  text: string;
+  buttonText: string;
+}
 
 interface HeaderAnnouncementProps {
   onOpenPreOrder: () => void;
@@ -7,30 +16,97 @@ interface HeaderAnnouncementProps {
 
 export const HeaderAnnouncement: React.FC<HeaderAnnouncementProps> = ({ onOpenPreOrder }) => {
   const [visible, setVisible] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides: AnnouncementSlide[] = [
+    {
+      id: 1,
+      tag: 'FOUNDING OFFER',
+      tagBg: 'bg-amber-400 text-slate-950',
+      icon: <Flame className="w-3 h-3 text-red-600 animate-bounce" />,
+      text: '🇮🇳 India - Mumbai Datacenter Launch: Get up to 30% OFF + Free +4 GB Permanent RAM Bonus!',
+      buttonText: 'Pre-Order Now',
+    },
+    {
+      id: 2,
+      tag: 'EPYC HARDWARE',
+      tagBg: 'bg-purple-500 text-white',
+      icon: <Zap className="w-3 h-3 text-yellow-300" />,
+      text: 'Dual AMD EPYC 9004 Compute Nodes & PCIe Gen5 NVMe (7,400 MB/s Read Speeds)!',
+      buttonText: 'Explore Specs',
+    },
+    {
+      id: 3,
+      tag: 'RISK-FREE GUARANTEE',
+      tagBg: 'bg-emerald-500 text-white',
+      icon: <ShieldCheck className="w-3 h-3 text-white" />,
+      text: 'Pre-orders are 100% fully refundable anytime prior to physical node provisioning!',
+      buttonText: 'Claim Slot',
+    },
+    {
+      id: 4,
+      tag: 'CASHFREE GATEWAY',
+      tagBg: 'bg-cyan-500 text-slate-950',
+      icon: <CreditCard className="w-3 h-3 text-slate-950" />,
+      text: 'Instant 1-Click Payments via UPI, GPay, PhonePe, Paytm, and All Credit Cards!',
+      buttonText: 'Checkout Now',
+    },
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, [slides.length]);
 
   if (!visible) return null;
 
+  const slide = slides[currentSlide];
+
   return (
-    <div className="w-full bg-gradient-to-r from-[#0096C7] via-blue-600 to-indigo-600 text-white text-xs font-mono py-2.5 px-4 shadow-md border-b border-white/10">
+    <div className="w-full bg-gradient-to-r from-[#0096C7] via-blue-600 to-indigo-600 text-white text-xs font-mono py-2.5 px-4 shadow-md border-b border-white/10 relative z-40 transition-all">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         
-        <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[10px] uppercase tracking-wider shadow-sm animate-pulse shrink-0">
-            <Flame className="w-3 h-3 text-red-600" />
-            FOUNDING OFFER
+        {/* Slideshow Ticker Content */}
+        <div className="flex items-center gap-3 overflow-hidden flex-1">
+          <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-black text-[10px] uppercase tracking-wider shadow-sm shrink-0 ${slide.tagBg}`}>
+            {slide.icon}
+            <span>{slide.tag}</span>
           </span>
 
-          <span className="font-extrabold text-white text-xs sm:text-sm tracking-wide">
-            🇮🇳 India - Mumbai Datacenter Launch: Get up to 30% OFF + Free +4 GB Permanent RAM Bonus!
+          <span className="font-extrabold text-white text-xs sm:text-sm tracking-wide truncate animate-in fade-in duration-300">
+            {slide.text}
           </span>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0">
+        {/* Slideshow Controls & CTA */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          
+          {/* Mini Nav Controls */}
+          <div className="hidden md:flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded-full border border-white/20">
+            <button
+              onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
+              className="p-0.5 hover:text-amber-300 transition-colors"
+              title="Previous offer"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" />
+            </button>
+            <span className="text-[10px] font-bold px-1">{currentSlide + 1}/{slides.length}</span>
+            <button
+              onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
+              className="p-0.5 hover:text-amber-300 transition-colors"
+              title="Next offer"
+            >
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
           <button
             onClick={onOpenPreOrder}
-            className="px-4 py-1.5 rounded-full bg-white text-slate-950 hover:bg-slate-100 font-black text-xs transition-all flex items-center gap-1.5 shadow-sm hover:scale-105 cursor-pointer"
+            className="px-3.5 py-1.5 rounded-full bg-white text-slate-950 hover:bg-slate-100 font-black text-xs transition-all flex items-center gap-1.5 shadow-sm hover:scale-105 cursor-pointer shrink-0"
           >
-            <span>Pre-Order Now</span>
+            <span>{slide.buttonText}</span>
             <ArrowRight className="w-3.5 h-3.5 text-[#0096C7]" />
           </button>
 
