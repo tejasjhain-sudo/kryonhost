@@ -1,0 +1,208 @@
+{
+  "users": [
+    {
+      "id": "usr-admin-01",
+      "email": "admin@kryonhost.com",
+      "fullName": "KryonHost Infrastructure Admin",
+      "role": "admin",
+      "isFoundingCustomer": false,
+      "createdAt": "2026-09-01T12:49:54.857Z"
+    },
+    {
+      "id": "usr-cust-01",
+      "email": "founding.dev@example.com",
+      "fullName": "Alex Mercer",
+      "role": "customer",
+      "isFoundingCustomer": true,
+      "createdAt": "2026-09-01T12:49:54.858Z"
+    }
+  ],
+  "orders": [],
+  "vpsInstances": [],
+  "reservations": [
+    {
+      "reservationId": "KH-PRE-8921",
+      "customerId": "usr-cust-01",
+      "fullName": "Alex Mercer",
+      "email": "founding.dev@example.com",
+      "discordUsername": "alex_mercer",
+      "country": "India",
+      "planId": "performance",
+      "planName": "Performance",
+      "datacenterLocation": "India - Mumbai",
+      "monthlyPriceUSD": 7.49,
+      "monthlyPriceINR": 599,
+      "baseRamGB": 8,
+      "bonusRamGB": 4,
+      "finalRamGB": 12,
+      "vcpu": 4,
+      "storageGB": 100,
+      "operatingSystem": "Ubuntu 24.04",
+      "intendedUse": "Docker / Containers",
+      "tellUsMore": "Running production microservices",
+      "addonInterests": [
+        "Automated Backups"
+      ],
+      "status": "RESERVED",
+      "createdAt": "2026-09-01T12:49:54.858Z",
+      "updatedAt": "2026-09-01T12:49:54.858Z"
+    },
+    {
+      "reservationId": "KH-PRE-1042",
+      "customerId": "usr-cust-02",
+      "fullName": "David Vance",
+      "email": "david.vance@example.com",
+      "discordUsername": "david_v",
+      "country": "India",
+      "planId": "pro",
+      "planName": "Pro",
+      "datacenterLocation": "India - Mumbai",
+      "monthlyPriceUSD": 12.49,
+      "monthlyPriceINR": 999,
+      "baseRamGB": 16,
+      "bonusRamGB": 4,
+      "finalRamGB": 20,
+      "vcpu": 6,
+      "storageGB": 200,
+      "operatingSystem": "Debian 12",
+      "intendedUse": "Database",
+      "addonInterests": [
+        "Extra NVMe Storage"
+      ],
+      "status": "RESERVED",
+      "createdAt": "2026-09-01T12:49:54.858Z",
+      "updatedAt": "2026-09-01T12:49:54.858Z"
+    }
+  ],
+  "ipAllocations": [
+    {
+      "id": "ip-1",
+      "ipAddress": "103.189.200.10",
+      "version": "IPv4",
+      "status": "AVAILABLE",
+      "nodeId": "pve-node-01",
+      "notes": "India - Mumbai Datacenter Subnet A",
+      "createdAt": "2026-09-01T12:49:54.858Z",
+      "updatedAt": "2026-09-01T12:49:54.858Z"
+    },
+    {
+      "id": "ip-2",
+      "ipAddress": "103.189.200.11",
+      "version": "IPv4",
+      "status": "AVAILABLE",
+      "nodeId": "pve-node-01",
+      "notes": "India - Mumbai Datacenter Subnet A",
+      "createdAt": "2026-09-01T12:49:54.858Z",
+      "updatedAt": "2026-09-01T12:49:54.858Z"
+    },
+    {
+      "id": "ip-3",
+      "ipAddress": "103.189.200.12",
+      "version": "IPv4",
+      "status": "AVAILABLE",
+      "nodeId": "pve-node-01",
+      "notes": "India - Mumbai Datacenter Subnet A",
+      "createdAt": "2026-09-01T12:49:54.858Z",
+      "updatedAt": "2026-09-01T12:49:54.858Z"
+    },
+    {
+      "id": "ip-4",
+      "ipAddress": "103.189.200.13",
+      "version": "IPv4",
+      "status": "AVAILABLE",
+      "nodeId": "pve-node-01",
+      "notes": "India - Mumbai Datacenter Subnet A",
+      "createdAt": "2026-09-01T12:49:54.858Z",
+      "updatedAt": "2026-09-01T12:49:54.858Z"
+    },
+    {
+      "id": "ip-5",
+      "ipAddress": "103.189.200.14",
+      "version": "IPv4",
+      "status": "AVAILABLE",
+      "nodeId": "pve-node-01",
+      "notes": "India - Mumbai Datacenter Subnet A",
+      "createdAt": "2026-09-01T12:49:54.858Z",
+      "updatedAt": "2026-09-01T12:49:54.858Z"
+    },
+    {
+      "id": "ip-6",
+      "ipAddress": "103.189.200.15",
+      "version": "IPv4",
+      "status": "AVAILABLE",
+      "nodeId": "pve-node-01",
+      "notes": "India - Mumbai Datacenter Subnet A",
+      "createdAt": "2026-09-01T12:49:54.858Z",
+      "updatedAt": "2026-09-01T12:49:54.858Z"
+    },
+    {
+      "id": "ip-7",
+      "ipAddress": "103.189.200.16",
+      "version": "IPv4",
+      "status": "AVAILABLE",
+      "nodeId": "pve-node-01",
+      "notes": "India - Mumbai Datacenter Subnet A",
+      "createdAt": "2026-09-01T12:49:54.858Z",
+      "updatedAt": "2026-09-01T12:49:54.858Z"
+    },
+    {
+      "id": "ip-8",
+      "ipAddress": "103.189.200.17",
+      "version": "IPv4",
+      "status": "AVAILABLE",
+      "nodeId": "pve-node-01",
+      "notes": "India - Mumbai Datacenter Subnet A",
+      "createdAt": "2026-09-01T12:49:54.858Z",
+      "updatedAt": "2026-09-01T12:49:54.858Z"
+    },
+    {
+      "id": "ip-9",
+      "ipAddress": "103.189.200.18",
+      "version": "IPv4",
+      "status": "AVAILABLE",
+      "nodeId": "pve-node-01",
+      "notes": "India - Mumbai Datacenter Subnet A",
+      "createdAt": "2026-09-01T12:49:54.858Z",
+      "updatedAt": "2026-09-01T12:49:54.858Z"
+    },
+    {
+      "id": "ip-10",
+      "ipAddress": "103.189.200.19",
+      "version": "IPv4",
+      "status": "AVAILABLE",
+      "nodeId": "pve-node-01",
+      "notes": "India - Mumbai Datacenter Subnet A",
+      "createdAt": "2026-09-01T12:49:54.858Z",
+      "updatedAt": "2026-09-01T12:49:54.858Z"
+    },
+    {
+      "id": "ip-11",
+      "ipAddress": "103.189.200.20",
+      "version": "IPv4",
+      "status": "AVAILABLE",
+      "nodeId": "pve-node-01",
+      "notes": "India - Mumbai Datacenter Subnet A",
+      "createdAt": "2026-09-01T12:49:54.858Z",
+      "updatedAt": "2026-09-01T12:49:54.858Z"
+    }
+  ],
+  "nodeCapacities": [
+    {
+      "nodeId": "pve-node-01",
+      "nodeName": "Delhi NCR Node 1",
+      "totalVcpu": 32,
+      "allocatedVcpu": 0,
+      "totalRamGB": 128,
+      "hostReservedRamGB": 16,
+      "allocatedRamGB": 0,
+      "totalStorageGB": 1920,
+      "allocatedStorageGB": 0
+    }
+  ],
+  "provisioningJobs": [],
+  "auditLogs": [],
+  "config": {
+    "totalFoundingAllocations": 30,
+    "foundingBonusRamGB": 4
+  }
+}
