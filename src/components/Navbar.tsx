@@ -58,7 +58,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-200">
+    <header className="sticky top-0 z-50 transition-all duration-200">
       <div
         className={`w-full transition-all duration-200 ${
           scrolled

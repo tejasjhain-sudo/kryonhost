@@ -41,7 +41,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
   };
 
   return (
-    <section className="relative pt-32 pb-16 bg-white text-slate-900 overflow-hidden font-sans border-b border-slate-200">
+    <section className="relative pt-12 sm:pt-16 pb-16 bg-white text-slate-900 overflow-hidden font-sans border-b border-slate-200">
       
       {/* Background Animated Ambience */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-[#0096C7]/15 via-blue-100/30 to-purple-100/20 blur-3xl pointer-events-none rounded-full" />

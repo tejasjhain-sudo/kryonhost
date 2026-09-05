@@ -7,7 +7,7 @@ interface PricingProps {
 }
 
 export const Pricing: React.FC<PricingProps> = ({ onSelectPlan }) => {
-  const [activeCategory, setActiveCategory] = useState<'budget' | 'standard' | 'performance' | 'power'>('power');
+  const [activeCategory, setActiveCategory] = useState<'budget' | 'standard' | 'performance' | 'power'>('budget');
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'quarterly'>('monthly');
   const [ramFilter, setRamFilter] = useState<'all' | 'small' | 'medium' | 'large'>('all');
 
