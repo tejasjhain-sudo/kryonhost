@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Cpu, ArrowRight, Activity, Terminal, CheckCircle2, Copy, Check, Radio } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Cpu, ArrowRight, Activity, Terminal, CheckCircle2, Copy, Check, Radio, Sparkles } from 'lucide-react';
 
 interface HeroProps {
   onExploreVPS: () => void;
@@ -9,6 +9,30 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
   const [activeConsoleTab, setActiveConsoleTab] = useState<'telemetry' | 'terminal' | 'network'>('telemetry');
   const [copiedSSH, setCopiedSSH] = useState(false);
+
+  // 2-Second Smooth Rotating Highlights
+  const rotatingHighlights = [
+    "Zero Hidden Charges.",
+    "No Setup Fees or Surcharges.",
+    "Starting at Just ₹379/mo.",
+    "Sub-5ms Domestic India Ping.",
+    "Instant 60-Second Provisioning."
+  ];
+
+  const [highlightIndex, setHighlightIndex] = useState(0);
+  const [isFading, setIsFading] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsFading(true);
+      setTimeout(() => {
+        setHighlightIndex((prev) => (prev + 1) % rotatingHighlights.length);
+        setIsFading(false);
+      }, 250); // 250ms smooth fadeout/fadein transition
+    }, 2000); // Rotates every 2 seconds
+
+    return () => clearInterval(interval);
+  }, [rotatingHighlights.length]);
 
   const handleCopySSH = () => {
     navigator.clipboard.writeText('ssh root@YOUR_SERVER_IP');
@@ -43,18 +67,25 @@ export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
               </span>
             </div>
 
-            {/* Headline */}
+            {/* Dynamic Headline with Smooth 2-Second Rotating Text */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-black text-slate-900 tracking-tight leading-[1.08]">
               High-Performance India VPS.<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077B6] via-[#0096C7] to-cyan-500">
-                Zero Hidden Charges.
+              <span className="block min-h-[1.2em] relative overflow-hidden">
+                <span
+                  className={`inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#0077B6] via-[#0096C7] to-cyan-500 transition-all duration-300 transform ${
+                    isFading ? 'opacity-0 -translate-y-2 scale-95' : 'opacity-100 translate-y-0 scale-100'
+                  }`}
+                >
+                  {rotatingHighlights[highlightIndex]}
+                </span>
               </span>
             </h1>
 
             {/* Supporting Copy (Structured Value Prop) */}
             <div className="space-y-2.5 text-sm sm:text-base text-slate-600 font-normal leading-relaxed max-w-xl">
-              <p className="font-semibold text-slate-800">
-                KryonHost provides ultra-fast KVM cloud VPS hosted in Tier IV Mumbai datacenters with 100% billing transparency.
+              <p className="font-semibold text-slate-800 flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-[#0096C7] shrink-0" />
+                <span>KryonHost provides ultra-fast KVM cloud VPS with 100% billing transparency.</span>
               </p>
               <ul className="space-y-1.5 text-xs sm:text-sm font-sans text-slate-600">
                 <li className="flex items-center gap-2">
