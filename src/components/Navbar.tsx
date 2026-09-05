@@ -44,7 +44,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
 
   const userEmail = (user as any)?.email || '';
   const displayName = userProfile?.fullName || (user as any)?.fullName || userEmail.split('@')[0] || 'Account';
-  const isOwnerAdmin = userEmail.toLowerCase() === 'tejasjha.in@gmail.com';
 
   const scrollToSection = (id: string) => {
     setActiveDropdown(null);
@@ -63,8 +62,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
       <div
         className={`w-full transition-all duration-200 ${
           scrolled
-            ? 'bg-[#070A0F]/95 backdrop-blur-md border-b border-slate-800 py-3.5 shadow-xl shadow-black/40'
-            : 'bg-[#070A0F]/80 backdrop-blur-sm border-b border-slate-800/60 py-4'
+            ? 'bg-white/95 backdrop-blur-md border-b border-slate-200 py-3.5 shadow-md'
+            : 'bg-white/85 backdrop-blur-sm border-b border-slate-200/80 py-4'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between" ref={dropdownRef}>
@@ -84,39 +83,39 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
             <div className="relative">
               <button
                 onClick={() => setActiveDropdown(activeDropdown === 'products' ? null : 'products')}
-                className={`px-3 py-2 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
-                  activeDropdown === 'products' ? 'text-white bg-slate-900' : 'text-slate-300 hover:text-white hover:bg-slate-900/60'
+                className={`px-3 py-2 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer ${
+                  activeDropdown === 'products' ? 'text-[#0096C7] bg-[#E0F2FE]' : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
                 <span>Products</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === 'products' ? 'rotate-180 text-[#0096C7]' : 'text-slate-500'}`} />
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === 'products' ? 'rotate-180 text-[#0096C7]' : 'text-slate-400'}`} />
               </button>
 
               {activeDropdown === 'products' && (
-                <div className="absolute left-0 mt-2 w-72 bg-[#0B0F17] border border-slate-800 rounded-2xl shadow-2xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute left-0 mt-2 w-72 bg-white border border-slate-200 rounded-2xl shadow-xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <button
                     onClick={() => scrollToSection('vps-hosting')}
-                    className="w-full p-3 rounded-xl hover:bg-slate-900/80 transition-colors flex items-start gap-3 text-left cursor-pointer group"
+                    className="w-full p-3 rounded-xl hover:bg-slate-50 transition-colors flex items-start gap-3 text-left cursor-pointer group"
                   >
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-[#0096C7] group-hover:border-[#0096C7]/40 shrink-0">
+                    <div className="p-2 rounded-lg bg-[#E0F2FE] border border-[#0096C7]/20 text-[#0096C7] group-hover:bg-[#0096C7] group-hover:text-white transition-colors shrink-0">
                       <Server className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-slate-100 group-hover:text-[#0096C7] transition-colors">VPS Hosting</div>
-                      <div className="text-[11px] text-slate-400 mt-0.5">Budget, Standard, Performance & Power tiers</div>
+                      <div className="text-xs font-black text-slate-900 group-hover:text-[#0096C7] transition-colors">VPS Hosting</div>
+                      <div className="text-[11px] text-slate-500 mt-0.5">Budget, Standard, Performance & Power tiers</div>
                     </div>
                   </button>
 
                   <button
                     onClick={() => scrollToSection('game-hosting')}
-                    className="w-full p-3 rounded-xl hover:bg-slate-900/80 transition-colors flex items-start gap-3 text-left cursor-pointer group"
+                    className="w-full p-3 rounded-xl hover:bg-slate-50 transition-colors flex items-start gap-3 text-left cursor-pointer group"
                   >
-                    <div className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-purple-400 group-hover:border-purple-500/40 shrink-0">
+                    <div className="p-2 rounded-lg bg-purple-50 border border-purple-200 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors shrink-0">
                       <Gamepad2 className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-slate-100 group-hover:text-purple-400 transition-colors">Game Server Hosting</div>
-                      <div className="text-[11px] text-slate-400 mt-0.5">Minecraft, Palworld, Rust & high-tickrate nodes</div>
+                      <div className="text-xs font-black text-slate-900 group-hover:text-purple-600 transition-colors">Game Server Hosting</div>
+                      <div className="text-[11px] text-slate-500 mt-0.5">Minecraft, Palworld, Rust & high-tickrate nodes</div>
                     </div>
                   </button>
                 </div>
@@ -127,25 +126,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
             <div className="relative">
               <button
                 onClick={() => setActiveDropdown(activeDropdown === 'resources' ? null : 'resources')}
-                className={`px-3 py-2 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
-                  activeDropdown === 'resources' ? 'text-white bg-slate-900' : 'text-slate-300 hover:text-white hover:bg-slate-900/60'
+                className={`px-3 py-2 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer ${
+                  activeDropdown === 'resources' ? 'text-[#0096C7] bg-[#E0F2FE]' : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
                 <span>Resources</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === 'resources' ? 'rotate-180 text-[#0096C7]' : 'text-slate-500'}`} />
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === 'resources' ? 'rotate-180 text-[#0096C7]' : 'text-slate-400'}`} />
               </button>
 
               {activeDropdown === 'resources' && (
-                <div className="absolute left-0 mt-2 w-64 bg-[#0B0F17] border border-slate-800 rounded-2xl shadow-2xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute left-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <button
                     onClick={() => {
                       setActiveDropdown(null);
                       onNavigate('docs');
                     }}
-                    className="w-full p-2.5 rounded-xl hover:bg-slate-900/80 transition-colors flex items-center gap-3 text-left cursor-pointer group"
+                    className="w-full p-2.5 rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-3 text-left cursor-pointer group"
                   >
                     <FileText className="w-4 h-4 text-[#0096C7]" />
-                    <span className="text-xs font-bold text-slate-200 group-hover:text-white">Documentation</span>
+                    <span className="text-xs font-bold text-slate-800 group-hover:text-[#0096C7]">Documentation</span>
                   </button>
 
                   <button
@@ -153,10 +152,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
                       setActiveDropdown(null);
                       onNavigate('status');
                     }}
-                    className="w-full p-2.5 rounded-xl hover:bg-slate-900/80 transition-colors flex items-center gap-3 text-left cursor-pointer group"
+                    className="w-full p-2.5 rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-3 text-left cursor-pointer group"
                   >
-                    <Activity className="w-4 h-4 text-emerald-400" />
-                    <span className="text-xs font-bold text-slate-200 group-hover:text-white">System Status</span>
+                    <Activity className="w-4 h-4 text-emerald-600" />
+                    <span className="text-xs font-bold text-slate-800 group-hover:text-emerald-600">System Status</span>
                   </button>
 
                   <button
@@ -164,10 +163,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
                       setActiveDropdown(null);
                       onNavigate('network');
                     }}
-                    className="w-full p-2.5 rounded-xl hover:bg-slate-900/80 transition-colors flex items-center gap-3 text-left cursor-pointer group"
+                    className="w-full p-2.5 rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-3 text-left cursor-pointer group"
                   >
-                    <Network className="w-4 h-4 text-blue-400" />
-                    <span className="text-xs font-bold text-slate-200 group-hover:text-white">Network & Latency</span>
+                    <Network className="w-4 h-4 text-blue-600" />
+                    <span className="text-xs font-bold text-slate-800 group-hover:text-blue-600">Network & Latency</span>
                   </button>
 
                   <button
@@ -175,19 +174,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
                       setActiveDropdown(null);
                       onNavigate('api-docs');
                     }}
-                    className="w-full p-2.5 rounded-xl hover:bg-slate-900/80 transition-colors flex items-center gap-3 text-left cursor-pointer group"
+                    className="w-full p-2.5 rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-3 text-left cursor-pointer group"
                   >
-                    <Terminal className="w-4 h-4 text-amber-400" />
-                    <span className="text-xs font-bold text-slate-200 group-hover:text-white">API Reference</span>
+                    <Terminal className="w-4 h-4 text-amber-600" />
+                    <span className="text-xs font-bold text-slate-800 group-hover:text-amber-600">API Reference</span>
                   </button>
                 </div>
               )}
             </div>
 
-            {/* Company Link */}
+            {/* Contact Link */}
             <button
               onClick={() => scrollToSection('contact-support')}
-              className="px-3 py-2 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-900/60 rounded-lg transition-colors cursor-pointer"
+              className="px-3 py-2 text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
             >
               Contact
             </button>
@@ -199,18 +198,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
               <div className="relative">
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-slate-200 flex items-center gap-2 hover:border-[#0096C7]/50 transition-all cursor-pointer"
+                  className="px-3.5 py-2 rounded-xl bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 flex items-center gap-2 hover:border-[#0096C7]/50 transition-all cursor-pointer"
                 >
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                   <span className="max-w-[120px] truncate">{displayName}</span>
-                  <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
                 </button>
 
                 {userDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-64 bg-[#0B0F17] border border-slate-800 rounded-2xl shadow-2xl p-2 z-50 animate-in fade-in duration-100 font-sans">
-                    <div className="px-3 py-2.5 border-b border-slate-800 text-xs">
-                      <div className="font-bold text-slate-100 truncate">{displayName}</div>
-                      <div className="text-[11px] font-mono text-slate-400 truncate">{userEmail}</div>
+                  <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl p-2 z-50 animate-in fade-in duration-100 font-sans">
+                    <div className="px-3 py-2.5 border-b border-slate-100 text-xs">
+                      <div className="font-bold text-slate-900 truncate">{displayName}</div>
+                      <div className="text-[11px] font-mono text-slate-500 truncate">{userEmail}</div>
                     </div>
 
                     <button
@@ -218,7 +217,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
                         setUserDropdownOpen(false);
                         onNavigate('account');
                       }}
-                      className="w-full p-2.5 rounded-xl hover:bg-slate-900 transition-colors flex items-center gap-2.5 text-left text-xs font-bold text-slate-200 cursor-pointer"
+                      className="w-full p-2.5 rounded-xl hover:bg-slate-50 transition-colors flex items-center gap-2.5 text-left text-xs font-bold text-slate-800 cursor-pointer"
                     >
                       <User className="w-4 h-4 text-[#0096C7]" />
                       <span>Client Portal</span>
@@ -228,23 +227,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
                       href="https://panel.kryonhost.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full p-2.5 rounded-xl hover:bg-slate-900 transition-colors flex items-center justify-between text-left text-xs font-bold text-purple-400 cursor-pointer"
+                      className="w-full p-2.5 rounded-xl hover:bg-purple-50 transition-colors flex items-center justify-between text-left text-xs font-bold text-purple-700 cursor-pointer"
                     >
                       <span className="flex items-center gap-2.5">
-                        <Server className="w-4 h-4 text-purple-400" />
+                        <Server className="w-4 h-4 text-purple-600" />
                         <span>VPS Control Panel</span>
                       </span>
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
 
-                    <div className="border-t border-slate-800 my-1" />
+                    <div className="border-t border-slate-100 my-1" />
 
                     <button
                       onClick={() => {
                         setUserDropdownOpen(false);
                         signOut();
                       }}
-                      className="w-full p-2.5 rounded-xl hover:bg-rose-950/40 text-rose-400 transition-colors flex items-center gap-2.5 text-left text-xs font-bold cursor-pointer"
+                      className="w-full p-2.5 rounded-xl hover:bg-rose-50 text-rose-600 transition-colors flex items-center gap-2.5 text-left text-xs font-bold cursor-pointer"
                     >
                       <LogOut className="w-4 h-4" />
                       <span>Sign Out</span>
@@ -255,7 +254,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
             ) : (
               <button
                 onClick={() => onOpenLogin('signin')}
-                className="px-4 py-2 text-xs font-bold text-slate-300 hover:text-white rounded-xl hover:bg-slate-900 transition-colors cursor-pointer"
+                className="px-4 py-2 text-xs font-bold text-slate-700 hover:text-slate-900 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer"
               >
                 Log In
               </button>
@@ -263,7 +262,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
 
             <button
               onClick={() => scrollToSection('vps-hosting')}
-              className="px-4 py-2 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white font-bold text-xs shadow-lg shadow-[#0096C7]/20 flex items-center gap-1.5 transition-all cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white font-black text-xs shadow-md shadow-[#0096C7]/20 flex items-center gap-1.5 transition-all cursor-pointer"
             >
               <span>Deploy Now</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -280,7 +279,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-slate-400 hover:text-white"
+              className="p-2 text-slate-600 hover:text-slate-900"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -291,17 +290,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#070A0F] border-b border-slate-800 px-4 pt-3 pb-6 space-y-3 font-sans">
+        <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3 font-sans shadow-lg">
           <div className="flex flex-col space-y-1">
             <button
               onClick={() => scrollToSection('vps-hosting')}
-              className="px-3 py-2 text-sm font-semibold text-slate-200 text-left hover:bg-slate-900 rounded-lg"
+              className="px-3 py-2 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-lg"
             >
               VPS Hosting
             </button>
             <button
               onClick={() => scrollToSection('game-hosting')}
-              className="px-3 py-2 text-sm font-semibold text-slate-200 text-left hover:bg-slate-900 rounded-lg"
+              className="px-3 py-2 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-lg"
             >
               Game Server Hosting
             </button>
@@ -310,7 +309,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
                 setMobileMenuOpen(false);
                 onNavigate('docs');
               }}
-              className="px-3 py-2 text-sm font-semibold text-slate-200 text-left hover:bg-slate-900 rounded-lg"
+              className="px-3 py-2 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-lg"
             >
               Documentation
             </button>
@@ -319,7 +318,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
                 setMobileMenuOpen(false);
                 onNavigate('status');
               }}
-              className="px-3 py-2 text-sm font-semibold text-slate-200 text-left hover:bg-slate-900 rounded-lg"
+              className="px-3 py-2 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-lg"
             >
               Status Page
             </button>
@@ -328,20 +327,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
                 setMobileMenuOpen(false);
                 onNavigate('network');
               }}
-              className="px-3 py-2 text-sm font-semibold text-slate-200 text-left hover:bg-slate-900 rounded-lg"
+              className="px-3 py-2 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-lg"
             >
               Network & Latency
             </button>
           </div>
 
-          <div className="pt-3 border-t border-slate-800 flex flex-col space-y-2">
+          <div className="pt-3 border-t border-slate-200 flex flex-col space-y-2">
             {user ? (
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   onNavigate('account');
                 }}
-                className="w-full py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs"
+                className="w-full py-2.5 rounded-xl bg-slate-100 text-slate-900 font-bold text-xs"
               >
                 Open Client Portal
               </button>
@@ -351,7 +350,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
                   setMobileMenuOpen(false);
                   onOpenLogin('signin');
                 }}
-                className="w-full py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs"
+                className="w-full py-2.5 rounded-xl bg-slate-100 text-slate-900 font-bold text-xs"
               >
                 Log In
               </button>

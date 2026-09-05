@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Gamepad2, Cpu, HardDrive, ShieldCheck, Server, ArrowRight, Check, Clock, Layers, Sparkles } from 'lucide-react';
+import { Gamepad2, Cpu, HardDrive, ShieldCheck, Server, ArrowRight, Check, Clock } from 'lucide-react';
 import { KRYONHOST_CONFIG } from '../config/kryonhost.config';
 
 interface GameHostingProps {
@@ -33,71 +33,71 @@ export const GameHosting: React.FC<GameHostingProps> = ({ onSelectGamePlan }) =>
   };
 
   return (
-    <section id="game-hosting" className="py-24 bg-[#070A0F] text-slate-100 font-sans border-b border-slate-800/80">
+    <section id="game-hosting" className="py-24 bg-white text-slate-900 font-sans border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono font-bold text-purple-400">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-xs font-mono font-bold text-purple-700">
             <Gamepad2 className="w-3.5 h-3.5" />
             <span>LOW LATENCY INDIA GAMING</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
             Game Hosting
           </h2>
-          <p className="text-sm sm:text-base text-slate-400 font-normal">
+          <p className="text-sm sm:text-base text-slate-600 font-medium">
             High-performance game servers, deployed in minutes.
           </p>
         </div>
 
         {/* Featured Minecraft Dedicated Section */}
-        <div className="bg-[#0B0F17] border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+        <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-lg relative overflow-hidden">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
             
             {/* Minecraft Overview Column */}
             <div className="lg:col-span-6 space-y-6">
               <div className="space-y-2">
-                <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-mono font-bold border border-emerald-500/20">
+                <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-mono font-bold border border-emerald-300">
                   <span>AVAILABLE NOW • INSTANT SETUP</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                   Minecraft Server Hosting
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-normal">
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
                   Engineered for high TPS on modded and plugin-heavy communities. Powered by high single-core CPU clocks, DDR4/DDR5 ECC RAM, and enterprise NVMe storage.
                 </p>
               </div>
 
               {/* Key Features List */}
-              <div className="grid grid-cols-2 gap-3 text-xs font-mono text-slate-300">
+              <div className="grid grid-cols-2 gap-3 text-xs font-mono text-slate-700">
                 <div className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Always-On DDoS Shield</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Automated Backups</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Sub-5ms Mumbai Latency</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Full SFTP File Access</span>
                 </div>
               </div>
             </div>
 
             {/* Minecraft Configurator Card */}
-            <div className="lg:col-span-6 bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-6">
+            <div className="lg:col-span-6 bg-white border border-slate-200 rounded-2xl p-6 space-y-6 shadow-sm">
               
               {/* RAM Selection */}
               <div className="space-y-2">
-                <label className="flex justify-between text-xs font-mono font-bold text-slate-300">
+                <label className="flex justify-between text-xs font-mono font-bold text-slate-800">
                   <span>SELECT MEMORY ALLOCATION:</span>
-                  <span className="text-purple-400">{mcRam} GB RAM</span>
+                  <span className="text-purple-600">{mcRam} GB RAM</span>
                 </label>
 
                 <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
@@ -107,8 +107,8 @@ export const GameHosting: React.FC<GameHostingProps> = ({ onSelectGamePlan }) =>
                       onClick={() => setMcRam(gb)}
                       className={`py-2 px-3 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer ${
                         mcRam === gb
-                          ? 'bg-purple-600 text-white shadow-md'
-                          : 'bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700'
+                          ? 'bg-purple-600 text-white shadow-sm'
+                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                       }`}
                     >
                       {gb} GB
@@ -119,13 +119,13 @@ export const GameHosting: React.FC<GameHostingProps> = ({ onSelectGamePlan }) =>
 
               {/* Server Software Dropdown */}
               <div className="space-y-2">
-                <label className="block text-xs font-mono font-bold text-slate-300">
+                <label className="block text-xs font-mono font-bold text-slate-800">
                   SERVER SOFTWARE / CORE:
                 </label>
                 <select
                   value={mcSoftware}
                   onChange={(e) => setMcSoftware(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-100 text-xs font-mono focus:outline-none focus:border-purple-500 cursor-pointer"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-purple-600 cursor-pointer"
                 >
                   <option value="Paper">Paper (High Performance & Plugins)</option>
                   <option value="Purpur">Purpur (Optimized Fork of Paper)</option>
@@ -137,18 +137,18 @@ export const GameHosting: React.FC<GameHostingProps> = ({ onSelectGamePlan }) =>
               </div>
 
               {/* Price & Deploy Action */}
-              <div className="pt-2 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="pt-2 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div>
                   <div className="text-[10px] font-mono text-slate-500 uppercase font-bold">Monthly Price</div>
-                  <div className="text-2xl font-black font-mono text-white">
+                  <div className="text-2xl font-black font-mono text-slate-900">
                     ₹{currentMcPrice.toLocaleString('en-IN')}
-                    <span className="text-xs text-slate-400 font-normal">/mo</span>
+                    <span className="text-xs text-slate-500 font-normal">/mo</span>
                   </div>
                 </div>
 
                 <button
                   onClick={handleDeployMinecraft}
-                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg shadow-purple-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-md shadow-purple-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   <span>Deploy Minecraft Server</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -164,51 +164,51 @@ export const GameHosting: React.FC<GameHostingProps> = ({ onSelectGamePlan }) =>
         {/* Other Supported Games Grid */}
         <div className="space-y-6">
           <div className="text-left space-y-1">
-            <h3 className="text-xl font-black text-white">Supported Game Titles</h3>
-            <p className="text-xs font-mono text-slate-400">Additional game nodes rolling out to the fleet.</p>
+            <h3 className="text-xl font-black text-slate-900">Supported Game Titles</h3>
+            <p className="text-xs font-mono text-slate-500">Additional game nodes rolling out to the fleet.</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {KRYONHOST_CONFIG.games.filter(g => g.id !== 'minecraft').map((game) => (
               <div
                 key={game.id}
-                className="bg-[#0B0F17] border border-slate-800 rounded-2xl p-5 flex flex-col justify-between space-y-4 hover:border-slate-700 transition-colors"
+                className="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col justify-between space-y-4 shadow-sm hover:border-slate-300 transition-colors"
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-900 border border-slate-800 text-slate-400">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white border border-slate-200 text-slate-600">
                       {game.category}
                     </span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center gap-1">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-100 text-amber-800 border border-amber-200 flex items-center gap-1">
                       <Clock className="w-2.5 h-2.5" />
                       <span>{game.status}</span>
                     </span>
                   </div>
 
                   <div>
-                    <h4 className="text-base font-bold text-slate-100">{game.name}</h4>
-                    <p className="text-xs text-slate-400 mt-1 font-normal leading-relaxed">{game.description}</p>
+                    <h4 className="text-base font-bold text-slate-900">{game.name}</h4>
+                    <p className="text-xs text-slate-600 mt-1 font-normal leading-relaxed">{game.description}</p>
                   </div>
 
-                  <div className="pt-2 border-t border-slate-800/80 space-y-1.5 text-[11px] font-mono text-slate-300">
+                  <div className="pt-2 border-t border-slate-200 space-y-1.5 text-[11px] font-mono text-slate-700">
                     {game.features.slice(0, 3).map((f, i) => (
                       <div key={i} className="flex items-center gap-1.5">
-                        <Check className="w-3 h-3 text-slate-500" />
+                        <Check className="w-3 h-3 text-slate-400" />
                         <span>{f}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
+                <div className="pt-3 border-t border-slate-200 flex items-center justify-between">
                   <div>
                     <span className="text-[10px] font-mono text-slate-500 block">Starting at</span>
-                    <span className="text-sm font-black font-mono text-white">₹{game.startingPriceINR}/mo</span>
+                    <span className="text-sm font-black font-mono text-slate-900">₹{game.startingPriceINR}/mo</span>
                   </div>
 
                   <button
                     disabled
-                    className="px-3.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-500 text-xs font-mono font-bold cursor-not-allowed"
+                    className="px-3.5 py-1.5 rounded-lg bg-slate-200 text-slate-400 text-xs font-mono font-bold cursor-not-allowed"
                   >
                     Coming Soon
                   </button>

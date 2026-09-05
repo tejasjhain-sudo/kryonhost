@@ -62,7 +62,7 @@ export function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070A0F] text-slate-100 selection:bg-[#0096C7]/30 selection:text-[#38BDF8] overflow-x-hidden font-sans">
+    <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-[#0096C7]/20 selection:text-[#0096C7] overflow-x-hidden font-sans">
       
       {/* Top Header Announcement Ticker */}
       <HeaderAnnouncement onExplore={() => {

@@ -49,27 +49,27 @@ export const CustomerAccount: React.FC<CustomerAccountProps> = ({ onBackToHome, 
   ]);
 
   return (
-    <div className="min-h-screen bg-[#070A0F] text-slate-100 font-sans pt-24 pb-20">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans pt-24 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Top Header & Breadcrumb */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#0B0F17] border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
           <div className="flex items-center gap-4">
             <button
               onClick={onBackToHome}
-              className="p-2 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 transition-colors cursor-pointer"
+              className="p-2 rounded-xl bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer"
               title="Return to Website"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-black text-white">Client Portal</h1>
-                <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-mono font-bold border border-emerald-500/20">
+                <h1 className="text-xl font-black text-slate-900">Client Portal</h1>
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-mono font-bold border border-emerald-300">
                   ACTIVE ACCOUNT
                 </span>
               </div>
-              <p className="text-xs text-slate-400 font-mono mt-0.5">
+              <p className="text-xs text-slate-500 font-mono mt-0.5">
                 Logged in as <strong>{displayName}</strong> ({userEmail})
               </p>
             </div>
@@ -87,7 +87,7 @@ export const CustomerAccount: React.FC<CustomerAccountProps> = ({ onBackToHome, 
               href="https://panel.kryonhost.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition-colors flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition-colors flex items-center gap-1.5 shadow-sm"
             >
               <span>White-Label Control Panel</span>
               <ExternalLink className="w-3.5 h-3.5" />
@@ -99,8 +99,8 @@ export const CustomerAccount: React.FC<CustomerAccountProps> = ({ onBackToHome, 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
           {/* Sidebar Nav (3 Cols) */}
-          <div className="lg:col-span-3 space-y-2">
-            <div className="bg-[#0B0F17] border border-slate-800 rounded-2xl p-3 space-y-1 font-mono text-xs">
+          <div className="lg:col-span-3 space-y-3">
+            <div className="bg-white border border-slate-200 rounded-2xl p-3 space-y-1 font-mono text-xs shadow-sm">
               {[
                 { id: 'services', label: 'My Services', icon: Server, badge: `${services.length}` },
                 { id: 'orders', label: 'Orders & History', icon: Receipt },
@@ -116,8 +116,8 @@ export const CustomerAccount: React.FC<CustomerAccountProps> = ({ onBackToHome, 
                     onClick={() => setActiveTab(item.id as any)}
                     className={`w-full p-2.5 rounded-xl transition-all flex items-center justify-between text-left cursor-pointer ${
                       isActive
-                        ? 'bg-[#0096C7] text-white font-bold shadow-md'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                        ? 'bg-[#0096C7] text-white font-bold shadow-sm'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                     }`}
                   >
                     <span className="flex items-center gap-2.5">
@@ -125,7 +125,7 @@ export const CustomerAccount: React.FC<CustomerAccountProps> = ({ onBackToHome, 
                       <span>{item.label}</span>
                     </span>
                     {item.badge && (
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${isActive ? 'bg-white/20 text-white' : 'bg-slate-900 text-slate-300'}`}>
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700'}`}>
                         {item.badge}
                       </span>
                     )}
@@ -135,19 +135,19 @@ export const CustomerAccount: React.FC<CustomerAccountProps> = ({ onBackToHome, 
             </div>
 
             {/* Provider Panel Direct Redirection Box */}
-            <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3 font-mono text-xs">
-              <div className="text-slate-300 font-bold flex items-center gap-2">
+            <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-3 font-mono text-xs shadow-sm">
+              <div className="text-slate-900 font-bold flex items-center gap-2">
                 <Server className="w-4 h-4 text-[#0096C7]" />
                 <span>VPS Management Notice</span>
               </div>
-              <p className="text-[11px] text-slate-400 leading-relaxed font-sans">
+              <p className="text-[11px] text-slate-600 leading-relaxed font-sans">
                 VPS instances are managed through the white-label control panel with direct power actions, console, and snapshot access.
               </p>
               <a
                 href="https://panel.kryonhost.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                className="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors border border-slate-200"
               >
                 <span>Open Control Panel</span>
                 <ExternalLink className="w-3.5 h-3.5" />
@@ -162,24 +162,24 @@ export const CustomerAccount: React.FC<CustomerAccountProps> = ({ onBackToHome, 
             {activeTab === 'services' && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-black text-white">Active VPS & Services</h2>
-                  <span className="text-xs font-mono text-slate-400">{services.length} Instance Running</span>
+                  <h2 className="text-lg font-black text-slate-900">Active VPS & Services</h2>
+                  <span className="text-xs font-mono text-slate-500">{services.length} Instance Running</span>
                 </div>
 
                 {services.map((srv) => (
                   <div
                     key={srv.id}
-                    className="bg-[#0B0F17] border border-slate-800 rounded-2xl p-6 shadow-xl space-y-5 hover:border-slate-700 transition-colors"
+                    className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-5 hover:border-[#0096C7] transition-colors"
                   >
-                    <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+                    <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
                       <div>
                         <div className="flex items-center gap-2">
-                          <h3 className="text-base font-bold text-white">{srv.name}</h3>
-                          <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-mono font-bold border border-emerald-500/20">
+                          <h3 className="text-base font-bold text-slate-900">{srv.name}</h3>
+                          <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-mono font-bold border border-emerald-300">
                             {srv.status}
                           </span>
                         </div>
-                        <div className="text-xs font-mono text-slate-400 mt-0.5">Service ID: {srv.id}</div>
+                        <div className="text-xs font-mono text-slate-500 mt-0.5">Service ID: {srv.id}</div>
                       </div>
 
                       {/* Manage Button redirecting to white-label panel */}
@@ -187,7 +187,7 @@ export const CustomerAccount: React.FC<CustomerAccountProps> = ({ onBackToHome, 
                         href={srv.panelUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-4 py-2 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white font-bold text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer"
+                        className="px-4 py-2 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white font-bold text-xs shadow-sm transition-all flex items-center gap-2 cursor-pointer"
                       >
                         <span>Manage VPS</span>
                         <ExternalLink className="w-3.5 h-3.5" />
@@ -195,24 +195,24 @@ export const CustomerAccount: React.FC<CustomerAccountProps> = ({ onBackToHome, 
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono text-xs">
-                      <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                      <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
                         <span className="text-slate-500 text-[10px] uppercase font-bold block">Static IPv4</span>
                         <span className="font-bold text-[#0096C7] text-xs mt-0.5 block">{srv.ipAddress}</span>
                       </div>
 
-                      <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                      <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
                         <span className="text-slate-500 text-[10px] uppercase font-bold block">Datacenter</span>
-                        <span className="font-bold text-slate-200 text-xs mt-0.5 block">{srv.location}</span>
+                        <span className="font-bold text-slate-800 text-xs mt-0.5 block">{srv.location}</span>
                       </div>
 
-                      <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                      <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
                         <span className="text-slate-500 text-[10px] uppercase font-bold block">Billing Term</span>
-                        <span className="font-bold text-slate-200 text-xs mt-0.5 block">₹{srv.monthlyPriceINR}/mo ({srv.billingCycle})</span>
+                        <span className="font-bold text-slate-800 text-xs mt-0.5 block">₹{srv.monthlyPriceINR}/mo ({srv.billingCycle})</span>
                       </div>
 
-                      <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+                      <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
                         <span className="text-slate-500 text-[10px] uppercase font-bold block">Next Renewal</span>
-                        <span className="font-bold text-slate-200 text-xs mt-0.5 block">{srv.nextRenewal}</span>
+                        <span className="font-bold text-slate-800 text-xs mt-0.5 block">{srv.nextRenewal}</span>
                       </div>
                     </div>
                   </div>
@@ -222,18 +222,18 @@ export const CustomerAccount: React.FC<CustomerAccountProps> = ({ onBackToHome, 
 
             {/* Orders Tab */}
             {activeTab === 'orders' && (
-              <div className="bg-[#0B0F17] border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
-                <h2 className="text-lg font-black text-white">Order History</h2>
+              <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+                <h2 className="text-lg font-black text-slate-900">Order History</h2>
                 <div className="space-y-3 font-mono text-xs">
                   {orders.map((ord) => (
-                    <div key={ord.orderId} className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between">
+                    <div key={ord.orderId} className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                       <div>
-                        <div className="font-bold text-slate-200">{ord.service}</div>
+                        <div className="font-bold text-slate-900">{ord.service}</div>
                         <div className="text-slate-500 mt-0.5">Order ID: {ord.orderId} • {ord.date}</div>
                       </div>
                       <div className="text-right">
-                        <div className="font-black text-white">{ord.amount}</div>
-                        <div className="text-emerald-400 text-[10px] font-bold">{ord.status}</div>
+                        <div className="font-black text-slate-900">{ord.amount}</div>
+                        <div className="text-emerald-700 text-[10px] font-bold">{ord.status}</div>
                       </div>
                     </div>
                   ))}
@@ -243,11 +243,11 @@ export const CustomerAccount: React.FC<CustomerAccountProps> = ({ onBackToHome, 
 
             {/* Billing Tab */}
             {activeTab === 'billing' && (
-              <div className="bg-[#0B0F17] border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
-                <h2 className="text-lg font-black text-white">Billing & Invoices</h2>
-                <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2 text-xs font-mono">
-                  <div className="text-slate-300 font-bold">Payment Gateway: Cashfree (Automated)</div>
-                  <p className="text-slate-400 font-sans text-xs">
+              <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
+                <h2 className="text-lg font-black text-slate-900">Billing & Invoices</h2>
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-xs font-mono">
+                  <div className="text-slate-800 font-bold">Payment Gateway: Cashfree (Automated)</div>
+                  <p className="text-slate-600 font-sans text-xs">
                     Invoices are automatically settled through your linked payment method. Subscriptions can be upgraded, downgraded, or cancelled anytime.
                   </p>
                 </div>
@@ -256,19 +256,19 @@ export const CustomerAccount: React.FC<CustomerAccountProps> = ({ onBackToHome, 
 
             {/* Support Tab */}
             {activeTab === 'support' && (
-              <div className="bg-[#0B0F17] border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
-                <h2 className="text-lg font-black text-white">Technical Support Desk</h2>
-                <p className="text-xs text-slate-400">
+              <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+                <h2 className="text-lg font-black text-slate-900">Technical Support Desk</h2>
+                <p className="text-xs text-slate-600">
                   Need assistance with your VPS routing, reverse DNS (PTR), or hardware configuration?
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs pt-2">
-                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
-                    <div className="text-slate-400 text-[10px]">Email Desk</div>
-                    <div className="font-bold text-white">support@kryonhost.com</div>
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <div className="text-slate-500 text-[10px]">Email Desk</div>
+                    <div className="font-bold text-slate-900">support@kryonhost.com</div>
                   </div>
-                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
-                    <div className="text-slate-400 text-[10px]">Hotline & WhatsApp</div>
-                    <div className="font-bold text-emerald-400">+91 8750287172 (9am-5pm IST)</div>
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                    <div className="text-slate-500 text-[10px]">Hotline & WhatsApp</div>
+                    <div className="font-bold text-emerald-700">+91 8750287172 (9am-5pm IST)</div>
                   </div>
                 </div>
               </div>
@@ -276,17 +276,17 @@ export const CustomerAccount: React.FC<CustomerAccountProps> = ({ onBackToHome, 
 
             {/* Security Tab */}
             {activeTab === 'security' && (
-              <div className="bg-[#0B0F17] border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
-                <h2 className="text-lg font-black text-white">Account Security & Access</h2>
-                <p className="text-xs text-slate-400 font-sans">
+              <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+                <h2 className="text-lg font-black text-slate-900">Account Security & Access</h2>
+                <p className="text-xs text-slate-600 font-sans">
                   Manage your account credentials, password updates, and session tokens.
                 </p>
-                <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs flex items-center justify-between">
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs flex items-center justify-between">
                   <div>
-                    <div className="font-bold text-slate-200">Account Password</div>
+                    <div className="font-bold text-slate-900">Account Password</div>
                     <div className="text-slate-500">Last updated: 2026</div>
                   </div>
-                  <button className="px-3.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white text-xs font-bold">
+                  <button className="px-3.5 py-1.5 rounded-lg bg-slate-100 text-slate-800 hover:bg-slate-200 text-xs font-bold border border-slate-200">
                     Update
                   </button>
                 </div>

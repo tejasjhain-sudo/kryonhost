@@ -30,17 +30,17 @@ export const NetworkSection: React.FC = () => {
   ];
 
   return (
-    <section id="network" className="py-24 bg-[#070A0F] text-slate-100 font-sans border-b border-slate-800/80">
+    <section id="network" className="py-24 bg-slate-50 text-slate-900 font-sans border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono font-bold text-[#0096C7]">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#E0F2FE] border border-[#0096C7]/30 text-xs font-mono font-bold text-[#0096C7]">
             <Network className="w-3.5 h-3.5" />
             <span>PACKET BACKBONE & SCRUBBING</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
             Network Architecture
           </h2>
-          <p className="text-sm text-slate-400 font-normal">
+          <p className="text-sm text-slate-600 font-medium">
             Engineered for high packet velocity, clean transit, and automated threat mitigation.
           </p>
         </div>
@@ -51,13 +51,13 @@ export const NetworkSection: React.FC = () => {
             return (
               <div
                 key={pillar.id}
-                className="p-6 rounded-2xl bg-[#0B0F17] border border-slate-800 hover:border-[#0096C7]/60 transition-all shadow-xl space-y-3"
+                className="p-6 rounded-2xl bg-white border border-slate-200 hover:border-[#0096C7] transition-all shadow-sm space-y-3"
               >
-                <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 text-[#0096C7] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-[#E0F2FE] border border-[#0096C7]/20 text-[#0096C7] flex items-center justify-center shadow-sm">
                   <Icon className="w-5 h-5" />
                 </div>
-                <h3 className="text-base font-bold text-white">{pillar.title}</h3>
-                <p className="text-xs text-slate-400 leading-relaxed font-normal">{pillar.desc}</p>
+                <h3 className="text-base font-bold text-slate-900">{pillar.title}</h3>
+                <p className="text-xs text-slate-600 leading-relaxed font-normal">{pillar.desc}</p>
               </div>
             );
           })}

@@ -18,7 +18,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
   };
 
   return (
-    <footer className="bg-[#05070B] border-t border-slate-800/80 text-slate-400 font-sans text-xs">
+    <footer className="bg-white border-t border-slate-200 text-slate-600 font-sans text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
         
         {/* Main 4-Column Footer Grid */}
@@ -27,10 +27,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
           {/* Brand Info (2 cols) */}
           <div className="lg:col-span-2 space-y-4">
             <Logo size="md" />
-            <p className="text-slate-400 text-xs font-mono max-w-sm">
+            <p className="text-slate-900 text-xs font-mono font-bold max-w-sm">
               Powerful Infrastructure. Built for What's Next.
             </p>
-            <p className="text-slate-400 text-xs font-normal max-w-sm leading-relaxed">
+            <p className="text-slate-600 text-xs font-normal max-w-sm leading-relaxed">
               High-performance KVM VPS and low-latency game hosting without the enterprise price tag. Hosted in Tier IV Mumbai datacenter with direct NIXI peering.
             </p>
 
@@ -39,7 +39,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="text-slate-300 font-mono text-[11px] font-bold">
+              <span className="text-slate-800 font-mono text-[11px] font-bold">
                 Tier IV Mumbai Node Operational
               </span>
             </div>
@@ -47,12 +47,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
 
           {/* Products Column */}
           <div className="space-y-3">
-            <h4 className="text-xs font-mono font-bold uppercase text-slate-200 tracking-wider">Products</h4>
+            <h4 className="text-xs font-mono font-bold uppercase text-slate-900 tracking-wider">Products</h4>
             <ul className="space-y-2">
               <li>
                 <button
                   onClick={() => scrollTo('vps-hosting')}
-                  className="hover:text-white transition-colors cursor-pointer"
+                  className="hover:text-slate-900 hover:underline transition-colors cursor-pointer"
                 >
                   VPS Hosting
                 </button>
@@ -60,7 +60,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
               <li>
                 <button
                   onClick={() => scrollTo('game-hosting')}
-                  className="hover:text-white transition-colors cursor-pointer"
+                  className="hover:text-slate-900 hover:underline transition-colors cursor-pointer"
                 >
                   Game Server Hosting
                 </button>
@@ -68,7 +68,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
               <li>
                 <button
                   onClick={() => scrollTo('vps-hosting')}
-                  className="hover:text-white transition-colors cursor-pointer"
+                  className="hover:text-slate-900 hover:underline transition-colors cursor-pointer"
                 >
                   Budget Compute
                 </button>
@@ -76,7 +76,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
               <li>
                 <button
                   onClick={() => scrollTo('vps-hosting')}
-                  className="hover:text-white transition-colors cursor-pointer"
+                  className="hover:text-slate-900 hover:underline transition-colors cursor-pointer"
                 >
                   Power Ryzen 7000 Tier
                 </button>
@@ -86,12 +86,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
 
           {/* Resources Column */}
           <div className="space-y-3">
-            <h4 className="text-xs font-mono font-bold uppercase text-slate-200 tracking-wider">Resources</h4>
+            <h4 className="text-xs font-mono font-bold uppercase text-slate-900 tracking-wider">Resources</h4>
             <ul className="space-y-2">
               <li>
                 <button
                   onClick={() => onNavigate('docs')}
-                  className="hover:text-white transition-colors cursor-pointer"
+                  className="hover:text-slate-900 hover:underline transition-colors cursor-pointer"
                 >
                   Documentation
                 </button>
@@ -99,7 +99,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
               <li>
                 <button
                   onClick={() => onNavigate('status')}
-                  className="hover:text-white transition-colors cursor-pointer"
+                  className="hover:text-slate-900 hover:underline transition-colors cursor-pointer"
                 >
                   Status Page
                 </button>
@@ -107,7 +107,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
               <li>
                 <button
                   onClick={() => onNavigate('api-docs')}
-                  className="hover:text-white transition-colors cursor-pointer"
+                  className="hover:text-slate-900 hover:underline transition-colors cursor-pointer"
                 >
                   API Reference
                 </button>
@@ -115,7 +115,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
               <li>
                 <button
                   onClick={() => onNavigate('network')}
-                  className="hover:text-white transition-colors cursor-pointer"
+                  className="hover:text-slate-900 hover:underline transition-colors cursor-pointer"
                 >
                   Network & Ping Test
                 </button>
@@ -125,12 +125,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
 
           {/* Company & Legal Column */}
           <div className="space-y-3">
-            <h4 className="text-xs font-mono font-bold uppercase text-slate-200 tracking-wider">Company & Legal</h4>
+            <h4 className="text-xs font-mono font-bold uppercase text-slate-900 tracking-wider">Company & Legal</h4>
             <ul className="space-y-2">
               <li>
                 <button
                   onClick={() => onOpenLegal('terms')}
-                  className="hover:text-white transition-colors cursor-pointer"
+                  className="hover:text-slate-900 hover:underline transition-colors cursor-pointer"
                 >
                   Terms of Service
                 </button>
@@ -138,7 +138,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
               <li>
                 <button
                   onClick={() => onOpenLegal('privacy')}
-                  className="hover:text-white transition-colors cursor-pointer"
+                  className="hover:text-slate-900 hover:underline transition-colors cursor-pointer"
                 >
                   Privacy Policy
                 </button>
@@ -146,7 +146,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
               <li>
                 <button
                   onClick={() => onOpenLegal('refund')}
-                  className="hover:text-white transition-colors cursor-pointer"
+                  className="hover:text-slate-900 hover:underline transition-colors cursor-pointer"
                 >
                   Refund Policy
                 </button>
@@ -154,7 +154,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
               <li>
                 <button
                   onClick={() => onOpenLegal('aup')}
-                  className="hover:text-white transition-colors cursor-pointer"
+                  className="hover:text-slate-900 hover:underline transition-colors cursor-pointer"
                 >
                   Acceptable Use Policy
                 </button>
@@ -165,7 +165,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-[11px] text-slate-400">
+        <div className="pt-8 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-[11px] text-slate-500">
           <div>
             © 2026 KryonHost. All rights reserved.
           </div>

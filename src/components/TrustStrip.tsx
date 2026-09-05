@@ -13,20 +13,20 @@ export const TrustStrip: React.FC = () => {
   ];
 
   return (
-    <div className="w-full bg-[#070A0F] border-y border-slate-800/80 py-4 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="w-full bg-slate-100/90 border-y border-slate-200 py-4 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
           {KRYONHOST_CONFIG.trustStrip.map((item, idx) => (
             <div
               key={item.label}
-              className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-900/60 transition-colors group"
+              className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/80 transition-all group"
             >
-              <div className="p-2 rounded-lg bg-slate-900 border border-slate-800 text-[#0096C7] group-hover:border-[#0096C7]/40 transition-colors shrink-0">
+              <div className="p-2 rounded-lg bg-white border border-slate-200 text-[#0096C7] group-hover:border-[#0096C7]/50 transition-colors shrink-0 shadow-sm">
                 {icons[idx % icons.length]}
               </div>
               <div className="leading-tight">
-                <div className="text-xs font-bold text-slate-200 tracking-tight">{item.label}</div>
-                <div className="text-[11px] font-mono text-slate-400 mt-0.5">{item.detail}</div>
+                <div className="text-xs font-black text-slate-900 tracking-tight">{item.label}</div>
+                <div className="text-[11px] font-mono text-slate-500 mt-0.5">{item.detail}</div>
               </div>
             </div>
           ))}
