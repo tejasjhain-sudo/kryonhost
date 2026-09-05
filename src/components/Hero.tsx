@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Server, Cpu, HardDrive, Network, ShieldCheck, ArrowRight, Activity, Terminal, CheckCircle2, Copy, Check, Radio, Zap, Sparkles, RefreshCw } from 'lucide-react';
+import React, { useState } from 'react';
+import { Cpu, ArrowRight, Activity, Terminal, CheckCircle2, Copy, Check, Radio } from 'lucide-react';
 
 interface HeroProps {
   onExploreVPS: () => void;
@@ -8,24 +8,10 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
   const [activeConsoleTab, setActiveConsoleTab] = useState<'telemetry' | 'terminal' | 'network'>('telemetry');
-  const [cpuUsage, setCpuUsage] = useState(24);
-  const [ramUsage, setRamUsage] = useState(38);
-  const [networkSpeed, setNetworkSpeed] = useState(892);
-  const [latencyMs, setLatencyMs] = useState(3.4);
   const [copiedSSH, setCopiedSSH] = useState(false);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCpuUsage(prev => Math.min(54, Math.max(16, prev + (Math.floor(Math.random() * 9) - 4))));
-      setRamUsage(prev => Math.min(62, Math.max(30, prev + (Math.floor(Math.random() * 5) - 2))));
-      setNetworkSpeed(prev => Math.min(994, Math.max(760, prev + (Math.floor(Math.random() * 31) - 15))));
-      setLatencyMs(prev => Number((Math.min(4.2, Math.max(2.6, prev + (Math.random() * 0.4 - 0.2)))).toFixed(1)));
-    }, 2200);
-    return () => clearInterval(interval);
-  }, []);
-
   const handleCopySSH = () => {
-    navigator.clipboard.writeText('ssh root@103.186.20.48');
+    navigator.clipboard.writeText('ssh root@YOUR_SERVER_IP');
     setCopiedSSH(true);
     setTimeout(() => setCopiedSSH(false), 2000);
   };
@@ -43,17 +29,17 @@ export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
           {/* Left Hero Column */}
           <div className="lg:col-span-7 space-y-5 text-left">
             
-            {/* Live Status Pill with Pulse Glow */}
+            {/* Infrastructure Online Status Pill */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200/90 text-xs font-mono shadow-sm animate-pulse-glow">
               <span className="flex h-2 w-2 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="text-slate-900 font-black tracking-tight uppercase text-[11px]">Hardware Online</span>
+              <span className="text-slate-900 font-black tracking-tight uppercase text-[11px]">Infrastructure Online</span>
               <span className="text-slate-300">•</span>
               <span className="text-[#0096C7] font-bold text-[11px] flex items-center gap-1">
                 <Radio className="w-3 h-3 text-[#0096C7] animate-pulse" />
-                <span>Tier IV Mumbai ({latencyMs}ms)</span>
+                <span>Tier IV Mumbai</span>
               </span>
             </div>
 
@@ -110,7 +96,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
 
           </div>
 
-          {/* Right Column: Animated Cool Hardware Console */}
+          {/* Right Column: Hardware Console Card */}
           <div className="lg:col-span-5">
             <div className="bg-white border border-slate-200 rounded-2xl shadow-xl p-5 relative font-mono text-xs space-y-4">
               
@@ -149,67 +135,54 @@ export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
                 </div>
               </div>
 
-              {/* Tab 1: Live Hardware Telemetry */}
+              {/* Tab 1: Hardware Specs (static, honest) */}
               {activeConsoleTab === 'telemetry' && (
                 <div className="space-y-3 animate-in fade-in duration-200">
                   
-                  {/* CPU Load with Animated Heartbeat Waveform */}
+                  {/* CPU Spec Row with Animated Waveform */}
                   <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
                     <div className="flex justify-between items-center text-[11px]">
                       <span className="text-slate-700 font-bold flex items-center gap-1.5">
                         <Cpu className="w-3.5 h-3.5 text-[#0096C7]" />
-                        <span>vCPU Clock (Boost 5.7 GHz)</span>
+                        <span>AMD Ryzen 7000 Series (KVM)</span>
                       </span>
                       
-                      {/* Animated Soundwave/Load Bars */}
+                      {/* Animated Soundwave Bars */}
                       <div className="flex items-center gap-0.5 h-4">
                         <div className="w-0.5 bg-[#0096C7] rounded-full animate-wave-1" />
                         <div className="w-0.5 bg-[#0096C7] rounded-full animate-wave-2" />
                         <div className="w-0.5 bg-[#0096C7] rounded-full animate-wave-3" />
                         <div className="w-0.5 bg-[#0096C7] rounded-full animate-wave-4" />
                         <div className="w-0.5 bg-[#0096C7] rounded-full animate-wave-5" />
-                        <span className="text-slate-900 font-black ml-1.5">{cpuUsage}%</span>
                       </div>
                     </div>
-
-                    <div className="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-[#0096C7] to-blue-600 transition-all duration-700"
-                        style={{ width: `${cpuUsage}%` }}
-                      />
-                    </div>
+                    <div className="text-[10px] text-slate-500 font-sans">Up to 5.7 GHz Boost · PCIe Gen5 · DDR5 ECC</div>
                   </div>
 
-                  {/* RAM DDR5 Gauge */}
+                  {/* RAM Spec */}
                   <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
                     <div className="flex justify-between text-[11px]">
                       <span className="text-slate-700 font-bold flex items-center gap-1.5">
                         <Activity className="w-3.5 h-3.5 text-purple-600" />
-                        <span>DDR5 ECC Memory Pool</span>
+                        <span>DDR5 ECC Memory</span>
                       </span>
-                      <span className="text-slate-900 font-black">{ramUsage}% Reserved</span>
+                      <span className="text-purple-700 font-black">Up to 64 GB</span>
                     </div>
-
-                    <div className="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-purple-500 to-indigo-600 transition-all duration-700"
-                        style={{ width: `${ramUsage}%` }}
-                      />
-                    </div>
+                    <div className="text-[10px] text-slate-500 font-sans">Error-correcting · Low-latency · Full isolation</div>
                   </div>
 
-                  {/* NVMe IOPS & Network Grid */}
+                  {/* NVMe & Network Grid */}
                   <div className="grid grid-cols-2 gap-2 text-[11px]">
                     <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
-                      <div className="text-slate-500 text-[10px]">Disk Read</div>
-                      <div className="font-black text-slate-900 mt-0.5">7,450 MB/s</div>
+                      <div className="text-slate-500 text-[10px]">NVMe Storage</div>
+                      <div className="font-black text-slate-900 mt-0.5">7,400 MB/s</div>
                       <div className="text-[10px] text-blue-600 font-bold">PCIe Gen5 NVMe</div>
                     </div>
 
                     <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
                       <div className="text-slate-500 text-[10px]">Network Port</div>
-                      <div className="font-black text-slate-900 mt-0.5">{networkSpeed} Mbps</div>
-                      <div className="text-[10px] text-emerald-600 font-bold">1 Gbps Full Duplex</div>
+                      <div className="font-black text-slate-900 mt-0.5">1 Gbps</div>
+                      <div className="text-[10px] text-emerald-600 font-bold">Full Duplex Uplink</div>
                     </div>
                   </div>
 
@@ -243,8 +216,8 @@ export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
                       <span className="font-bold text-slate-900">NIXI + ExtremeIX Direct Peer</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-500">Measured Latency:</span>
-                      <span className="font-black text-emerald-600">{latencyMs} ms (Sub-5ms Domestic)</span>
+                      <span className="text-slate-500">Connectivity:</span>
+                      <span className="font-black text-emerald-600">1 Gbps Uplink · DDoS Protected</span>
                     </div>
                   </div>
                 </div>
@@ -254,7 +227,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
               <div className="pt-2 border-t border-slate-100 flex items-center justify-between bg-slate-50 p-2 rounded-xl border border-slate-200 text-[11px]">
                 <div className="flex items-center gap-1.5 truncate">
                   <Terminal className="w-3.5 h-3.5 text-[#0096C7] shrink-0" />
-                  <span className="font-bold text-slate-800">ssh root@103.186.20.48</span>
+                  <span className="font-bold text-slate-800">ssh root@YOUR_SERVER_IP</span>
                 </div>
                 <button
                   onClick={handleCopySSH}
