@@ -5,7 +5,13 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { TrustStrip } from './components/TrustStrip';
 import { Pricing } from './components/Pricing';
+import { ServerCalculator } from './components/ServerCalculator';
 import { GameHosting } from './components/GameHosting';
+import { OSCatalog } from './components/OSCatalog';
+import { HardwareSpecs } from './components/HardwareSpecs';
+import { LatencyMatrix } from './components/LatencyMatrix';
+import { ComparisonTable } from './components/ComparisonTable';
+import { SecuritySection } from './components/SecuritySection';
 import { NetworkSection } from './components/NetworkSection';
 import { SupportBanner } from './components/SupportBanner';
 import { FAQ } from './components/FAQ';
@@ -102,8 +108,9 @@ export function AppContent() {
         ) : currentView === 'api-docs' ? (
           <APIDocsPage onBackToHome={() => handleNavigate('home')} />
         ) : (
-          /* HOME LANDING PAGE */
+          /* HOME LANDING PAGE - 13 RICH TECHNICAL SECTIONS */
           <div>
+            {/* 1. Hero Section */}
             <Hero
               onExploreVPS={() => {
                 document.getElementById('vps-hosting')?.scrollIntoView({ behavior: 'smooth' });
@@ -113,22 +120,40 @@ export function AppContent() {
               }}
             />
 
-            {/* Dark Trust Strip */}
+            {/* 2. Trust Strip */}
             <TrustStrip />
 
-            {/* VPS Hosting Pricing Section (Budget, Standard, Performance, Power) */}
+            {/* 3. VPS Hosting Pricing Section (Budget, Standard, Performance, Power) */}
             <Pricing onSelectPlan={handleSelectPlan} />
 
-            {/* Game Server Hosting Section (Minecraft + Supported Games) */}
+            {/* 4. Interactive Custom Server Calculator */}
+            <ServerCalculator onSelectPlan={handleSelectPlan} />
+
+            {/* 5. Game Server Hosting Section (Minecraft + Supported Games) */}
             <GameHosting onSelectGamePlan={handleSelectGamePlan} />
 
-            {/* Network Section */}
+            {/* 6. OS & 1-Click App Catalog */}
+            <OSCatalog />
+
+            {/* 7. Enterprise Hardware Node Specifications */}
+            <HardwareSpecs />
+
+            {/* 8. Regional India Latency Matrix & Looking Glass */}
+            <LatencyMatrix />
+
+            {/* 9. KryonHost vs Legacy Providers Comparison Table */}
+            <ComparisonTable onExplore={() => handleNavigate('checkout')} />
+
+            {/* 10. Security & DDoS Filtering Shield */}
+            <SecuritySection />
+
+            {/* 11. Packet Backbone Network Section */}
             <NetworkSection />
 
-            {/* Official Support & Contact Desk */}
+            {/* 12. Official Support Desk Banner */}
             <SupportBanner />
 
-            {/* Technical FAQ */}
+            {/* 13. Technical FAQ */}
             <FAQ onOpenRefundPolicy={() => handleOpenLegal('refund')} />
           </div>
         )}
