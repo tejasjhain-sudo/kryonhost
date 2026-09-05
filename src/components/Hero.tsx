@@ -39,22 +39,42 @@ export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
               <span className="text-slate-300">•</span>
               <span className="text-[#0096C7] font-bold text-[11px] flex items-center gap-1">
                 <Radio className="w-3.5 h-3.5 text-[#0096C7] animate-pulse" />
-                <span>Tier IV Mumbai</span>
+                <span>Tier IV Mumbai • Starting at ₹379/mo</span>
               </span>
             </div>
 
             {/* Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-black text-slate-900 tracking-tight leading-[1.08]">
-              Powerful Infrastructure.<br />
+              High-Performance India VPS.<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077B6] via-[#0096C7] to-cyan-500">
-                Built for What's Next.
+                Zero Hidden Charges.
               </span>
             </h1>
 
-            {/* Supporting Copy */}
-            <p className="text-base text-slate-600 max-w-lg font-normal leading-relaxed">
-              Deploy ultra-fast KVM VPS and low-ping game servers in 60 seconds. Powered by AMD Ryzen 7000, DDR5 ECC memory, Gen5 NVMe, and 1 Gbps direct NIXI peering.
-            </p>
+            {/* Supporting Copy (Structured Value Prop) */}
+            <div className="space-y-2.5 text-sm sm:text-base text-slate-600 font-normal leading-relaxed max-w-xl">
+              <p className="font-semibold text-slate-800">
+                KryonHost provides ultra-fast KVM cloud VPS hosted in Tier IV Mumbai datacenters with 100% billing transparency.
+              </p>
+              <ul className="space-y-1.5 text-xs sm:text-sm font-sans text-slate-600">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span><strong>Zero Hidden Charges</strong>: No setup fees, no surcharges, fixed monthly billing.</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span><strong>Enterprise Speed</strong>: Powered by AMD Ryzen 7000, DDR5 ECC RAM & Gen5 NVMe.</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span><strong>Low Latency Peering</strong>: 1 Gbps port with direct NIXI & ExtremeIX India routing.</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span><strong>Instant 60s Deploy</strong>: Full root SSH access, dedicated IPv4 & DDoS protection.</span>
+                </li>
+              </ul>
+            </div>
 
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center gap-3 pt-1">
@@ -62,7 +82,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
                 onClick={onExploreVPS}
                 className="px-6 py-3.5 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white font-heading font-bold text-xs shadow-lg shadow-[#0096C7]/25 flex items-center gap-2 transition-all hover:scale-[1.02] cursor-pointer"
               >
-                <span>Explore VPS Plans</span>
+                <span>Deploy VPS from ₹379/mo</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
@@ -75,10 +95,10 @@ export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
             </div>
 
             {/* Compact Technical Highlights */}
-            <div className="pt-5 border-t border-slate-200/80 flex flex-wrap gap-3 text-xs font-mono text-slate-600">
+            <div className="pt-4 border-t border-slate-200/80 flex flex-wrap gap-3 text-xs font-mono text-slate-600">
               <div className="flex items-center gap-1.5 bg-slate-100/80 px-3 py-1.5 rounded-lg border border-slate-200/80 shadow-xs">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span className="font-bold text-slate-800">KVM Isolation</span>
+                <span className="font-bold text-slate-800">No Setup Fees</span>
               </div>
               <div className="flex items-center gap-1.5 bg-slate-100/80 px-3 py-1.5 rounded-lg border border-slate-200/80 shadow-xs">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
