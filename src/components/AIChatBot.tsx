@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bot, X, Send, Sparkles, User, Loader2, Server, HelpCircle, ChevronDown, CheckCircle2, ShieldCheck, RefreshCw, MessageSquare, Zap, Terminal, Code } from 'lucide-react';
+import { MessageSquare, X, Send, User, Loader2, Server, HelpCircle, Check, Terminal, ShieldCheck, Headphones } from 'lucide-react';
 
 interface Message {
   id: string;
-  sender: 'ai' | 'user';
+  sender: 'support' | 'user';
   text: string;
   timestamp: string;
 }
@@ -19,7 +19,6 @@ export const AIChatBot: React.FC<AIChatBotProps> = ({ onOpenPreOrder }) => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto-dismiss welcome tooltip after 12 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowWelcomeTooltip(false);
@@ -34,16 +33,14 @@ export const AIChatBot: React.FC<AIChatBotProps> = ({ onOpenPreOrder }) => {
 
   const initialGreeting: Message = {
     id: 'msg-1',
-    sender: 'ai',
-    text: `👋 **Hello! I am your KryonHost AI Specialist.**
+    sender: 'support',
+    text: `👋 **Welcome to KryonHost Technical Desk.**
 
-I can answer any question about:
-• **KryonHost VPS Plans & Mumbai Node Specs**
-• **Custom Month Discounts (Up to 30% OFF)** & **Cashfree Payments**
-• **Linux Commands, Docker, Nginx, Node.js & Server Setup**
-• **Server Security, SSH Keys & Optimization**
-
-How can I assist your setup today?`,
+How can we assist your infrastructure today?
+• **VPS Hardware Specs & Tier IV Datacenter**
+• **Transparent Pricing & Instant Deployment**
+• **Linux Commands, Docker, Nginx & Server Setup**
+• **Network Peering & Latency Information**`,
     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
   };
 
@@ -59,150 +56,76 @@ How can I assist your setup today?`,
     }
   }, [messages, isOpen]);
 
-  // Universal Expert AI Knowledge Engine
-  const generateAIResponse = (query: string): string => {
+  const generateSupportResponse = (query: string): string => {
     const q = query.toLowerCase();
 
-    // 1. KryonHost Plans & Pricing
-    if (q.includes('plan') || q.includes('price') || q.includes('cost') || q.includes('cheap') || q.includes('rate') || q.includes('tier')) {
-      return `⚡ **KryonHost VPS Plans (India - Mumbai Datacenter)**:
+    if (q.includes('plan') || q.includes('price') || q.includes('cost') || q.includes('cheap') || q.includes('tier') || q.includes('vps')) {
+      return `⚡ **KryonHost VPS Categories (Tier IV Mumbai)**:
 
-1. **Starter**: 2 vCPU / 4 GB RAM (+4GB Bonus = 8GB) / 50 GB NVMe — **₹349/mo** ($4.29)
-2. **Performance**: 4 vCPU / 8 GB RAM (+4GB Bonus = 12GB) / 100 GB NVMe — **₹599/mo** ($7.49) ⭐ *Most Popular*
-3. **Pro**: 6 vCPU / 16 GB RAM (+4GB Bonus = 20GB) / 200 GB NVMe — **₹1,199/mo** ($14.99)
-4. **Enterprise**: 8 vCPU / 32 GB RAM (+4GB Bonus = 36GB) / 400 GB NVMe — **₹2,399/mo** ($29.99)
-5. **Extreme**: 16 vCPU / 64 GB RAM (+4GB Bonus = 68GB) / 800 GB NVMe — **₹4,799/mo** ($59.99)
+• **Budget VPS**: Intel Xeon, NVMe, Unlimited Bandwidth — **From ₹379/mo**
+• **Standard VPS**: AMD EPYC, DDR4 ECC, 1 Gbps, Snapshots — **From ₹616/mo**
+• **Performance VPS**: Intel 12th/13th Gen, High Clock — **From ₹829/mo**
+• **Power VPS**: AMD Ryzen 7000 X/X3D, DDR5 ECC, 1 Gbps — **From ₹829/mo**
 
-💡 *Tip: Pre-ordering for 12+ custom months via Cashfree saves up to 25% OFF!*`;
+💡 *Zero hidden fees, zero setup charges, fixed monthly billing.*`;
     }
 
-    // 2. Founding Bonus RAM
-    if (q.includes('bonus') || q.includes('ram') || q.includes('4gb') || q.includes('founding') || q.includes('allocation') || q.includes('slot')) {
-      return `🎉 **+4 GB Permanent Founding RAM Bonus**:
-All early pre-orders locked in today receive a **permanent +4 GB RAM upgrade** for the lifetime of your server!
-
-• **Current Allocation Status**: 28 of 30 Founding Slots Remaining.
-• **Activation**: Applied automatically at checkout on all eligible plans.`;
+    if (q.includes('location') || q.includes('mumbai') || q.includes('datacenter') || q.includes('ping') || q.includes('latency') || q.includes('india')) {
+      return `🇮🇳 **Datacenter & Peering Specifications**:
+• **Facility**: Tier IV Datacenter in Navi Mumbai, India.
+• **Peering**: Direct NIXI and ExtremeIX interconnects.
+• **Latency**: Sub-5ms domestic ping across major Indian metro hubs.
+• **Port**: 1 Gbps full-duplex uplink with redundant fiber paths.`;
     }
 
-    // 3. Datacenter Location & Latency
-    if (q.includes('location') || q.includes('mumbai') || q.includes('datacenter') || q.includes('ping') || q.includes('latency') || q.includes('india') || q.includes('server')) {
-      return `🇮🇳 **India - Mumbai Datacenter Specs**:
-• **Tier IV Facility** with N+2 power & cooling redundancy.
-• **1 Gbps Unmetered Uplink Port** with domestic NIXI & IX-India peering.
-• Sub-15ms latency across Mumbai, Delhi, Bengaluru, Hyderabad & Chennai.`;
+    if (q.includes('payment') || q.includes('cashfree') || q.includes('upi') || q.includes('card') || q.includes('billing')) {
+      return `💳 **Accepted Payment Methods**:
+We process instant payments via **Cashfree Payments**:
+• **UPI & QR**: Google Pay, PhonePe, Paytm, BHIM.
+• **Credit & Debit Cards**: Visa, Mastercard, RuPay.
+• **NetBanking**: Supported across all major Indian banks.`;
     }
 
-    // 4. Cashfree Payment Gateway
-    if (q.includes('payment') || q.includes('cashfree') || q.includes('upi') || q.includes('card') || q.includes('gpay') || q.includes('paytm') || q.includes('phonepe')) {
-      return `💳 **Cashfree Payments Gateway**:
-We process instant pre-orders securely via **Cashfree**:
-• **UPI & QR**: Google Pay, PhonePe, Paytm, BHIM UPI.
-• **Cards**: Visa, Mastercard, RuPay Credit & Debit Cards.
-• **NetBanking**: Supported across 50+ major Indian banks.`;
-    }
+    if (q.includes('docker') || q.includes('container') || q.includes('portainer')) {
+      return `🐳 **Installing Docker & Portainer on Ubuntu/Debian**:
 
-    // 5. Custom Duration Discounts
-    if (q.includes('discount') || q.includes('month') || q.includes('year') || q.includes('term') || q.includes('duration') || q.includes('save')) {
-      return `🔥 **Custom Duration Tiered Discounts**:
-Choose any custom duration from 1 to 36 months on checkout:
-• **3–5 Months**: 5% OFF
-• **6–11 Months**: 10% OFF
-• **12–23 Months**: 15% OFF
-• **24–35 Months**: 25% OFF
-• **36+ Months**: 30% MAX SAVINGS OFF`;
-    }
-
-    // 6. Docker & Container Guidance
-    if (q.includes('docker') || q.includes('container') || q.includes('portainer') || q.includes('compose')) {
-      return `🐳 **How to Install Docker & Docker Compose on Ubuntu**:
-
-Run the following commands on your KryonHost VPS:
+Run these terminal commands:
 \`\`\`bash
 sudo apt update && sudo apt install -y docker.io docker-compose
 sudo systemctl enable --now docker
 \`\`\`
+
 To deploy Portainer Web GUI:
 \`\`\`bash
 docker run -d -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock portainer/portainer-ce:latest
-\`\`\`
-Visit \`http://your-server-ip:9000\` to open your dashboard!`;
+\`\`\``;
     }
 
-    // 7. Nginx & Reverse Proxy Setup
-    if (q.includes('nginx') || q.includes('proxy') || q.includes('domain') || q.includes('ssl') || q.includes('certbot')) {
-      return `🌐 **Nginx Reverse Proxy & Free SSL Setup**:
+    if (q.includes('nginx') || q.includes('ssl') || q.includes('domain') || q.includes('certbot')) {
+      return `🌐 **Nginx Reverse Proxy & Free SSL**:
 
 1. Install Nginx & Certbot:
 \`\`\`bash
 sudo apt update && sudo apt install -y nginx certbot python3-certbot-nginx
 \`\`\`
-2. Configure \`/etc/nginx/sites-available/yourdomain.conf\`:
-\`\`\`nginx
-server {
-    server_name yourdomain.com;
-    location / {
-        proxy_pass http://localhost:3000;
-    }
-}
-\`\`\`
-3. Issue Free SSL:
+2. Issue SSL Certificate:
 \`\`\`bash
 sudo certbot --nginx -d yourdomain.com
 \`\`\``;
     }
 
-    // 8. SSH & Security Best Practices
-    if (q.includes('ssh') || q.includes('security') || q.includes('ufw') || q.includes('firewall') || q.includes('password') || q.includes('root')) {
-      return `🔒 **Server Security Best Practices**:
-
-1. **Enable UFW Firewall**:
-\`\`\`bash
-sudo ufw allow 22/tcp
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
-sudo ufw enable
-\`\`\`
-2. **Add SSH Public Key**:
-Copy your key into \`~/.ssh/authorized_keys\` on your KryonHost VPS.`;
+    if (q.includes('contact') || q.includes('support') || q.includes('human') || q.includes('ticket') || q.includes('discord')) {
+      return `🎧 **Official Support Desk**:
+• **Email**: support@kryonhost.com
+• **Phone**: +91 8750287172 (9:00 AM – 5:00 PM IST)
+• **Discord**: https://discord.gg/kryonhost`;
     }
 
-    // 9. Node.js & Web App Deployment
-    if (q.includes('node') || q.includes('express') || q.includes('python') || q.includes('pm2') || q.includes('app') || q.includes('deploy')) {
-      return `🚀 **Node.js Production Setup with PM2**:
-
-1. Install Node.js LTS & PM2:
-\`\`\`bash
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs
-sudo npm install -g pm2
-\`\`\`
-2. Start app with auto-restart:
-\`\`\`bash
-pm2 start server.js --name "my-app"
-pm2 save && pm2 startup
-\`\`\``;
-    }
-
-    // 10. General / Greetings / Helpful Fallback
-    if (q.includes('hi') || q.includes('hello') || q.includes('hey') || q.includes('help')) {
-      return `👋 **Hello! How can I assist you today?**
-
-You can ask me about:
-• KryonHost VPS Plans & +4 GB RAM Bonus
-• Cashfree Payment Gateway & Discounts
-• Deploying Docker, Nginx, Node.js, or Python apps
-• Setting up SSH keys & server security`;
-    }
-
-    // Universal Helpful Answer
-    return `I am happy to assist you with your request!
+    return `Thank you for reaching out to KryonHost Support!
 
 Regarding **"${query}"**:
-• If you need guidance on **KryonHost VPS plans**, we offer high-performance NVMe servers starting at **₹349/mo** with a **+4 GB Founding RAM bonus**.
-• If you need **Linux server administration**, **Docker setup**, or **application deployment**, let me know what stack you are building and I will provide full step-by-step terminal commands!
-
-How would you like to proceed?`;
+• We offer high-performance KVM VPS hosting in Tier IV Mumbai starting at **₹379/mo**.
+• If you need technical assistance with **Linux server configuration**, **Docker**, **Nginx**, or **network latency**, please specify your requirements and our team will guide you!`;
   };
 
   const handleSendMessage = (textToSend?: string) => {
@@ -221,130 +144,128 @@ How would you like to proceed?`;
     setIsTyping(true);
 
     setTimeout(() => {
-      const aiReply = generateAIResponse(text);
-      const aiMsg: Message = {
-        id: `ai-${Date.now()}`,
-        sender: 'ai',
-        text: aiReply,
+      const replyText = generateSupportResponse(text);
+      const replyMsg: Message = {
+        id: `support-${Date.now()}`,
+        sender: 'support',
+        text: replyText,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
-      setMessages((prev) => [...prev, aiMsg]);
+      setMessages((prev) => [...prev, replyMsg]);
       setIsTyping(false);
-    }, 500);
+    }, 400);
   };
 
   const quickPrompts = [
-    'What VPS plans do you offer?',
-    'How to install Docker & Portainer?',
-    'Tell me about India - Mumbai Datacenter',
-    'How to setup Nginx & SSL?',
+    'VPS Plans & Pricing',
+    'Mumbai Datacenter Ping',
+    'Docker Installation Guide',
+    'Contact Human Support',
   ];
 
   return (
     <div className="fixed bottom-6 right-6 z-50 font-sans">
-      {/* Proactive Welcome Tooltip Popup on Homepage */}
+      
+      {/* Welcome Tooltip Popup */}
       {!isOpen && showWelcomeTooltip && (
-        <div className="absolute bottom-16 right-0 w-72 p-4 rounded-2xl bg-slate-900/95 text-white border border-[#0096C7]/40 shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-bottom-3 duration-300 font-sans z-50">
+        <div className="absolute bottom-16 right-0 w-72 p-4 rounded-2xl bg-white text-slate-900 border border-slate-200 shadow-xl font-sans z-50 animate-in fade-in slide-in-from-bottom-2 duration-200">
           <div className="flex items-start justify-between gap-2">
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-[#0096C7] text-white">
-                <Sparkles className="w-4 h-4" />
+                <Headphones className="w-4 h-4" />
               </div>
-              <span className="text-xs font-black font-mono text-[#38BDF8]">KryonHost Assistant</span>
+              <span className="text-xs font-bold font-mono text-slate-900">Technical Desk</span>
             </div>
             <button
               onClick={() => setShowWelcomeTooltip(false)}
-              className="text-slate-400 hover:text-white transition-colors"
+              className="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
-          <p className="text-xs text-slate-300 mt-2 font-medium leading-relaxed">
-            👋 Have questions about our <strong className="text-white">India - Mumbai VPS</strong> or <strong className="text-[#38BDF8]">+4 GB RAM Bonus</strong>?
+          <p className="text-xs text-slate-600 mt-2 font-normal leading-relaxed">
+            Need help selecting a <strong className="text-slate-900">Mumbai VPS plan</strong> or server configuration?
           </p>
 
-          <div className="pt-3 mt-2 border-t border-slate-800 flex items-center justify-between">
-            <span className="text-[10px] text-emerald-400 font-mono font-bold flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" /> Online & Ready
+          <div className="pt-3 mt-2 border-t border-slate-100 flex items-center justify-between">
+            <span className="text-[10px] text-emerald-600 font-mono font-bold flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Support Online
             </span>
             <button
               onClick={handleOpenChat}
-              className="px-3 py-1.5 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white text-xs font-black font-mono shadow-md flex items-center gap-1 transition-all"
+              className="px-3 py-1.5 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white text-xs font-heading font-bold shadow-sm flex items-center gap-1 transition-all cursor-pointer"
             >
-              <span>Ask AI Assistant</span>
-              <Zap className="w-3.5 h-3.5 fill-white" />
+              <span>Chat Desk</span>
             </button>
           </div>
         </div>
       )}
 
-      {/* Floating Chat Trigger Button - Icon Only */}
+      {/* Floating Trigger Button */}
       {!isOpen && (
         <button
           onClick={handleOpenChat}
-          aria-label="Open AI Assistant Chat"
-          className="relative p-3.5 rounded-full bg-[#0096C7] hover:bg-[#0284C7] text-white shadow-2xl transition-all transform hover:scale-110 flex items-center justify-center cursor-pointer border border-white/20 group"
+          aria-label="Open Technical Support"
+          className="p-3.5 rounded-full bg-[#0096C7] hover:bg-[#0284C7] text-white shadow-xl transition-all hover:scale-105 flex items-center justify-center cursor-pointer border border-white/20 group"
         >
-          <div className="relative">
-            <Bot className="w-7 h-7 group-hover:rotate-6 transition-transform" />
-            <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-slate-900 rounded-full animate-pulse" />
-          </div>
+          <MessageSquare className="w-6 h-6" />
         </button>
       )}
 
-      {/* Floating Chat Window */}
+      {/* Floating Chat Window - Crisp Light Enterprise Theme */}
       {isOpen && (
-        <div className="w-[92vw] sm:w-[420px] h-[560px] max-h-[85vh] bg-slate-950/95 border border-[#0096C7]/40 text-white rounded-3xl shadow-2xl backdrop-blur-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 duration-200">
-          {/* Top Header */}
-          <div className="p-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+        <div className="w-[92vw] sm:w-[400px] h-[540px] max-h-[85vh] bg-white border border-slate-200 text-slate-900 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-3 duration-200">
+          
+          {/* Header */}
+          <div className="p-4 bg-slate-900 text-white flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-2xl bg-[#0096C7] text-white shadow-md shadow-[#0096C7]/30">
-                <Bot className="w-5 h-5" />
+              <div className="p-2 rounded-xl bg-[#0096C7] text-white shadow-sm">
+                <Headphones className="w-5 h-5" />
               </div>
               <div>
-                <div className="text-xs font-black flex items-center gap-2 font-mono">
-                  <span>KryonHost Universal AI</span>
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold border border-emerald-500/30">
-                    ONLINE 🟢
+                <div className="text-xs font-heading font-black flex items-center gap-2 tracking-tight">
+                  <span>KryonHost Technical Desk</span>
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-mono font-bold">
+                    ONLINE
                   </span>
                 </div>
-                <div className="text-[10px] text-slate-400 font-medium">VPS Specs, Pricing & Linux Administration</div>
+                <div className="text-[10px] text-slate-400 font-mono">Infrastructure & Support Assistant</div>
               </div>
             </div>
 
             <button
               onClick={() => setIsOpen(false)}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Messages Body */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-3.5 bg-slate-900/40">
+          <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50">
             {messages.map((msg) => (
               <div
                 key={msg.id}
                 className={`flex gap-2.5 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                {msg.sender === 'ai' && (
+                {msg.sender === 'support' && (
                   <div className="w-7 h-7 rounded-xl bg-[#0096C7] text-white flex items-center justify-center shrink-0 text-xs shadow-sm mt-0.5">
-                    <Bot className="w-4 h-4" />
+                    <Headphones className="w-4 h-4" />
                   </div>
                 )}
 
                 <div
-                  className={`max-w-[84%] p-3.5 rounded-2xl text-xs leading-relaxed space-y-1.5 shadow-sm font-sans ${
+                  className={`max-w-[85%] p-3.5 rounded-2xl text-xs leading-relaxed space-y-1.5 shadow-sm font-sans ${
                     msg.sender === 'user'
                       ? 'bg-[#0096C7] text-white rounded-br-none font-medium'
-                      : 'bg-slate-900/90 border border-slate-800 text-slate-200 rounded-bl-none'
+                      : 'bg-white border border-slate-200 text-slate-800 rounded-bl-none'
                   }`}
                 >
                   <div className="whitespace-pre-wrap">{msg.text}</div>
                   <div
                     className={`text-[9px] font-mono text-right ${
-                      msg.sender === 'user' ? 'text-blue-100' : 'text-slate-500'
+                      msg.sender === 'user' ? 'text-blue-100' : 'text-slate-400'
                     }`}
                   >
                     {msg.timestamp}
@@ -354,21 +275,21 @@ How would you like to proceed?`;
             ))}
 
             {isTyping && (
-              <div className="flex items-center gap-2 text-slate-400 text-xs font-mono p-2">
-                <Loader2 className="w-4 h-4 animate-spin text-[#38BDF8]" />
-                <span>KryonHost AI is processing your request...</span>
+              <div className="flex items-center gap-2 text-slate-500 text-xs font-mono p-2">
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-[#0096C7]" />
+                <span>Support desk is typing...</span>
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
 
           {/* Quick Choice Prompts */}
-          <div className="p-2.5 bg-slate-900/80 border-t border-slate-800 flex items-center gap-1.5 overflow-x-auto text-[11px] font-mono scrollbar-none">
+          <div className="p-2 bg-white border-t border-slate-200 flex items-center gap-1.5 overflow-x-auto text-[11px] font-mono scrollbar-none">
             {quickPrompts.map((prompt) => (
               <button
                 key={prompt}
                 onClick={() => handleSendMessage(prompt)}
-                className="px-2.5 py-1 rounded-xl bg-slate-800/80 hover:bg-[#0096C7]/30 text-slate-300 hover:text-white font-bold whitespace-nowrap transition-colors border border-slate-700/60 shrink-0"
+                className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-[#0096C7] hover:text-white text-slate-700 font-bold whitespace-nowrap transition-colors border border-slate-200 shrink-0 cursor-pointer"
               >
                 {prompt}
               </button>
@@ -381,34 +302,24 @@ How would you like to proceed?`;
               e.preventDefault();
               handleSendMessage();
             }}
-            className="p-3 bg-slate-900 border-t border-slate-800 flex items-center gap-2"
+            className="p-3 bg-white border-t border-slate-200 flex items-center gap-2"
           >
             <input
               type="text"
-              placeholder="Ask anything about VPS, Docker, Nginx, Cashfree..."
+              placeholder="Type your server or pricing question..."
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              className="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-[#0096C7]"
+              className="flex-1 px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0096C7]"
             />
             <button
               type="submit"
               disabled={!inputText.trim()}
-              className="p-2.5 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white disabled:opacity-40 transition-all cursor-pointer shadow-md"
+              className="p-2 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white disabled:opacity-40 transition-all cursor-pointer shadow-sm"
             >
               <Send className="w-4 h-4" />
             </button>
           </form>
 
-          {/* Footer Branding */}
-          <div className="py-2 px-4 bg-slate-950 border-t border-slate-900 text-[10px] text-slate-500 font-mono text-center flex items-center justify-between">
-            <span>KryonHost Universal AI Assistant</span>
-            <button
-              onClick={() => onOpenPreOrder('performance')}
-              className="text-[#38BDF8] font-bold hover:underline"
-            >
-              Pre-Order VPS →
-            </button>
-          </div>
         </div>
       )}
     </div>
