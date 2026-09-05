@@ -27,32 +27,32 @@ export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           
           {/* Left Hero Column */}
-          <div className="lg:col-span-7 space-y-5 text-left">
+          <div className="lg:col-span-7 space-y-6 text-left">
             
             {/* Infrastructure Online Status Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200/90 text-xs font-mono shadow-sm animate-pulse-glow">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/90 text-xs font-mono shadow-sm animate-pulse-glow">
               <span className="flex h-2 w-2 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="text-slate-900 font-black tracking-tight uppercase text-[11px]">Infrastructure Online</span>
+              <span className="text-slate-900 font-extrabold tracking-tight uppercase text-[11px]">Infrastructure Online</span>
               <span className="text-slate-300">•</span>
               <span className="text-[#0096C7] font-bold text-[11px] flex items-center gap-1">
-                <Radio className="w-3 h-3 text-[#0096C7] animate-pulse" />
+                <Radio className="w-3.5 h-3.5 text-[#0096C7] animate-pulse" />
                 <span>Tier IV Mumbai</span>
               </span>
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.1]">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-black text-slate-900 tracking-tight leading-[1.08]">
               Powerful Infrastructure.<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077B6] via-[#0096C7] to-blue-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077B6] via-[#0096C7] to-cyan-500">
                 Built for What's Next.
               </span>
             </h1>
 
             {/* Supporting Copy */}
-            <p className="text-sm sm:text-base text-slate-600 max-w-lg font-normal leading-relaxed">
+            <p className="text-base text-slate-600 max-w-lg font-normal leading-relaxed">
               Deploy ultra-fast KVM VPS and low-ping game servers in 60 seconds. Powered by AMD Ryzen 7000, DDR5 ECC memory, Gen5 NVMe, and 1 Gbps direct NIXI peering.
             </p>
 
@@ -60,7 +60,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <button
                 onClick={onExploreVPS}
-                className="px-6 py-3 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white font-black text-xs shadow-lg shadow-[#0096C7]/25 flex items-center gap-2 transition-all hover:scale-[1.02] cursor-pointer"
+                className="px-6 py-3.5 rounded-xl bg-[#0096C7] hover:bg-[#0284C7] text-white font-heading font-bold text-xs shadow-lg shadow-[#0096C7]/25 flex items-center gap-2 transition-all hover:scale-[1.02] cursor-pointer"
               >
                 <span>Explore VPS Plans</span>
                 <ArrowRight className="w-4 h-4" />
@@ -68,29 +68,29 @@ export const Hero: React.FC<HeroProps> = ({ onExploreVPS, onExploreGame }) => {
 
               <button
                 onClick={onExploreGame}
-                className="px-6 py-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-800 border border-slate-200 font-bold text-xs transition-all hover:scale-[1.02] shadow-sm cursor-pointer"
+                className="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 font-heading font-bold text-xs transition-all hover:scale-[1.02] shadow-sm cursor-pointer"
               >
                 <span>Game Server Hosting</span>
               </button>
             </div>
 
             {/* Compact Technical Highlights */}
-            <div className="pt-4 border-t border-slate-200/80 flex flex-wrap gap-4 text-xs font-mono text-slate-600">
-              <div className="flex items-center gap-1.5 bg-slate-100/70 px-2.5 py-1 rounded-lg border border-slate-200/70">
+            <div className="pt-5 border-t border-slate-200/80 flex flex-wrap gap-3 text-xs font-mono text-slate-600">
+              <div className="flex items-center gap-1.5 bg-slate-100/80 px-3 py-1.5 rounded-lg border border-slate-200/80 shadow-xs">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span className="font-bold">KVM Isolation</span>
+                <span className="font-bold text-slate-800">KVM Isolation</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-slate-100/70 px-2.5 py-1 rounded-lg border border-slate-200/70">
+              <div className="flex items-center gap-1.5 bg-slate-100/80 px-3 py-1.5 rounded-lg border border-slate-200/80 shadow-xs">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span className="font-bold">DDR5 ECC RAM</span>
+                <span className="font-bold text-slate-800">DDR5 ECC RAM</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-slate-100/70 px-2.5 py-1 rounded-lg border border-slate-200/70">
+              <div className="flex items-center gap-1.5 bg-slate-100/80 px-3 py-1.5 rounded-lg border border-slate-200/80 shadow-xs">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span className="font-bold">7,400 MB/s NVMe</span>
+                <span className="font-bold text-slate-800">7,400 MB/s NVMe</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-slate-100/70 px-2.5 py-1 rounded-lg border border-slate-200/70">
+              <div className="flex items-center gap-1.5 bg-slate-100/80 px-3 py-1.5 rounded-lg border border-slate-200/80 shadow-xs">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span className="font-bold">Dedicated IPv4</span>
+                <span className="font-bold text-slate-800">Dedicated IPv4</span>
               </div>
             </div>
 

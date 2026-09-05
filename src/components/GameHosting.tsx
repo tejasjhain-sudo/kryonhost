@@ -38,14 +38,14 @@ export const GameHosting: React.FC<GameHostingProps> = ({ onSelectGamePlan }) =>
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-xs font-mono font-bold text-purple-700">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-xs font-mono font-bold text-purple-700 shadow-sm">
             <Gamepad2 className="w-3.5 h-3.5" />
             <span>LOW LATENCY INDIA GAMING</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-3xl sm:text-5xl font-heading font-black text-slate-900 tracking-tight">
             Game Hosting
           </h2>
-          <p className="text-sm sm:text-base text-slate-600 font-medium">
+          <p className="text-base text-slate-600 font-normal">
             High-performance game servers, deployed in minutes.
           </p>
         </div>

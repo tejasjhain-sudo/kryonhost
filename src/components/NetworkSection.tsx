@@ -33,14 +33,14 @@ export const NetworkSection: React.FC = () => {
     <section id="network" className="py-24 bg-slate-50 text-slate-900 font-sans border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#E0F2FE] border border-[#0096C7]/30 text-xs font-mono font-bold text-[#0096C7]">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E0F2FE] border border-[#0096C7]/30 text-xs font-mono font-bold text-[#0096C7] shadow-sm">
             <Network className="w-3.5 h-3.5" />
             <span>PACKET BACKBONE & SCRUBBING</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-heading font-black text-slate-900 tracking-tight">
             Network Architecture
           </h2>
-          <p className="text-sm text-slate-600 font-medium">
+          <p className="text-base text-slate-600 font-normal">
             Engineered for high packet velocity, clean transit, and automated threat mitigation.
           </p>
         </div>
