@@ -1,185 +1,180 @@
 import React from 'react';
 import { Logo } from './Logo';
+import { ShieldCheck, Server, Gamepad2, ArrowRight, ExternalLink, Mail, Phone } from 'lucide-react';
 import { KRYONHOST_CONFIG } from '../config/kryonhost.config';
-import { MessageSquare, Twitter, Instagram, Github, ArrowUp } from 'lucide-react';
 
 interface FooterProps {
-  onOpenPreOrder: () => void;
-  onOpenLegal: (doc: 'terms' | 'privacy' | 'aup' | 'refund') => void;
-  onOpenDocs: () => void;
+  onNavigate: (view: 'home' | 'checkout' | 'account' | 'status' | 'network' | 'docs' | 'api-docs') => void;
+  onOpenLegal: (doc: 'terms' | 'privacy' | 'refund' | 'aup') => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenPreOrder, onOpenLegal, onOpenDocs }) => {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
+  const scrollTo = (id: string) => {
+    onNavigate('home');
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   };
 
   return (
-    <footer className="bg-white border-t border-slate-200 text-slate-600">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
-          {/* Brand & Slogan */}
-          <div className="lg:col-span-2 space-y-3">
-            <a href="#" className="inline-block">
-              <Logo size="md" />
-            </a>
-            <p className="text-xs font-bold text-slate-900 tracking-wide">
-              {KRYONHOST_CONFIG.brand.tagline}
+    <footer className="bg-[#05070B] border-t border-slate-800/80 text-slate-400 font-sans text-xs">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+        
+        {/* Main 4-Column Footer Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+          
+          {/* Brand Info (2 cols) */}
+          <div className="lg:col-span-2 space-y-4">
+            <Logo size="md" />
+            <p className="text-slate-400 text-xs font-mono max-w-sm">
+              Powerful Infrastructure. Built for What's Next.
             </p>
-            <p className="text-xs text-slate-600 max-w-sm leading-relaxed">
-              {KRYONHOST_CONFIG.brand.subtext}
+            <p className="text-slate-400 text-xs font-normal max-w-sm leading-relaxed">
+              High-performance KVM VPS and low-latency game hosting without the enterprise price tag. Hosted in Tier IV Mumbai datacenter with direct NIXI peering.
             </p>
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#E0F2FE] border border-[#0096C7]/30 text-[11px] font-mono text-[#0096C7]">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Pre-launch founding allocation active</span>
+
+            <div className="pt-2 flex items-center gap-3">
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-slate-300 font-mono text-[11px] font-bold">
+                Tier IV Mumbai Node Operational
+              </span>
             </div>
           </div>
 
-          {/* Products */}
-          <div className="space-y-2.5">
-            <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-900">Products</h4>
-            <ul className="space-y-2 text-xs">
+          {/* Products Column */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-mono font-bold uppercase text-slate-200 tracking-wider">Products</h4>
+            <ul className="space-y-2">
               <li>
-                <a href="#vps-plans" className="hover:text-slate-900 transition-colors">
-                  Compute VPS
-                </a>
+                <button
+                  onClick={() => scrollTo('vps-hosting')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  VPS Hosting
+                </button>
               </li>
               <li>
-                <a href="#vps-plans" className="hover:text-slate-900 transition-colors">
-                  Pricing Plans
-                </a>
+                <button
+                  onClick={() => scrollTo('game-hosting')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Game Server Hosting
+                </button>
               </li>
               <li>
-                <a href="#locations" className="hover:text-slate-900 transition-colors">
-                  Datacenter Regions
-                </a>
+                <button
+                  onClick={() => scrollTo('vps-hosting')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Budget Compute
+                </button>
               </li>
               <li>
-                <button onClick={onOpenPreOrder} className="text-[#0096C7] font-bold hover:underline">
-                  Pre-Order VPS
+                <button
+                  onClick={() => scrollTo('vps-hosting')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Power Ryzen 7000 Tier
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Company */}
-          <div className="space-y-2.5">
-            <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-900">Company</h4>
-            <ul className="space-y-2 text-xs">
+          {/* Resources Column */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-mono font-bold uppercase text-slate-200 tracking-wider">Resources</h4>
+            <ul className="space-y-2">
               <li>
-                <a href="#features" className="hover:text-slate-900 transition-colors">
-                  Architecture
-                </a>
-              </li>
-              <li>
-                <a href="#status" className="hover:text-slate-900 transition-colors">
-                  System Status
-                </a>
-              </li>
-              <li>
-                <a
-                  href={KRYONHOST_CONFIG.contact.discordUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-slate-900 transition-colors"
+                <button
+                  onClick={() => onNavigate('docs')}
+                  className="hover:text-white transition-colors cursor-pointer"
                 >
-                  Contact Support
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Legal & Docs */}
-          <div className="space-y-2.5">
-            <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-900">Legal & Policies</h4>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <button onClick={onOpenDocs} className="hover:text-slate-900 text-left">
                   Documentation
                 </button>
               </li>
               <li>
-                <a href="#faq" className="hover:text-slate-900 transition-colors">
-                  FAQ
-                </a>
-              </li>
-              <li>
-                <button onClick={() => onOpenLegal('terms')} className="hover:text-slate-900 text-left">
-                  Terms of Service
+                <button
+                  onClick={() => onNavigate('status')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Status Page
                 </button>
               </li>
               <li>
-                <button onClick={() => onOpenLegal('privacy')} className="hover:text-slate-900 text-left">
-                  Privacy Policy
+                <button
+                  onClick={() => onNavigate('api-docs')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  API Reference
                 </button>
               </li>
               <li>
-                <button onClick={() => onOpenLegal('aup')} className="hover:text-slate-900 text-left">
-                  Acceptable Use Policy
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onOpenLegal('refund')} className="hover:text-slate-900 text-left">
-                  Refund Policy
+                <button
+                  onClick={() => onNavigate('network')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Network & Ping Test
                 </button>
               </li>
             </ul>
           </div>
+
+          {/* Company & Legal Column */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-mono font-bold uppercase text-slate-200 tracking-wider">Company & Legal</h4>
+            <ul className="space-y-2">
+              <li>
+                <button
+                  onClick={() => onOpenLegal('terms')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Terms of Service
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onOpenLegal('privacy')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Privacy Policy
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onOpenLegal('refund')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Refund Policy
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onOpenLegal('aup')}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Acceptable Use Policy
+                </button>
+              </li>
+            </ul>
+          </div>
+
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-xs text-slate-500 font-mono">
+        <div className="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono text-[11px] text-slate-400">
+          <div>
             © 2026 KryonHost. All rights reserved.
           </div>
-
-          <div className="flex items-center space-x-3">
-            <a
-              href={KRYONHOST_CONFIG.contact.discordUrl}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Discord"
-              className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
-            >
-              <MessageSquare className="w-4 h-4" />
-            </a>
-            <a
-              href={KRYONHOST_CONFIG.contact.twitterUrl}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Twitter X"
-              className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
-            >
-              <Twitter className="w-4 h-4" />
-            </a>
-            <a
-              href={KRYONHOST_CONFIG.contact.instagramUrl}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Instagram"
-              className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
-            >
-              <Instagram className="w-4 h-4" />
-            </a>
-            <a
-              href={KRYONHOST_CONFIG.contact.githubUrl}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="GitHub"
-              className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
-            >
-              <Github className="w-4 h-4" />
-            </a>
-
-            <button
-              onClick={scrollToTop}
-              className="p-2 rounded-lg bg-[#E0F2FE] text-[#0096C7] hover:bg-[#0096C7] hover:text-white transition-colors ml-2"
-              title="Scroll to Top"
-            >
-              <ArrowUp className="w-4 h-4" />
-            </button>
+          <div className="flex items-center gap-6">
+            <span>Support: support@kryonhost.com</span>
+            <span>Tel: +91 8750287172</span>
           </div>
         </div>
+
       </div>
     </footer>
   );

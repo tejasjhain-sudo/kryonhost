@@ -3,52 +3,52 @@ import { AuthProvider } from './context/AuthContext';
 import { HeaderAnnouncement } from './components/HeaderAnnouncement';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { PreOrderBanner } from './components/PreOrderBanner';
+import { TrustStrip } from './components/TrustStrip';
 import { Pricing } from './components/Pricing';
-import { Features } from './components/Features';
-import { InfrastructureSpecs } from './components/InfrastructureSpecs';
-import { InfrastructureUpgrades } from './components/InfrastructureUpgrades';
-import { InfrastructureSlideshow } from './components/InfrastructureSlideshow';
-import { Locations } from './components/Locations';
+import { GameHosting } from './components/GameHosting';
 import { NetworkSection } from './components/NetworkSection';
 import { SupportBanner } from './components/SupportBanner';
-import { CustomerExperience } from './components/CustomerExperience';
-import { StatusWidget } from './components/StatusWidget';
 import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
 import { CheckoutPage } from './components/CheckoutPage';
+import { CustomerAccount } from './components/CustomerAccount';
+import { StatusPage } from './components/StatusPage';
+import { NetworkPage } from './components/NetworkPage';
+import { DocsPage } from './components/DocsPage';
+import { APIDocsPage } from './components/APIDocsPage';
 import { AuthModal } from './components/AuthModal';
-import { BillingPage } from './components/BillingPage';
-import { AdminPage } from './components/AdminPage';
 import { AIChatBot } from './components/AIChatBot';
 import { CookieConsent } from './components/CookieConsent';
-import { LegalModal, DocsModal } from './components/Modals';
+import { LegalModal } from './components/Modals';
 import { Analytics } from '@vercel/analytics/react';
 
+export type AppView = 'home' | 'checkout' | 'account' | 'status' | 'network' | 'docs' | 'api-docs';
+
 export function AppContent() {
-  // Main Navigation View State: 'home' | 'checkout' | 'admin'
-  const [currentView, setCurrentView] = useState<'home' | 'checkout' | 'admin'>('home');
-  const [selectedPlanId, setSelectedPlanId] = useState<string>('performance');
+  const [currentView, setCurrentView] = useState<AppView>('home');
+  const [selectedPlanId, setSelectedPlanId] = useState<string>('performance-16gb');
+  const [selectedBillingCycle, setSelectedBillingCycle] = useState<'monthly' | 'quarterly'>('monthly');
 
   // Modals & Panels
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
-  const [billingOpen, setBillingOpen] = useState(false);
-  const [docsOpen, setDocsOpen] = useState(false);
   const [legalModalOpen, setLegalModalOpen] = useState(false);
-  const [activeLegalTab, setActiveLegalTab] = useState<'terms' | 'privacy' | 'aup' | 'refund'>('terms');
+  const [activeLegalTab, setActiveLegalTab] = useState<'terms' | 'privacy' | 'refund' | 'aup'>('terms');
 
-  const handleOpenCheckout = (planId?: string) => {
-    if (planId) {
-      setSelectedPlanId(planId);
-    }
-    setCurrentView('checkout');
+  const handleNavigate = (view: AppView) => {
+    setCurrentView(view);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleOpenAdmin = () => {
-    setCurrentView('admin');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleSelectPlan = (planId: string, billingCycle: 'monthly' | 'quarterly' = 'monthly') => {
+    setSelectedPlanId(planId);
+    setSelectedBillingCycle(billingCycle);
+    handleNavigate('checkout');
+  };
+
+  const handleSelectGamePlan = (gameId: string, planDetails: any) => {
+    setSelectedPlanId('performance-8gb'); // Base high-clock node for game hosting
+    handleNavigate('checkout');
   };
 
   const handleOpenAuth = (mode: 'signin' | 'signup' = 'signin') => {
@@ -56,117 +56,110 @@ export function AppContent() {
     setAuthModalOpen(true);
   };
 
-  const handleOpenLegal = (doc: 'terms' | 'privacy' | 'aup' | 'refund') => {
+  const handleOpenLegal = (doc: 'terms' | 'privacy' | 'refund' | 'aup') => {
     setActiveLegalTab(doc);
     setLegalModalOpen(true);
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-[#0096C7]/20 selection:text-[#0096C7] overflow-x-hidden">
-      {/* Navbar with Header Announcement */}
+    <div className="min-h-screen bg-[#070A0F] text-slate-100 selection:bg-[#0096C7]/30 selection:text-[#38BDF8] overflow-x-hidden font-sans">
+      
+      {/* Top Header Announcement Ticker */}
+      <HeaderAnnouncement onExplore={() => {
+        handleNavigate('home');
+        setTimeout(() => {
+          document.getElementById('vps-hosting')?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }} />
+
+      {/* Sticky Dark Navigation Bar */}
       <Navbar
-        onOpenPreOrder={handleOpenCheckout}
+        onNavigate={handleNavigate}
         onOpenLogin={(mode) => handleOpenAuth(mode || 'signin')}
-        onOpenDocs={() => setDocsOpen(true)}
-        onOpenBilling={() => setBillingOpen(true)}
-        onOpenAdmin={handleOpenAdmin}
+        onSelectPlan={handleSelectPlan}
       />
 
-      {/* Main View Routing */}
-      {currentView === 'checkout' ? (
-        /* DEDICATED FULL STANDALONE CHECKOUT PAGE */
-        <CheckoutPage
-          selectedPlanId={selectedPlanId}
-          onBackToHome={() => {
-            setCurrentView('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          onOpenBilling={() => setBillingOpen(true)}
-        />
-      ) : currentView === 'admin' ? (
-        /* DEDICATED FULL STANDALONE ADMIN PORTAL PAGE */
-        <AdminPage
-          onBackToHome={() => {
-            setCurrentView('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-        />
-      ) : (
-        /* HOME LANDING PAGE */
-        <main>
-          <Hero onOpenPreOrder={() => handleOpenCheckout('performance')} />
+      {/* Main View Router */}
+      <main>
+        {currentView === 'checkout' ? (
+          <CheckoutPage
+            selectedPlanId={selectedPlanId}
+            initialBillingCycle={selectedBillingCycle}
+            onBackToHome={() => handleNavigate('home')}
+            onOpenAccount={() => handleNavigate('account')}
+          />
+        ) : currentView === 'account' ? (
+          <CustomerAccount
+            onBackToHome={() => handleNavigate('home')}
+            onDeployNew={() => handleNavigate('home')}
+          />
+        ) : currentView === 'status' ? (
+          <StatusPage onBackToHome={() => handleNavigate('home')} />
+        ) : currentView === 'network' ? (
+          <NetworkPage onBackToHome={() => handleNavigate('home')} />
+        ) : currentView === 'docs' ? (
+          <DocsPage onBackToHome={() => handleNavigate('home')} />
+        ) : currentView === 'api-docs' ? (
+          <APIDocsPage onBackToHome={() => handleNavigate('home')} />
+        ) : (
+          /* HOME LANDING PAGE */
+          <div>
+            <Hero
+              onExploreVPS={() => {
+                document.getElementById('vps-hosting')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              onExploreGame={() => {
+                document.getElementById('game-hosting')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            />
 
-          {/* Founding Pre-Order Banner */}
-          <PreOrderBanner onOpenPreOrder={() => handleOpenCheckout('performance')} />
+            {/* Dark Trust Strip */}
+            <TrustStrip />
 
-          {/* VPS Pricing Plans */}
-          <Pricing onSelectPlan={(planId) => handleOpenCheckout(planId)} />
+            {/* VPS Hosting Pricing Section (Budget, Standard, Performance, Power) */}
+            <Pricing onSelectPlan={handleSelectPlan} />
 
-          {/* Why KryonHost (Features) */}
-          <Features />
+            {/* Game Server Hosting Section (Minecraft + Supported Games) */}
+            <GameHosting onSelectGamePlan={handleSelectGamePlan} />
 
-          {/* Technical Infrastructure Specification Dashboard */}
-          <InfrastructureSpecs />
+            {/* Network Section */}
+            <NetworkSection />
 
-          {/* Custom Infrastructure Upgrades & Add-ons Pricing */}
-          <InfrastructureUpgrades onOpenPreOrder={() => handleOpenCheckout('performance')} />
+            {/* Official Support & Contact Desk */}
+            <SupportBanner />
 
-          {/* Interactive 5-Slide Infrastructure Presentation */}
-          <InfrastructureSlideshow onOpenPreOrder={() => handleOpenCheckout('performance')} />
+            {/* Technical FAQ */}
+            <FAQ onOpenRefundPolicy={() => handleOpenLegal('refund')} />
+          </div>
+        )}
+      </main>
 
-          {/* Datacenter Locations */}
-          <Locations />
-
-          {/* Network Section */}
-          <NetworkSection />
-
-          {/* Official Support & Contact Banner */}
-          <SupportBanner />
-
-          {/* Customer Experience Grid */}
-          <CustomerExperience />
-
-          {/* Infrastructure Live Status Widget */}
-          <StatusWidget />
-
-          {/* FAQ Accordion */}
-          <FAQ onOpenRefundPolicy={() => handleOpenLegal('refund')} />
-        </main>
-      )}
-
-      {/* Footer */}
+      {/* Dark Premium Footer */}
       <Footer
-        onOpenPreOrder={() => handleOpenCheckout('performance')}
+        onNavigate={handleNavigate}
         onOpenLegal={handleOpenLegal}
-        onOpenDocs={() => setDocsOpen(true)}
       />
 
-      {/* AI Customer Support & VPS Guide Chatbot Floating Widget */}
-      <AIChatBot onOpenPreOrder={handleOpenCheckout} />
+      {/* Floating Support Chatbot */}
+      <AIChatBot onOpenPreOrder={() => handleNavigate('checkout')} />
 
-      {/* First-Time Visitor Cookie Consent Banner */}
+      {/* First-Time Visitor Cookie Consent */}
       <CookieConsent onOpenPrivacy={() => handleOpenLegal('privacy')} />
 
-      {/* Modals & Billing Portal */}
+      {/* Authentication Modal */}
       <AuthModal
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
         initialMode={authMode}
       />
 
-      <BillingPage
-        isOpen={billingOpen}
-        onClose={() => setBillingOpen(false)}
-        onOpenPreOrder={() => handleOpenCheckout('performance')}
-      />
-
-      <DocsModal isOpen={docsOpen} onClose={() => setDocsOpen(false)} />
-
+      {/* Legal Documents Modal (Terms, Privacy, Refund, AUP) */}
       <LegalModal
         isOpen={legalModalOpen}
         onClose={() => setLegalModalOpen(false)}
         activeDoc={activeLegalTab}
       />
+
     </div>
   );
 }
