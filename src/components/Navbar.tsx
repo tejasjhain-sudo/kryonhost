@@ -290,46 +290,51 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3 font-sans shadow-lg">
+        <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3 font-sans shadow-lg animate-in fade-in slide-in-from-top-2">
           <div className="flex flex-col space-y-1">
             <button
               onClick={() => scrollToSection('vps-hosting')}
-              className="px-3 py-2 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-lg"
+              className="px-3.5 py-2.5 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-xl flex items-center gap-2.5"
             >
-              VPS Hosting
+              <Server className="w-4 h-4 text-[#0096C7]" />
+              <span>VPS Hosting</span>
             </button>
             <button
               onClick={() => scrollToSection('game-hosting')}
-              className="px-3 py-2 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-lg"
+              className="px-3.5 py-2.5 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-xl flex items-center gap-2.5"
             >
-              Game Server Hosting
+              <Gamepad2 className="w-4 h-4 text-purple-600" />
+              <span>Game Server Hosting</span>
             </button>
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onNavigate('docs');
               }}
-              className="px-3 py-2 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-lg"
+              className="px-3.5 py-2.5 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-xl flex items-center gap-2.5"
             >
-              Documentation
+              <FileText className="w-4 h-4 text-[#0096C7]" />
+              <span>Documentation</span>
             </button>
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onNavigate('status');
               }}
-              className="px-3 py-2 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-lg"
+              className="px-3.5 py-2.5 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-xl flex items-center gap-2.5"
             >
-              Status Page
+              <Activity className="w-4 h-4 text-emerald-600" />
+              <span>Status Page</span>
             </button>
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onNavigate('network');
               }}
-              className="px-3 py-2 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-lg"
+              className="px-3.5 py-2.5 text-sm font-bold text-slate-800 text-left hover:bg-slate-100 rounded-xl flex items-center gap-2.5"
             >
-              Network & Latency
+              <Network className="w-4 h-4 text-blue-600" />
+              <span>Network & Latency</span>
             </button>
           </div>
 
@@ -340,9 +345,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
                   setMobileMenuOpen(false);
                   onNavigate('account');
                 }}
-                className="w-full py-2.5 rounded-xl bg-slate-100 text-slate-900 font-bold text-xs"
+                className="w-full py-3 rounded-xl bg-slate-100 text-slate-900 font-bold text-xs flex items-center justify-center gap-2"
               >
-                Open Client Portal
+                <User className="w-4 h-4 text-[#0096C7]" />
+                <span>Open Client Portal</span>
               </button>
             ) : (
               <button
@@ -350,14 +356,71 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, onOpenLogin, onSelec
                   setMobileMenuOpen(false);
                   onOpenLogin('signin');
                 }}
-                className="w-full py-2.5 rounded-xl bg-slate-100 text-slate-900 font-bold text-xs"
+                className="w-full py-3 rounded-xl bg-slate-100 text-slate-900 font-bold text-xs flex items-center justify-center gap-2"
               >
-                Log In
+                <User className="w-4 h-4 text-slate-600" />
+                <span>Log In</span>
               </button>
             )}
           </div>
         </div>
       )}
+
+      {/* DEDICATED PHONE MOBILE BOTTOM NAVIGATION BAR (Visible ONLY on phones / screens < 768px) */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-slate-200/90 py-1.5 px-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] flex items-center justify-around font-sans text-[10px] font-bold text-slate-600 select-none">
+        
+        {/* 1. VPS Plans */}
+        <button
+          onClick={() => scrollToSection('vps-hosting')}
+          className="flex flex-col items-center gap-1 p-1 hover:text-[#0096C7] transition-colors cursor-pointer"
+        >
+          <Server className="w-5 h-5 text-[#0096C7]" />
+          <span>VPS Plans</span>
+        </button>
+
+        {/* 2. Game VPS */}
+        <button
+          onClick={() => scrollToSection('game-hosting')}
+          className="flex flex-col items-center gap-1 p-1 hover:text-purple-600 transition-colors cursor-pointer"
+        >
+          <Gamepad2 className="w-5 h-5 text-purple-600" />
+          <span>Gaming</span>
+        </button>
+
+        {/* 3. Central Deploy CTA Button */}
+        <button
+          onClick={() => scrollToSection('vps-hosting')}
+          className="flex flex-col items-center justify-center w-12 h-12 rounded-full bg-[#0096C7] text-white shadow-lg shadow-[#0096C7]/30 -mt-5 hover:scale-105 active:scale-95 transition-transform cursor-pointer border-2 border-white"
+        >
+          <ArrowRight className="w-5 h-5" />
+        </button>
+
+        {/* 4. Network */}
+        <button
+          onClick={() => onNavigate('network')}
+          className="flex flex-col items-center gap-1 p-1 hover:text-blue-600 transition-colors cursor-pointer"
+        >
+          <Network className="w-5 h-5 text-blue-600" />
+          <span>Network</span>
+        </button>
+
+        {/* 5. Account */}
+        <button
+          onClick={() => {
+            if (user) {
+              onNavigate('account');
+            } else {
+              onOpenLogin('signin');
+            }
+          }}
+          className="flex flex-col items-center gap-1 p-1 hover:text-slate-900 transition-colors cursor-pointer"
+        >
+          <User className="w-5 h-5 text-slate-700" />
+          <span>{user ? 'Account' : 'Login'}</span>
+        </button>
+
+      </div>
     </header>
   );
 };
+
