@@ -10,7 +10,6 @@ import { GameHosting } from './components/GameHosting';
 import { OSCatalog } from './components/OSCatalog';
 import { HardwareSpecs } from './components/HardwareSpecs';
 import { InfrastructureSlideshow } from './components/InfrastructureSlideshow';
-import { LatencyMatrix } from './components/LatencyMatrix';
 import { ComparisonTable } from './components/ComparisonTable';
 import { SecuritySection } from './components/SecuritySection';
 import { NetworkSection } from './components/NetworkSection';
@@ -142,10 +141,7 @@ export function AppContent() {
             {/* 8. Datacenter & Node Image Slideshow Gallery */}
             <InfrastructureSlideshow onOpenPreOrder={() => handleNavigate('checkout')} />
 
-            {/* 9. Regional India Latency Matrix & Looking Glass */}
-            <LatencyMatrix />
-
-            {/* 9. KryonHost vs Legacy Providers Comparison Table */}
+            {/* 9. Enterprise Benchmarks Showcase */}
             <ComparisonTable onExplore={() => handleNavigate('checkout')} />
 
             {/* 10. Security & DDoS Filtering Shield */}
