@@ -51,7 +51,7 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
       title: '+4 GB Permanent RAM Launch Bonus',
       subtitle: 'Exclusive Founding Customer RAM Boost',
       description: 'Pre-order any VPS plan during the founding period and receive +4 GB permanent RAM added to your instance for life at no additional cost.',
-      image: 'https://images.unsplash.com/photo-1562976540-1502c2145186?auto=format&fit=crop&w=1200&q=80',
+      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
       stats: [
         { label: 'Founding Bonus', value: '+4 GB RAM' },
         { label: 'Cost', value: '₹0 (Permanent)' },
@@ -68,24 +68,10 @@ export const InfrastructureSlideshow: React.FC<{ onOpenPreOrder?: () => void }> 
       image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80',
       stats: [
         { label: 'DDoS Capacity', value: '100 Gbps+' },
-        { label: 'Checkout Provider', value: 'Cashfree' },
+        { label: 'Checkout Provider', value: 'Razorpay' },
         { label: 'Payment Options', value: 'UPI / Cards' },
       ],
       icon: <ShieldCheck className="w-8 h-8 text-amber-600" />,
-    },
-    {
-      id: 5,
-      badge: 'KVM VIRTUALIZATION',
-      title: 'Proxmox KVM Isolation & 7-Day Rolling Backups',
-      subtitle: 'Dedicated Resources & 1-Click OS Templates',
-      description: 'Full KVM hardware virtualization ensuring 100% reserved vCPU and RAM resources. Enjoy 7-day rolling backups and instant OS installs.',
-      image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1200&q=80',
-      stats: [
-        { label: 'Hypervisor', value: 'Proxmox VE' },
-        { label: 'OS Templates', value: 'Linux & Docker' },
-        { label: 'Backups', value: '7-Day Rolling' },
-      ],
-      icon: <Server className="w-8 h-8 text-blue-600" />,
     },
   ];
 
