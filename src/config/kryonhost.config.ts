@@ -65,6 +65,13 @@ export const KRYONHOST_CONFIG = {
     status: 'Infrastructure Online',
   },
 
+  payments: {
+    gateway: 'Razorpay',
+    mode: 'Test Mode',
+    razorpayKeyId: 'rzp_test_TYNEWJU3MCxeKe',
+    currency: 'INR',
+  },
+
   contact: {
     email: 'support@kryonhost.com',
     phone: '+91 8750287172',

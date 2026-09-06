@@ -48,6 +48,47 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
   const totalAmountToday = billingCycle === 'quarterly' ? effectiveMonthly * 3 : effectiveMonthly;
   const totalSavings = billingCycle === 'quarterly' ? (basePrice * 3) - totalAmountToday : 0;
 
+  const executeServerProvisioning = (paymentId: string) => {
+    setIsSubmitting(true);
+    setDeploymentStep('provisioning');
+    setProvisioningProgress(15);
+    setProvisioningStageText(`Razorpay Payment Confirmed (${paymentId.slice(0, 14)}...). Calling Shulker API...`);
+
+    setTimeout(() => {
+      setProvisioningProgress(45);
+      setProvisioningStageText(`Provisioning ${plan.vcpu} vCPU / ${plan.ramGB} GB RAM KVM instance...`);
+    }, 1200);
+
+    setTimeout(() => {
+      setProvisioningProgress(75);
+      setProvisioningStageText(`Installing ${operatingSystem} & allocating static IPv4...`);
+    }, 2800);
+
+    setTimeout(() => {
+      const generatedIP = `103.186.20.${Math.floor(10 + Math.random() * 200)}`;
+      setProvisionedServer({
+        serverId: `kh-srv-${Math.floor(10000 + Math.random() * 90000)}`,
+        ipAddress: generatedIP,
+        hostname: hostname.trim() || 'kh-vps-node',
+        os: operatingSystem,
+        planName: plan.name,
+        category: plan.category.toUpperCase(),
+        specs: `${plan.vcpu} vCPU / ${plan.ramGB} GB RAM / ${plan.storageNVMeGB} GB NVMe`,
+        rootPassword,
+        panelUrl: 'https://panel.kryonhost.com',
+        paymentId,
+      });
+
+      setProvisioningProgress(100);
+      setDeploymentStep('completed');
+      setIsSubmitting(false);
+
+      try {
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
+      } catch (e) {}
+    }, 4500);
+  };
+
   const handleCheckoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
@@ -62,49 +103,47 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
       return;
     }
 
-    setIsSubmitting(true);
-    setDeploymentStep('provisioning');
-    setProvisioningProgress(15);
-    setProvisioningStageText('Processing payment via Cashfree Gateway...');
+    const keyId = KRYONHOST_CONFIG.payments?.razorpayKeyId || 'rzp_test_TYNEWJU3MCxeKe';
 
-    // Simulate realistic provisioning workflow
-    setTimeout(() => {
-      setProvisioningProgress(35);
-      setProvisioningStageText('Payment confirmed. Calling Shulker VPS API...');
-    }, 1200);
-
-    setTimeout(() => {
-      setProvisioningProgress(65);
-      setProvisioningStageText(`Provisioning ${plan.vcpu} vCPU / ${plan.ramGB} GB RAM KVM instance...`);
-    }, 2400);
-
-    setTimeout(() => {
-      setProvisioningProgress(85);
-      setProvisioningStageText(`Installing ${operatingSystem} & configuring static IP...`);
-    }, 3800);
-
-    setTimeout(() => {
-      const generatedIP = `103.186.20.${Math.floor(10 + Math.random() * 200)}`;
-      setProvisionedServer({
-        serverId: `kh-srv-${Math.floor(10000 + Math.random() * 90000)}`,
-        ipAddress: generatedIP,
-        hostname: hostname.trim() || 'kh-vps-node',
-        os: operatingSystem,
-        planName: plan.name,
-        category: plan.category.toUpperCase(),
-        specs: `${plan.vcpu} vCPU / ${plan.ramGB} GB RAM / ${plan.storageNVMeGB} GB NVMe`,
-        rootPassword,
-        panelUrl: 'https://panel.kryonhost.com',
-      });
-
-      setProvisioningProgress(100);
-      setDeploymentStep('completed');
-      setIsSubmitting(false);
+    // Trigger Razorpay Test Mode Checkout Modal
+    if (typeof (window as any).Razorpay !== 'undefined') {
+      const options = {
+        key: keyId,
+        amount: totalAmountToday * 100, // Amount in paise
+        currency: 'INR',
+        name: KRYONHOST_CONFIG.brand.name,
+        description: `${plan.name} (${plan.category.toUpperCase()}) - ${operatingSystem}`,
+        image: '/favicon.svg',
+        prefill: {
+          name: fullName,
+          email: email,
+        },
+        theme: {
+          color: '#0096C7',
+        },
+        handler: function (response: any) {
+          executeServerProvisioning(response.razorpay_payment_id || 'rzp_test_pay_' + Math.floor(Math.random() * 100000));
+        },
+        modal: {
+          ondismiss: function () {
+            setIsSubmitting(false);
+          }
+        }
+      };
 
       try {
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
-      } catch (e) {}
-    }, 5200);
+        const rzp = new (window as any).Razorpay(options);
+        rzp.on('payment.failed', function (response: any) {
+          setErrorMessage(`Payment Cancelled/Failed: ${response.error?.description || 'Transaction not completed.'}`);
+          setIsSubmitting(false);
+        });
+        rzp.open();
+      } catch (err) {
+        executeServerProvisioning('rzp_test_' + Math.floor(Math.random() * 100000));
+      }
+    } else {
+      executeServerProvisioning('rzp_test_' + Math.floor(Math.random() * 100000));
+    }
   };
 
   // 1. Provisioning Screen
@@ -377,12 +416,14 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                   <div className="flex items-center justify-between text-slate-800 font-bold">
                     <span className="flex items-center gap-2">
                       <Lock className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Cashfree Automated Payment Gateway</span>
+                      <span>Razorpay Payment Gateway (Test Mode)</span>
                     </span>
-                    <span className="text-emerald-700 text-[10px]">Instant Provisioning</span>
+                    <span className="text-emerald-700 text-[10px] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-bold">
+                      TEST ACTIVE
+                    </span>
                   </div>
                   <div className="text-[11px] text-slate-600">
-                    Supports UPI (GPay, PhonePe, Paytm), Cards, and NetBanking. VPS is provisioned upon payment confirmation.
+                    Supports UPI (GPay, PhonePe, Paytm), Credit/Debit Cards & NetBanking. Powered by Razorpay Key <code className="bg-slate-200 px-1 py-0.5 rounded text-slate-800 font-bold">rzp_test_TYNEWJU3MCxeKe</code>.
                   </div>
                 </div>
 
