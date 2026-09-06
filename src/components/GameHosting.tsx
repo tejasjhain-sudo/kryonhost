@@ -11,17 +11,17 @@ export const GameHosting: React.FC<GameHostingProps> = ({ onSelectGamePlan }) =>
   const [mcRam, setMcRam] = useState(8);
   const [mcSoftware, setMcSoftware] = useState('Paper');
 
-  // Minecraft Pricing Calculation based on exact RAM
+  // Minecraft Pricing Calculation (+150 markup over Shulker API base rate)
   const mcPriceMap: Record<number, number> = {
-    4: 459,
-    8: 871,
-    12: 1254,
-    16: 1549,
-    24: 2249,
-    32: 2949,
+    4: 609,
+    8: 1021,
+    12: 1404,
+    16: 1699,
+    24: 2399,
+    32: 3099,
   };
 
-  const currentMcPrice = mcPriceMap[mcRam] || 871;
+  const currentMcPrice = mcPriceMap[mcRam] || 1021;
 
   const handleDeployMinecraft = () => {
     onSelectGamePlan('minecraft', {

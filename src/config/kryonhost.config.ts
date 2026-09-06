@@ -658,8 +658,8 @@ export const KRYONHOST_CONFIG = {
       status: 'Available Now',
       isAvailable: true,
       description: 'High-clock single core performance for Paper, Purpur, Spigot, Fabric, and Forge servers.',
-      startingPriceINR: 379,
-      startingPriceUSD: 4.75,
+      startingPriceINR: 609,
+      startingPriceUSD: 7.60,
       features: ['Paper / Purpur / Fabric', 'Instant Deployment', 'Automated Backups', 'DDoS Protection', 'Full SFTP & Panel Access'],
     },
     {
